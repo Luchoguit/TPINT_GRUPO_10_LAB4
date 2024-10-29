@@ -117,17 +117,23 @@
             <input id="direccion" type="text" name="direccion" required maxlength="100">
         </div>
 
-        <!-- Localidad -->
-        <div class="form-group">
-            <label for="localidad">Localidad</label>
-            <input id="localidad" type="text" name="localidad" required maxlength="50">
-        </div>
+       <!-- Localidad -->
+	<div class="form-group">
+   	 <label for="localidad">Localidad</label>
+    	<select id="localidad" name="localidad" required>
+        <option value="">Seleccione una localidad</option>
+        <!-- Las opciones se llenarán dinámicamente desde la base de datos -->
+    	</select>
+		</div>
 
-        <!-- Provincia -->
-        <div class="form-group">
-            <label for="provincia">Provincia</label>
-            <input id="provincia" type="text" name="provincia" required maxlength="50">
-        </div>
+	<!-- Provincia -->
+	<div class="form-group">
+    	<label for="provincia">Provincia</label>
+    	<select id="provincia" name="provincia" required>
+        <option value="">Seleccione una provincia</option>
+        <!-- Las opciones se llenarán dinámicamente desde la base de datos -->
+    	</select>
+	</div>
 
         <!-- Correo Electrónico -->
         <div class="form-group">
