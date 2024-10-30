@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Alta de Cliente</title>
     <style>
-        /* Estilos básicos para la estructura del formulario */
+        /* Estilos básicos para la estructura del formulario si quieren copien todo */
         
         body {
             font-family: Arial, sans-serif;
@@ -147,8 +147,8 @@
             <input id="telefono" type="text" name="telefono" required maxlength="20">
         </div>
 
-        <!-- ID Usuario -->
-        <input type="hidden" name="id_usuario" value="1"> <!-- Asumido valor predeterminado para el ejemplo -->
+        <!-- ID Usuario, supongo que tendra alguna logica que aplicarle despues -->
+        <input type="hidden" name="id_usuario" value="1"> 
 
         <div class="form-group">
             <input type="submit" value="Guardar Cliente">
