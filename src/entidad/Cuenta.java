@@ -9,17 +9,17 @@ public class Cuenta {
     private LocalDateTime fechaCreacion;
     private String cbu;
     private BigDecimal saldo;
-    private Cliente cliente; 
+    private Usuario usuario; 
     private TipoCuenta tipoCuenta; 
 
     public Cuenta(int id, String numeroCuenta, LocalDateTime fechaCreacion, String cbu, 
-                  BigDecimal saldo, Cliente cliente, TipoCuenta tipoCuenta) {
+                  BigDecimal saldo, Usuario usuario, TipoCuenta tipoCuenta) {
         this.id = id;
         this.numeroCuenta = numeroCuenta;
         this.fechaCreacion = fechaCreacion;
         this.cbu = cbu;
         this.saldo = saldo;
-        this.cliente = cliente;
+        this.usuario = usuario;
         this.tipoCuenta = tipoCuenta;
     }
 
@@ -63,12 +63,12 @@ public class Cuenta {
         this.saldo = saldo;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public TipoCuenta getTipoCuenta() {
