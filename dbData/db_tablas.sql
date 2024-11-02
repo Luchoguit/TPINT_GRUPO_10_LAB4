@@ -23,7 +23,7 @@ CREATE TABLE clientes(
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
     sexo ENUM('M','F') NOT NULL,
-    nacioalidad VARCHAR(50) NOT NULL,
+    nacionalidad VARCHAR(50) NOT NULL,
     fecha_nacimiento DATE NOT NULL,
 	id_localidad INT NOT NULL,
     correo VARCHAR(100) UNIQUE NOT NULL,
@@ -31,13 +31,13 @@ CREATE TABLE clientes(
 );
 
 CREATE TABLE usuarios(
-	id INT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     FOREIGN KEY (id) REFERENCES clientes(id),
 	nombre_usuario VARCHAR(50) UNIQUE NOT NULL,
     contraseña VARCHAR(25) NOT NULL,
     tipo ENUM('admin', 'cliente') NOT NULL DEFAULT 'cliente',
     estado BOOLEAN NOT NULL DEFAULT TRUE,
-    fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    fecha_creacion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -49,7 +49,7 @@ CREATE TABLE tipos_de_cuentas(
 CREATE TABLE cuentas(
 	id INT AUTO_INCREMENT PRIMARY KEY,
     numero_cuenta VARCHAR(20) NOT NULL,
-    fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fecha_creacion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     cbu VARCHAR(22) UNIQUE NOT NULL,
     saldo DECIMAL(15,2) NOT NULL DEFAULT 10000,
     id_cliente INT NOT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE movimientos(
     fechaHora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     importe DECIMAL(15,2) NOT NULL,
     id_cuentaDestino INT NOT NULL,
-    FOREIGN KEY (id_cuentaDestino) REFERENCES clientes(id)
+    FOREIGN KEY (id_cuentaDestino) REFERENCES cuentas(id)
 );
 
 
