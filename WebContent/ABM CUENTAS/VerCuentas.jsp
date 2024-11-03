@@ -35,7 +35,7 @@
 </head>
 <body>
 
-	<h2 style="text-align: center;">Datos de la cuenta</h2>
+	<h2 style="text-align: center;">Cuentas disponibles</h2>
 
 	<table>
 	    <tr>
@@ -47,6 +47,7 @@
 	        <th>Apellido titular</th>
 	        <th>Fecha de creacion</th>
 	        <th>Saldo</th>
+	        <th></th>
 	    </tr>
 	    <tr>
 	        <td>Caja de ahorro</td>
@@ -57,6 +58,18 @@
 	        <td>Perez</td>
 	        <td>01/01/2024</td>
 	        <td>10.000,00</td>
+	        <th><a href="../MENUS/IndexCuenta.jsp">Ver Cuenta</a></th>
+	    </tr>
+	    	    <tr>
+	        <td>Cuenta sueldo</td>
+	        <td>2245567881</td>
+	        <td>1000000009234567891235</td>
+	        <td>11234333</td>
+	        <td>Juan</td>
+	        <td>Perez</td>
+	        <td>01/01/2023</td>
+	        <td>200.000,00</td>
+	        <th><a href="../MENUS/IndexCuenta.jsp">Ver Cuenta</a>
 	    </tr>
 	</table>
 

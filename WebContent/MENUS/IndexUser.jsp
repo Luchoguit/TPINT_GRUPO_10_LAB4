@@ -55,7 +55,7 @@
 <body>
 
     <div class="main-container">
-        <h1>Banco GRUPO10</h1>
+        <h1>BANCO G10</h1>
 
         <div class="logged-user">
             <!-- Mostrar el usuario logueado -->
@@ -63,12 +63,10 @@
         </div>
 
         <ul class="navigation">
+            <li><a href="../ABM CUENTAS/VerCuentas.jsp">Seleccionar cuentas</a></li>
             <li><a href="../ABM CUENTAS/AltaCuenta.jsp">Crear nueva cuenta</a></li>
-            <li><a href="../ABM CUENTAS/DatosCuenta.jsp">Consultar cuentas</a></li>
-            <li><a href="">Realizar transferencia</a></li>
-            <li><a href="">Reportes y Estadísticas</a></li>
-            <li><a href="">Configuración de usuario</a></li>
-            <li><a href="">Cerrar sesión</a></li>
+			<li><a href="../ABM CLIENTES/InformacionCompletaCliente.jsp">Ver datos personales</a></li>
+            <li><a href="../LOGIN/Login.jsp">Cerrar sesion</a></li>
         </ul>
 
         <!-- Posibles mensajes aclaratorios -->

@@ -3,8 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>LOGIN</title>
+    <title>Login</title>
     <style>
         /* Estilos básicos para la estructura del formulario si quieren copien todo */
         
@@ -78,7 +77,7 @@
 
 <div class="form-container">
     <h2>Login</h2>
-    <form method="post" action="ServletLogin">
+    <form method="post" action="../MENUS/IndexUser.jsp">
  
         <div class="form-group">
             <label for="usuario">Usuario</label>
