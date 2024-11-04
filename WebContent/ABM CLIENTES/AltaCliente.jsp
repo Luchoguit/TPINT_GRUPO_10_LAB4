@@ -38,6 +38,7 @@
             font-weight: bold;
         }
         input[type="text"],
+        input[type="password"],
         input[type="email"],
         input[type="number"],
         input[type="date"],
@@ -108,7 +109,7 @@
         <!-- Fecha de Nacimiento -->
         <div class="form-group">
             <label for="fecha_nacimiento">Fecha de Nacimiento</label>
-            <input id="fecha_nacimiento" type="date" required name="fecha_nacimiento" >
+            <input id="fecha_nacimiento" type="date" required name="fecha_nacimiento">
         </div>
 
         <!-- Dirección -->
@@ -117,23 +118,23 @@
             <input id="direccion" type="text" name="direccion" required maxlength="100">
         </div>
 
-       <!-- Localidad -->
-	<div class="form-group">
-   	 <label for="localidad">Localidad</label>
-    	<select id="localidad" name="localidad" required>
-        <option value="">Seleccione una localidad</option>
-        <!-- Las opciones se llenarán dinámicamente desde la base de datos -->
-    	</select>
-		</div>
+        <!-- Localidad -->
+        <div class="form-group">
+            <label for="localidad">Localidad</label>
+            <select id="localidad" name="localidad" required>
+                <option value="">Seleccione una localidad</option>
+                <!-- Las opciones se llenarán dinámicamente desde la base de datos -->
+            </select>
+        </div>
 
-	<!-- Provincia -->
-	<div class="form-group">
-    	<label for="provincia">Provincia</label>
-    	<select id="provincia" name="provincia" required>
-        <option value="">Seleccione una provincia</option>
-        <!-- Las opciones se llenarán dinámicamente desde la base de datos -->
-    	</select>
-	</div>
+        <!-- Provincia -->
+        <div class="form-group">
+            <label for="provincia">Provincia</label>
+            <select id="provincia" name="provincia" required>
+                <option value="">Seleccione una provincia</option>
+                <!-- Las opciones se llenarán dinámicamente desde la base de datos -->
+            </select>
+        </div>
 
         <!-- Correo Electrónico -->
         <div class="form-group">
@@ -147,8 +148,26 @@
             <input id="telefono" type="text" name="telefono" required maxlength="20">
         </div>
 
-        <!-- ID Usuario, supongo que tendra alguna logica que aplicarle despues -->
-        <input type="hidden" name="id_usuario" value="1"> 
+        <!-- Usuario -->
+        <div class="form-group">
+            <label for="usuario">Usuario</label>
+            <input id="usuario" type="text" name="usuario" maxlength="50" required>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="form-group">
+            <label for="contrasena">Contraseña</label>
+            <input id="contrasena" type="password" name="contrasena" maxlength="50" required>
+        </div>
+        
+        <!-- Repetir Contraseña (armar logica verificando que coinciden las pw)-->
+        <div class="form-group">
+            <label for="contrasena2">Repetir Contraseña</label>
+            <input id="contrasena2" type="password" name="contrasena" maxlength="50" required>
+        </div>
+
+        <!-- ID Usuario -->
+        <input type="hidden" name="id_usuario" value="1">
 
         <div class="form-group">
             <input type="submit" value="Guardar Cliente">
