@@ -119,6 +119,10 @@
    <div id="formularioMonto" style="display: none; margin-top: 15px; margin-left: 100px">
 	    <label for="monto">Monto $</label>
 	    <input type="number" id="monto" name="monto" placeholder="Ingrese el monto">
+	    <label>Concepto </label>
+	    <input type="text" id="concepto" name="concepto" placeholder="Opcional">
+	    <br>
+	    <br>
 	    <button type="button" onclick="aceptarTransferencia()">Aceptar</button>
 	</div>
 </div>
