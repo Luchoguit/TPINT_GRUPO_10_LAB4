@@ -27,7 +27,8 @@ CREATE TABLE clientes(
     fecha_nacimiento DATE NOT NULL,
 	id_localidad INT NOT NULL,
     correo VARCHAR(100) UNIQUE NOT NULL,
-    telefono VARCHAR(20) NOT NULL
+    telefono VARCHAR(20) NOT NULL,
+    FOREIGN KEY (id_localidad) REFERENCES localidades(id)
 );
 
 CREATE TABLE usuarios(
@@ -67,23 +68,45 @@ CREATE TABLE tipos_de_movimientos(
 CREATE TABLE movimientos(
 	id INT AUTO_INCREMENT PRIMARY KEY,
     id_cuenta INT NOT NULL,
-	FOREIGN KEY (id_cuenta) REFERENCES clientes(id),
+	FOREIGN KEY (id_cuenta) REFERENCES cuentas(id),
     id_tipoMovimiento INT NOT NULL,
     FOREIGN KEY (id_tipoMovimiento) REFERENCES tipos_de_movimientos(id),
     detalle VARCHAR(100) NOT NULL,
     fechaHora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     importe DECIMAL(15,2) NOT NULL,
-    id_cuentaDestino INT NOT NULL,
+    id_cuentaDestino INT NULL,
     FOREIGN KEY (id_cuentaDestino) REFERENCES cuentas(id)
 );
 
+CREATE TABLE Prestamos (
+    id_prestamo INT PRIMARY KEY AUTO_INCREMENT,
+    id_cliente INT NOT NULL,
+    id_cuenta INT NOT NULL,
+    fecha_alta DATE NOT NULL,
+    importe_pedido DECIMAL(15, 2) NOT NULL,
+    plazo_meses INT NOT NULL,
+    importe_mensual DECIMAL(15, 2) NOT NULL,
+    cantidad_cuotas INT NOT NULL,
+    FOREIGN KEY (id_cliente) REFERENCES Clientes(id),
+    FOREIGN KEY (id_cuenta) REFERENCES Cuentas(id_cuenta)
+);
 
--- Inserción tipos de movimientos
-INSERT INTO tipos_de_movimientos(descripcion) VALUES
-('Alta de cuenta'),
-('Alta de prestamo'),
-('Pago de prestamo'),
-('Transferencia');
+CREATE TABLE Cuotas (
+    id_cuota INT PRIMARY KEY AUTO_INCREMENT,
+    id_prestamo INT NOT NULL,
+    numero_cuota INT NOT NULL,
+    monto DECIMAL(15, 2) NOT NULL,
+    fecha_pago DATE NOT NULL,
+    FOREIGN KEY (id_prestamo) REFERENCES Prestamos(id_prestamo)
+);
+
+-- Inserción TiposDeMovimiento
+INSERT INTO tipos_de_movimientos (id, descripcion) VALUES
+(1, 'Alta de cuenta'),
+(2, 'Alta de préstamo'),
+(3, 'Pago de préstamo'),
+(4, 'Transferencia');
+
 
 -- Inserción tipos de cuentas
 INSERT INTO tipos_de_cuentas (descripcion) VALUES
