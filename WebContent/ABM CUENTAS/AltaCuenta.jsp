@@ -93,7 +93,7 @@
         
         
          <div class="form-group">
-            <input type="submit" value="Crear cuenta">
+            <input type="submit" value="Enviar solicitud">
         </div>
         
         <!-- Para posible manejo de error -->

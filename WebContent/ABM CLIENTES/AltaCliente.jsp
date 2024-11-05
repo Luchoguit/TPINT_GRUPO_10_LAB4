@@ -8,23 +8,26 @@
     <style>
         /* Estilos básicos para la estructura del formulario si quieren copien todo */
         
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-        .form-container {
-            width: 400px;
-            padding: 20px;
-            background: #fff;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
+		body {
+		    font-family: Arial, sans-serif;
+		    margin: 0;
+		    padding: 0;
+		    display: flex;
+		    justify-content: center;
+		    align-items: center;
+		    min-height: 100vh; /* Cambiado a min-height */
+		    background-color: #f4f4f4;
+		    overflow: auto; /* Permitir desplazamiento si es necesario */
+		}
+		
+		.form-container {
+		    width: 400px;
+		    padding: 20px;
+		    background: #fff;
+		    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+		    border-radius: 8px;
+		    overflow: hidden; /* Para evitar que se desborde el contenido */
+		}
         .form-container h2 {
             text-align: center;
             margin-bottom: 20px;
