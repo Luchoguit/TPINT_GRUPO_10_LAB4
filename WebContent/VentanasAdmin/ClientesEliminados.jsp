@@ -13,6 +13,9 @@
             padding: 10px;
             text-align: left;
             border: 1px solid #ddd;
+            white-space: nowrap; 
+            overflow-x: auto; 
+            max-width: 200px; 
         }
         th {
             background-color: #f4f4f4;

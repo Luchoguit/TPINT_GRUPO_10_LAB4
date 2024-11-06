@@ -15,9 +15,9 @@
 		    display: flex;
 		    justify-content: center;
 		    align-items: center;
-		    min-height: 100vh; /* Cambiado a min-height */
+		    min-height: 100vh; 
 		    background-color: #f4f4f4;
-		    overflow: auto; /* Permitir desplazamiento si es necesario */
+		    overflow: auto; 
 		}
 		
 		.form-container {
@@ -26,7 +26,7 @@
 		    background: #fff;
 		    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 		    border-radius: 8px;
-		    overflow: hidden; /* Para evitar que se desborde el contenido */
+		    overflow: hidden; 
 		}
         .form-container h2 {
             text-align: center;
