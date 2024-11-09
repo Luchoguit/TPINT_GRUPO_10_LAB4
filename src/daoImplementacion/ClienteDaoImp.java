@@ -3,11 +3,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import dao.ClienteDao;
 import entidad.Cliente;
+import entidad.Localidad;
+import entidad.Provincia;
 
 public class ClienteDaoImp implements ClienteDao {
 
@@ -19,9 +22,6 @@ public class ClienteDaoImp implements ClienteDao {
 	    PreparedStatement statement;
 	    Connection conexion = Conexion.getConexion().getSQLConexion();
 	    boolean isInsertExitoso = false;
-
-	    String qryInsert = "INSERT INTO clientes (dni, cuil, nombre, apellido, sexo, nacionalidad, fecha_nacimiento, direccion, id_localidad, id_provincia, correo, telefono) "
-	            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	    try {
 	
@@ -60,11 +60,59 @@ public class ClienteDaoImp implements ClienteDao {
 	    return isInsertExitoso;
 	}
 
+	private static final String qrylistarclientes = "SELECT id, dni, cuil, nombre, apellido, sexo, nacionalidad, fecha_nacimiento, direccion, id_localidad, id_provincia, correo, telefono FROM clientes";
+	
 	@Override
-	public List<Cliente> obtenerTodos() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Cliente> listarClientes() {
+	
+	    List<Cliente> clientes = new ArrayList<>();
+
+	    try {
+	     
+	        Connection con = Conexion.getConexion().getSQLConexion();	
+	        System.out.println("[DEBUG] Conexión a la base de datos establecida");
+
+	        System.out.println("[DEBUG] Conexión establecida: " + con);
+
+	        PreparedStatement statement = con.prepareStatement(qrylistarclientes);
+	        ResultSet resultSet = statement.executeQuery();
+
+	        while (resultSet.next()) {
+	        	int id = resultSet.getInt("id");
+	            String dni = resultSet.getString("dni");
+	            String cuil = resultSet.getString("cuil");
+	            String nombre = resultSet.getString("nombre");
+	            String apellido = resultSet.getString("apellido");
+	            String sexo = resultSet.getString("sexo");
+	            String nacionalidad = resultSet.getString("nacionalidad");
+	            java.sql.Date sqlDate = resultSet.getDate("fecha_nacimiento");
+	            LocalDate fechaNacimiento = sqlDate != null ? sqlDate.toLocalDate() : null;
+
+	            
+	            Localidad localidadCliente = new Localidad();
+	            Provincia provinciaCliente = new Provincia();
+	            localidadCliente.setId(resultSet.getInt("id_localidad"));
+	            provinciaCliente.setId(resultSet.getInt("id_provincia"));
+
+	            
+	            String correo = resultSet.getString("correo");
+	            String telefono = resultSet.getString("telefono");
+	            String direccion = resultSet.getString("direccion");
+	        
+	            Cliente cli = new Cliente(id, dni, cuil, nombre, apellido, sexo, nacionalidad, 
+	            		fechaNacimiento, direccion, localidadCliente, provinciaCliente, correo, telefono);
+	            clientes.add(cli);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        Conexion.getConexion().cerrarConexion();
+	    }
+
+	    return clientes;
 	}
+ 
 
 	@Override
 	public Cliente obtenerPorId(int id) {

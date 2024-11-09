@@ -11,7 +11,7 @@ public class Cliente {
     private String nacionalidad;
     private LocalDate fechaNacimiento;
     private Localidad localidadCliente;
-    private Provincia ProvinciaCliente;
+    private Provincia provinciaCliente;
     private String correo;
     private String telefono;
     private String direccion;
@@ -28,6 +28,7 @@ public class Cliente {
         this.nacionalidad = nacionalidad;
         this.fechaNacimiento = fechaNacimiento;
         this.localidadCliente = localidadCliente;
+        this.provinciaCliente = provinciaCliente;
         this.correo = correo;
         this.telefono = telefono;
         this.setDireccion(direccion);
@@ -126,11 +127,11 @@ public class Cliente {
     }
 
 	public Provincia getProvinciaCliente() {
-		return ProvinciaCliente;
+		return provinciaCliente;
 	}
 
 	public void setProvinciaCliente(Provincia provinciaCliente) {
-		ProvinciaCliente = provinciaCliente;
+		this.provinciaCliente = provinciaCliente;
 	}
 
 	public String getDireccion() {

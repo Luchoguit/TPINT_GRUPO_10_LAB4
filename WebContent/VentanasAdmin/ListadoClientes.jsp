@@ -1,7 +1,12 @@
-<!DOCTYPE html>
-<html lang="es">
+<%@page import="entidad.Cliente" %>
+<%@page import="java.util.List" %>
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
-    <meta charset="ISO-8859-1">
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Lista de Clientes</title>
     <style>
         table {
@@ -38,7 +43,7 @@
 <h2 style="text-align: center;">Lista de Clientes</h2>
 
 <div class="filter-container">
-    <form method="post" action="servletCliente">
+    <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoClientes">
         <input type="text" name="filtroCliente" placeholder="Ingrese DNI, nombre o apellido">
         <input type="submit" name="btnFiltrar" value="Filtrar">
     </form>
@@ -56,58 +61,41 @@
         <th>Modificar</th>
         <th>Eliminar</th>
     </tr>
+			    <% 
+			    	List<Cliente> listaClientes = (List<Cliente>)request.getAttribute("listaClientes");
+            		if (listaClientes != null) {
+			        for (Cliente cliente : listaClientes) {
+			    %>
+    
     <tr>
-        <td>12345678</td>
-        <td>Juan</td>
-        <td>Pérez</td>
-        <td>20123456789</td>
-        <td>juan.perez@example.com</td>
-        <td>123-456-7890</td>
-        <td>
-            <form method="post" action="servletCliente">
-                <input type="hidden" name="idCliente" value="12345678">             
-                <input type="submit" name="btnModificar" value=" + ">
-            </form>
-        </td>
-        <td>
-            <form method="post" action="servletCliente">
-                <input type="hidden" name="idCliente" value="12345678">             
-                <input type="submit" name="btnModificar" value="Modificar">
-            </form>
-        </td>
-        <td>
-            <form method="post" action="servletCliente">
-                <input type="hidden" name="idCliente" value="12345678">
-                <input type="submit" name="btnEliminar" value="Eliminar">
-            </form>
-        </td>
-    </tr>
-    <tr>
-        <td>87654321</td>
-        <td>Ana</td>
-        <td>Gómez</td>
-        <td>20876543210</td>
-        <td>ana.gomez@example.com</td>
-        <td>098-765-4321</td>
+        <td><%= cliente.getDni() %></td>
+        <td><%= cliente.getNombre() %></td>
+        <td><%= cliente.getApellido() %></td>
+        <td><%= cliente.getCuil() %></td>
+        <td><%= cliente.getCorreo() %></td>
+        <td><%= cliente.getTelefono() %></td>
          <td>
-            <form method="post" action="servletCliente">
-                <input type="hidden" name="idCliente" value="12345678">             
-                <input type="submit" name="btnModificar" value=" + ">
+            <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoClientes">
+                <input type="hidden" name="verMas" value="12345678">             
+                <input type="submit" name="verMas" value=" + ">
             </form>
         </td>
         <td>
-            <form method="post" action="servletCliente">
-                <input type="hidden" name="idCliente" value="87654321">             
+            <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoClientes">
+                <input type="hidden" name="modificar" value="87654321">             
                 <input type="submit" name="btnModificar" value="Modificar">
             </form>
         </td>
         <td>
-            <form method="post" action="servletCliente">
-                <input type="hidden" name="idCliente" value="87654321">
+            <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoClientes">
+                <input type="hidden" name="eliminar" value="87654321">
                 <input type="submit" name="btnEliminar" value="Eliminar">             
             </form>
         </td>
     </tr>
+			    <% } } else {System.out.println("Los clientes no llegaron correctamente.");}
+			    %>
+    
 </table>
 
 </body>

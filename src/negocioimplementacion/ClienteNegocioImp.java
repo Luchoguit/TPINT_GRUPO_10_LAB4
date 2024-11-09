@@ -12,7 +12,7 @@ public class ClienteNegocioImp implements ClienteNegocio {
 
     @Override
     public List<Cliente> listarClientes() {
-        return clienteDao.obtenerTodos();
+        return clienteDao.listarClientes();
     }
 
     @Override
