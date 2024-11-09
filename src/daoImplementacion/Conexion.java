@@ -12,7 +12,7 @@ public class Conexion
 	private String host = "jdbc:mysql://localhost:3306/";
 	private String user = "root";
 	private String pass = "root";
-	private String dbName = "SegurosGroup?useUnicode=yes&characterEncoding=UTF-8&useSSL=false";
+	private String dbName = "tp_integrador?useUnicode=yes&characterEncoding=UTF-8&useSSL=false";
 	
 	private Conexion()
 	{

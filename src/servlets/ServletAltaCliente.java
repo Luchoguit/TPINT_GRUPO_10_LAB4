@@ -1,9 +1,13 @@
-/*package servlets;
+package servlets;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import com.google.gson.Gson;
 
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,15 +17,62 @@ import javax.servlet.http.HttpServletResponse;
 import entidad.Cliente;
 import entidad.Localidad;
 import entidad.Provincia;
+import negocio.LocalidadNegocio;
+import negocio.ProvinciaNegocio;
 import negocioimplementacion.ClienteNegocioImp;
+import negocioimplementacion.LocalidadNegocioImp;
+import negocioimplementacion.ProvinciaNegocioImp;
 
 
 @WebServlet("/ServletAltaCliente")
 public class ServletAltaCliente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
+	
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
+
+        // Verificar si la solicitud es para cargar localidades
+        String provinciaId = request.getParameter("provinciaId");
+        if (provinciaId != null && !provinciaId.isEmpty()) {
+            try {
+                LocalidadNegocio localidadNegocio = new LocalidadNegocioImp();
+                List<Localidad> localidades = localidadNegocio.listarPorProvincia(Integer.parseInt(provinciaId));
+
+                // Convertir la lista de localidades a JSON
+                Gson gson = new Gson();
+                String json = gson.toJson(localidades);
+
+                // Configurar el tipo de respuesta como JSON
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(json);
+            } catch (Exception e) {
+                // Manejo de error si ocurre alguna excepción
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500
+                response.getWriter().write("{\"error\":\"Error al cargar las localidades\"}");
+            }
+            return;
+        }
+    	
+
+     // Lógica para cargar provincias
+        ProvinciaNegocio provinciaNegocio = new ProvinciaNegocioImp();
+        List<Provincia> listaProvincias = provinciaNegocio.listarProvincias();
+        request.setAttribute("provincias", listaProvincias);
+
+        // Reenvío al JSP para mostrar las provincias
+        RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasAdmin/AltaCliente.jsp");
+        dispatcher.forward(request, response);
+        System.out.println("Cargando provincias en ServletAltaCliente");
+
+    }
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String dni = request.getParameter("dni");
+        System.out.println("Entro al doPost");
+
+    	
+    	String dni = request.getParameter("dni");
         String cuil = request.getParameter("cuil");
         String nombre = request.getParameter("nombre");
         String apellido = request.getParameter("apellido");
@@ -69,9 +120,18 @@ public class ServletAltaCliente extends HttpServlet {
         if (resultado) {
             System.out.println("Alta de cliente exitosa.");      
         } else {
-            System.out.println("Error en el alta de cliente.");  
+        	
+            System.out.println("Error en el alta de cliente."); 
+            
+            ProvinciaNegocio provinciaNegocio = new ProvinciaNegocioImp();
+            List<Provincia> listaProvincias = provinciaNegocio.listarProvincias();
+            request.setAttribute("provincias", listaProvincias);
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/AltaCliente.jsp");
+            dispatcher.forward(request, response);
+        	
         }
 }
 
 
-}*/
+}

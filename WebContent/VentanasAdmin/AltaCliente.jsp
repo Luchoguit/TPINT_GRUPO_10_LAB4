@@ -1,3 +1,6 @@
+<%@page import="entidad.Provincia" %>
+<%@page import="java.util.List" %>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -63,12 +66,47 @@
             background-color: #218838;
         }
     </style>
+    
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function cargarLocalidades() {
+        var provinciaId = document.getElementById("provincia").value;
+
+        // Verificamos que se haya seleccionado una provincia
+        if (provinciaId) {
+            // Realizamos la solicitud AJAX
+            $.ajax({
+                url: '/TPINT_GRUPO_10_LAB4/ServletAltaCliente',
+                type: 'GET',
+                data: { provinciaId: provinciaId },  // Enviamos el ID de la provincia
+                success: function(response) {
+                    // Limpiamos las opciones actuales
+                    var localidadSelect = document.getElementById("localidad");
+                    localidadSelect.innerHTML = '<option value="">Seleccione una localidad</option>';
+                    
+                    // Agregamos las localidades recibidas
+                    response.forEach(function(localidad) {
+                        var option = document.createElement("option");
+                        option.value = localidad.id;
+                        option.text = localidad.nombre;
+                        localidadSelect.appendChild(option);
+                    });
+                },
+                error: function() {
+                    alert("Error al cargar las localidades.");
+                }
+            });
+        }
+    }
+</script>
+
+    
 </head>
 <body>
 
 <div class="form-container">
     <h1>Alta Cliente</h1>
-    <form method="post" action="ServletAltaCliente">
+    <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletAltaCliente">
         <!-- DNI -->
         <div class="form-group">
             <label for="dni">DNI</label>
@@ -121,22 +159,29 @@
             <input id="direccion" type="text" name="direccion" required maxlength="100">
         </div>
 
-        <!-- Localidad -->
+        <!-- Provincia -->
+        <div class="form-group">
+            <label for="provincia">Provincia</label>
+			<select id="provincia" name="provincia" required onchange="cargarLocalidades()">
+			    <option value="">Seleccione una provincia</option>
+			    <% 
+			        List<Provincia> listaProvincias = (List<Provincia>)request.getAttribute("provincias");
+            		if (listaProvincias != null) {
+			        for (Provincia provincia : listaProvincias) {
+			    %>
+			        <option value="<%= provincia.getId() %>"><%= provincia.getNombre() %></option>
+			    <% } } else {System.out.println("Las provincias no llegaron correctamente.");}
+			    %>
+			</select>
+
+        </div>
+        
+                <!-- Localidad -->
         <div class="form-group">
             <label for="localidad">Localidad</label>
             <select id="localidad" name="localidad" required>
                 <option value="">Seleccione una localidad</option>
                 <option value="1">Tigre</option>
-                <!-- Las opciones se llenarán dinámicamente desde la base de datos -->
-            </select>
-        </div>
-
-        <!-- Provincia -->
-        <div class="form-group">
-            <label for="provincia">Provincia</label>
-            <select id="provincia" name="provincia" required>
-                <option value="">Seleccione una provincia</option>
-                <option value="1">Buenos Aires</option>
                 <!-- Las opciones se llenarán dinámicamente desde la base de datos -->
             </select>
         </div>
