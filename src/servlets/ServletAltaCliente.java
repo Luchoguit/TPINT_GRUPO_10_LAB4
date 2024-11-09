@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import com.google.gson.Gson;
-
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -30,108 +28,115 @@ public class ServletAltaCliente extends HttpServlet {
 
 	
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	
-
-        // Verificar si la solicitud es para cargar localidades
-        String provinciaId = request.getParameter("provinciaId");
-        if (provinciaId != null && !provinciaId.isEmpty()) {
-            try {
-                LocalidadNegocio localidadNegocio = new LocalidadNegocioImp();
-                List<Localidad> localidades = localidadNegocio.listarPorProvincia(Integer.parseInt(provinciaId));
-
-                // Convertir la lista de localidades a JSON
-                Gson gson = new Gson();
-                String json = gson.toJson(localidades);
-
-                // Configurar el tipo de respuesta como JSON
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(json);
-            } catch (Exception e) {
-                // Manejo de error si ocurre alguna excepción
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500
-                response.getWriter().write("{\"error\":\"Error al cargar las localidades\"}");
-            }
-            return;
-        }
-    	
-
-     // Lógica para cargar provincias
+    	   	
+    	// Carga de provincias
         ProvinciaNegocio provinciaNegocio = new ProvinciaNegocioImp();
         List<Provincia> listaProvincias = provinciaNegocio.listarProvincias();
         request.setAttribute("provincias", listaProvincias);
+        
+        // Carga de localidades
+        LocalidadNegocio localidadesNegocio = new LocalidadNegocioImp();
+        List<Localidad> listaLocalidades = localidadesNegocio.listarLocalidades();
+        request.setAttribute("localidades", listaLocalidades);
 
-        // Reenvío al JSP para mostrar las provincias
+        // Reenvío al JSP
         RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasAdmin/AltaCliente.jsp");
         dispatcher.forward(request, response);
-        System.out.println("Cargando provincias en ServletAltaCliente");
+        
 
     }
-       
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("Entro al doPost");
-
-    	
-    	String dni = request.getParameter("dni");
-        String cuil = request.getParameter("cuil");
-        String nombre = request.getParameter("nombre");
-        String apellido = request.getParameter("apellido");
-        String sexo = request.getParameter("sexo");
-        String nacionalidad = request.getParameter("nacionalidad");
-        String fechaNacimientoStr = request.getParameter("fecha_nacimiento"); 
-        String direccion = request.getParameter("direccion");
-
- 
-        //int idLocalidad = Integer.parseInt(request.getParameter("id_localidad"));
-        //int idProvincia = Integer.parseInt(request.getParameter("id_provincia"));
-
-        String correo = request.getParameter("correo");
-        String telefono = request.getParameter("telefono");
-
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate fechaNacimiento = LocalDate.parse(fechaNacimientoStr, formatter);
-
-
-        Localidad localidadCliente = new Localidad(); 
-        //localidadCliente.setId(idLocalidad);
-        localidadCliente.setId(1);
-        Provincia provinciaCliente = new Provincia(); 
-        //provinciaCliente.setId(idProvincia);
-         provinciaCliente.setId(1);
-  
-        Cliente cliente = new Cliente();
-        cliente.setDni(dni);
-        cliente.setCuil(cuil);
-        cliente.setNombre(nombre);
-        cliente.setApellido(apellido);
-        cliente.setSexo(sexo);
-        cliente.setNacionalidad(nacionalidad);
-        cliente.setFechaNacimiento(fechaNacimiento);
-        cliente.setDireccion(direccion);
-        cliente.setLocalidadCliente(localidadCliente);
-        cliente.setProvinciaCliente(provinciaCliente); 
-        cliente.setCorreo(correo);
-        cliente.setTelefono(telefono);
-
-        ClienteNegocioImp clienteNegocio = new ClienteNegocioImp();
-        boolean resultado = clienteNegocio.altaCliente(cliente);
-
-        if (resultado) {
-            System.out.println("Alta de cliente exitosa.");      
-        } else {
-        	
-            System.out.println("Error en el alta de cliente."); 
+        try {
+            String dni = request.getParameter("dni");
+            String cuil = request.getParameter("cuil");
+            String nombre = request.getParameter("nombre");
+            String apellido = request.getParameter("apellido");
+            String sexo = request.getParameter("sexo");
+            String nacionalidad = request.getParameter("nacionalidad");
+            String fechaNacimientoStr = request.getParameter("fecha_nacimiento");
+            String direccion = request.getParameter("direccion");
             
+
+            // Conversión/obtención de IDs de localidad y provincia
+            int idLocalidad = request.getParameter("localidad") != null ? Integer.parseInt(request.getParameter("localidad")) : -1;
+            int idProvincia = request.getParameter("provincia") != null ? Integer.parseInt(request.getParameter("provincia")) : -1;
+
+            
+            String correo = request.getParameter("correo");
+            String telefono = request.getParameter("telefono");
+
+            
+            // Conversión de fecha
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate fechaNacimiento = LocalDate.parse(fechaNacimientoStr, formatter);
+
+
+            // Creación de objetos Localidad y Provincia
+            Localidad localidadCliente = new Localidad();
+            localidadCliente.setId(idLocalidad);
+
+            Provincia provinciaCliente = new Provincia();
+            provinciaCliente.setId(idProvincia);
+
+            // Configuración del cliente
+            Cliente cliente = new Cliente();
+            cliente.setDni(dni);
+            cliente.setCuil(cuil);
+            cliente.setNombre(nombre);
+            cliente.setApellido(apellido);
+            cliente.setSexo(sexo);
+            cliente.setNacionalidad(nacionalidad);
+            cliente.setFechaNacimiento(fechaNacimiento);
+            cliente.setDireccion(direccion);
+            cliente.setLocalidadCliente(localidadCliente);
+            cliente.setProvinciaCliente(provinciaCliente);
+            cliente.setCorreo(correo);
+            cliente.setTelefono(telefono);
+            
+
+
+            // Guardar cliente
+            ClienteNegocioImp clienteNegocio = new ClienteNegocioImp();
+            boolean resultado = clienteNegocio.altaCliente(cliente);
+
+            if (resultado) {
+                System.out.println("Alta de cliente exitosa.");
+            } else {
+                System.out.println("Error en el alta de cliente.");
+
+                // Carga de provincias
+                ProvinciaNegocio provinciaNegocio = new ProvinciaNegocioImp();
+                List<Provincia> listaProvincias = provinciaNegocio.listarProvincias();
+                request.setAttribute("provincias", listaProvincias);
+                
+                // Carga de localidades
+                LocalidadNegocio localidadesNegocio = new LocalidadNegocioImp();
+                List<Localidad> listaLocalidades = localidadesNegocio.listarLocalidades();
+                request.setAttribute("localidades", listaLocalidades);
+
+                // Reenvío al JSP
+                RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasAdmin/AltaCliente.jsp");
+                dispatcher.forward(request, response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+                        
+            // Carga de provincias
             ProvinciaNegocio provinciaNegocio = new ProvinciaNegocioImp();
             List<Provincia> listaProvincias = provinciaNegocio.listarProvincias();
             request.setAttribute("provincias", listaProvincias);
+            
+            // Carga de localidades
+            LocalidadNegocio localidadesNegocio = new LocalidadNegocioImp();
+            List<Localidad> listaLocalidades = localidadesNegocio.listarLocalidades();
+            request.setAttribute("localidades", listaLocalidades);
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/AltaCliente.jsp");
+            // Reenvío al JSP
+            RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasAdmin/AltaCliente.jsp");
             dispatcher.forward(request, response);
-        	
         }
-}
+    }
+
 
 
 }

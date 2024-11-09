@@ -1,4 +1,5 @@
 <%@page import="entidad.Provincia" %>
+<%@page import="entidad.Localidad" %>
 <%@page import="java.util.List" %>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -8,9 +9,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Alta de Cliente</title>
-    <style>
-        /* Estilos básicos para la estructura del formulario si quieren copien todo */
-        
+    <style>        
 		body {
 		    font-family: Arial, sans-serif;
 		    margin: 0;
@@ -65,43 +64,9 @@
         input[type="submit"]:hover {
             background-color: #218838;
         }
-    </style>
-    
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    function cargarLocalidades() {
-        var provinciaId = document.getElementById("provincia").value;
-
-        // Verificamos que se haya seleccionado una provincia
-        if (provinciaId) {
-            // Realizamos la solicitud AJAX
-            $.ajax({
-                url: '/TPINT_GRUPO_10_LAB4/ServletAltaCliente',
-                type: 'GET',
-                data: { provinciaId: provinciaId },  // Enviamos el ID de la provincia
-                success: function(response) {
-                    // Limpiamos las opciones actuales
-                    var localidadSelect = document.getElementById("localidad");
-                    localidadSelect.innerHTML = '<option value="">Seleccione una localidad</option>';
-                    
-                    // Agregamos las localidades recibidas
-                    response.forEach(function(localidad) {
-                        var option = document.createElement("option");
-                        option.value = localidad.id;
-                        option.text = localidad.nombre;
-                        localidadSelect.appendChild(option);
-                    });
-                },
-                error: function() {
-                    alert("Error al cargar las localidades.");
-                }
-            });
-        }
-    }
-</script>
-
-    
+    </style>    
 </head>
+
 <body>
 
 <div class="form-container">
@@ -110,31 +75,31 @@
         <!-- DNI -->
         <div class="form-group">
             <label for="dni">DNI</label>
-            <input id="dni" type="number" name="dni" maxlength="11" required>
+            <input id="dni" type="number" name="dni" maxlength="11">
         </div>
 
         <!-- CUIL -->
         <div class="form-group">
             <label for="cuil">CUIL</label>
-            <input id="cuil" type="number" name="cuil" maxlength="11" required>
+            <input id="cuil" type="number" name="cuil" maxlength="11">
         </div>
 
         <!-- Nombre -->
         <div class="form-group">
             <label for="nombre">Nombre</label>
-            <input id="nombre" type="text" name="nombre" maxlength="50" required>
+            <input id="nombre" type="text" name="nombre" maxlength="50">
         </div>
 
         <!-- Apellido -->
         <div class="form-group">
             <label for="apellido">Apellido</label>
-            <input id="apellido" type="text" name="apellido" maxlength="50" required>
+            <input id="apellido" type="text" name="apellido" maxlength="50">
         </div>
 
         <!-- Sexo -->
         <div class="form-group">
             <label for="sexo">Sexo</label>
-            <select id="sexo" name="sexo" required>
+            <select id="sexo" name="sexo">
                 <option value="">Seleccione...</option>
                 <option value="M">Masculino</option>
                 <option value="F">Femenino</option>
@@ -144,25 +109,25 @@
         <!-- Nacionalidad -->
         <div class="form-group">
             <label for="nacionalidad">Nacionalidad</label>
-            <input id="nacionalidad" type="text" name="nacionalidad" required maxlength="50">
+            <input id="nacionalidad" type="text" name="nacionalidad" maxlength="50">
         </div>
 
         <!-- Fecha de Nacimiento -->
         <div class="form-group">
-            <label for="fecha_nacimiento">Fecha de Nacimiento</label>
-            <input id="fecha_nacimiento" type="date" required name="fecha_nacimiento">
+		<label for="fecha_nacimiento">Fecha de Nacimiento</label>
+		<input type="text" id="fecha_nacimiento" name="fecha_nacimiento" maxlength="10" placeholder="dd/mm/yyyy" required>
         </div>
 
         <!-- Dirección -->
         <div class="form-group">
             <label for="direccion">Dirección</label>
-            <input id="direccion" type="text" name="direccion" required maxlength="100">
+            <input id="direccion" type="text" name="direccion" maxlength="100">
         </div>
 
         <!-- Provincia -->
         <div class="form-group">
             <label for="provincia">Provincia</label>
-			<select id="provincia" name="provincia" required onchange="cargarLocalidades()">
+			<select id="provincia" name="provincia">
 			    <option value="">Seleccione una provincia</option>
 			    <% 
 			        List<Provincia> listaProvincias = (List<Provincia>)request.getAttribute("provincias");
@@ -177,13 +142,21 @@
         </div>
         
                 <!-- Localidad -->
+                
         <div class="form-group">
             <label for="localidad">Localidad</label>
-            <select id="localidad" name="localidad" required>
-                <option value="">Seleccione una localidad</option>
-                <option value="1">Tigre</option>
-                <!-- Las opciones se llenarán dinámicamente desde la base de datos -->
-            </select>
+			<select id="localidad" name="localidad">
+			    <option value="">Seleccione una provincia</option>
+			    <% 
+			        List<Localidad> listaLocalidades = (List<Localidad>)request.getAttribute("localidades");
+            		if (listaLocalidades != null) {
+			        for (Localidad localidad : listaLocalidades) {
+			    %>
+			        <option value="<%= localidad.getId() %>"><%= localidad.getNombre() %></option>
+			    <% } } else {System.out.println("Las localidades no llegaron correctamente.");}
+			    %>
+			</select>
+
         </div>
 
         <!-- Correo Electrónico -->
@@ -203,6 +176,27 @@
         </div>
     </form>
 </div>
+
+        <!-- Script para formato de fecha -->
+<script>
+    document.getElementById("fecha_nacimiento").addEventListener("input", function (e) {
+        let input = e.target.value;
+        // Elimina todos los caracteres que no sean dígitos
+        input = input.replace(/\D/g, "");
+        
+        // Agrega las barras
+        if (input.length >= 3) {
+            input = input.substring(0, 2) + "/" + input.substring(2);
+        }
+        if (input.length >= 6) {
+            input = input.substring(0, 5) + "/" + input.substring(5, 9);
+        }
+
+        // Actualiza el valor del campo con el formato aplicado
+        e.target.value = input;
+    });
+</script>
+
 
 </body>
 </html>

@@ -25,7 +25,7 @@ public ProvinciaDaoImp() {};
 	        Connection con = Conexion.getConexion().getSQLConexion();	
 	        System.out.println("[DEBUG] Conexión a la base de datos establecida");
 
-	        System.out.println("Conexión establecida: " + con);
+	        System.out.println("[DEBUG] Conexión establecida: " + con);
 
 	        PreparedStatement statement = con.prepareStatement(qrylistarprovincias);
 	        ResultSet resultSet = statement.executeQuery();
@@ -33,10 +33,7 @@ public ProvinciaDaoImp() {};
 	        while (resultSet.next()) {
 	            int id = resultSet.getInt("id");
 	            String nombre = resultSet.getString("nombre");
-	           
-	            System.out.println("Valor de id: " + id);
-	            System.out.println("Nombre: " + nombre);
-
+	        
 	            Provincia prov = new Provincia(id, nombre);
 	            provincias.add(prov);
 	        }
