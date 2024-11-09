@@ -9,7 +9,10 @@ public class Provincia {
         this.nombre = nombre;
     }
 
-    public int getId() {
+    public Provincia() {
+	}
+
+	public int getId() {
         return id;
     }
 

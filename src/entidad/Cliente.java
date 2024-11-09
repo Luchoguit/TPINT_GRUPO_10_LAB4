@@ -7,16 +7,18 @@ public class Cliente {
     private String cuil;
     private String nombre;
     private String apellido;
-    private char sexo;
+    private String sexo;
     private String nacionalidad;
     private LocalDate fechaNacimiento;
     private Localidad localidadCliente;
+    private Provincia ProvinciaCliente;
     private String correo;
     private String telefono;
+    private String direccion;
 
     public Cliente(int id, String dni, String cuil, String nombre, String apellido, 
-                   char sexo, String nacionalidad, LocalDate fechaNacimiento, 
-                   Localidad localidadCliente, String correo, String telefono) {
+                   String sexo, String nacionalidad, LocalDate fechaNacimiento, String direccion, 
+                   Localidad localidadCliente, Provincia provinciaCliente, String correo, String telefono) {
         this.id = id;
         this.dni = dni;
         this.cuil = cuil;
@@ -28,9 +30,14 @@ public class Cliente {
         this.localidadCliente = localidadCliente;
         this.correo = correo;
         this.telefono = telefono;
+        this.setDireccion(direccion);
     }
 
-    public int getId() {
+    public Cliente() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getId() {
         return id;
     }
 
@@ -70,11 +77,11 @@ public class Cliente {
         this.apellido = apellido;
     }
 
-    public char getSexo() {
+    public String getSexo() {
         return sexo;
     }
 
-    public void setSexo(char sexo) {
+    public void setSexo(String sexo) {
         this.sexo = sexo;
     }
 
@@ -117,5 +124,21 @@ public class Cliente {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+
+	public Provincia getProvinciaCliente() {
+		return ProvinciaCliente;
+	}
+
+	public void setProvinciaCliente(Provincia provinciaCliente) {
+		ProvinciaCliente = provinciaCliente;
+	}
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
 }
 

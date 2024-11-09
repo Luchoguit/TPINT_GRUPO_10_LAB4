@@ -10,6 +10,8 @@ public class Localidad {
         this.nombre = nombre;
         this.provincia = provincia;
     }
+    public Localidad() {  
+    }
 
     public int getId() {
         return id;
