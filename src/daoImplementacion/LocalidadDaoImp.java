@@ -84,5 +84,39 @@ private static final String qrylistarlocalidadesPorProvincia = "SELECT id, nombr
 
 	    return localidades;
 	}
+	
+private static final String qryBuscarLocalidad = "SELECT id, nombre FROM localidades WHERE id = ?";
+	
+	public Localidad obtenerLocalidadPorId(int id) {
+	    Localidad localidad = null;
+
+	    try {
+	        
+	        Connection con = Conexion.getConexion().getSQLConexion();
+	        
+	        
+	        PreparedStatement statement = con.prepareStatement(qryBuscarLocalidad);
+	        statement.setInt(1, id); 
+
+	    
+	        ResultSet resultSet = statement.executeQuery();
+
+	      
+	        if (resultSet.next()) {
+	            localidad = new Localidad();
+	            localidad.setId(resultSet.getInt("id"));
+	            localidad.setNombre(resultSet.getString("nombre"));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        
+	        Conexion.getConexion().cerrarConexion();
+	    }
+
+	    return localidad;
+	}
+
+	
 	}
 

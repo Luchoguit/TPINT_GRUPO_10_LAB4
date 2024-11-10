@@ -8,5 +8,6 @@ public interface LocalidadNegocio {
 	
 	List<Localidad> listarLocalidades();
 	List<Localidad> listarPorProvincia(int idProvincia);
-
+	Localidad obtenerLocalidadPorId(int id);
+	
 }

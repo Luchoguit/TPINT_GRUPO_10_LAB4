@@ -56,17 +56,17 @@
         <th>Apellido</th>
         <th>CUIL</th>
         <th>Correo</th>
-        <th>Teléfono</th>
+        <th>Telefono</th>
         <th>Ver Datos</th>
         <th>Modificar</th>
         <th>Eliminar</th>
     </tr>
-			    <% 
-			    	List<Cliente> listaClientes = (List<Cliente>)request.getAttribute("listaClientes");
-            		if (listaClientes != null) {
-			        for (Cliente cliente : listaClientes) {
-			    %>
     
+    <% 
+    List<Cliente> listaClientes = (List<Cliente>)request.getAttribute("listaClientes");
+    if (listaClientes != null) {
+        for (Cliente cliente : listaClientes) {
+    %>
     <tr>
         <td><%= cliente.getDni() %></td>
         <td><%= cliente.getNombre() %></td>
@@ -74,27 +74,36 @@
         <td><%= cliente.getCuil() %></td>
         <td><%= cliente.getCorreo() %></td>
         <td><%= cliente.getTelefono() %></td>
-         <td>
-            <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoClientes">
-                <input type="hidden" name="verMas" value="12345678">             
+        
+        <!-- Boton para ver mas detalles -->
+        <td>
+            <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletsInfoCompletaCliente">
+                <input type="hidden" name="dniCliente" value="<%= cliente.getDni() %>">
                 <input type="submit" name="verMas" value=" + ">
             </form>
         </td>
+
+        <!-- Boton para modificar -->
         <td>
-            <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoClientes">
-                <input type="hidden" name="modificar" value="87654321">             
+            <form method="post" action="/TPINT_GRUPO_10_LAB4/ModificarClienteServlet">
+                <input type="hidden" name="dniCliente" value="<%= cliente.getDni() %>">
                 <input type="submit" name="btnModificar" value="Modificar">
             </form>
         </td>
+
+        <!-- Boton para eliminar -->
         <td>
-            <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoClientes">
-                <input type="hidden" name="eliminar" value="87654321">
-                <input type="submit" name="btnEliminar" value="Eliminar">             
+            <form method="post" action="/TPINT_GRUPO_10_LAB4/EliminarClienteServlet">
+                <input type="hidden" name="dniCliente" value="<%= cliente.getDni() %>">
+                <input type="submit" name="btnEliminar" value="Eliminar">
             </form>
         </td>
     </tr>
-			    <% } } else {System.out.println("Los clientes no llegaron correctamente.");}
-			    %>
+    <% } } else { %>
+    <tr>
+        <td colspan="9">No se encontraron clientes.</td>
+    </tr>
+    <% } %>
     
 </table>
 

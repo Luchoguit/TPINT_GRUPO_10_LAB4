@@ -20,6 +20,12 @@ public class LocalidadNegocioImp implements LocalidadNegocio {
 	public List<Localidad> listarPorProvincia(int idProvincia) {
 		return localidadDao.listarPorProvincia(idProvincia);
 	}
+
+	@Override
+	public Localidad obtenerLocalidadPorId(int id) {
+		return localidadDao.obtenerLocalidadPorId(id);
+	}
+	
 	
 	
 

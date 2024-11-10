@@ -44,4 +44,9 @@ public class ClienteNegocioImp implements ClienteNegocio {
     {
     	return clienteDao.verificarTelefonoIngresado(telefono);
     }
+    
+    @Override
+	public Cliente obtenerPorDNI(String dni) {
+		return clienteDao.obtenerPorDNI(dni);
+	}
 }

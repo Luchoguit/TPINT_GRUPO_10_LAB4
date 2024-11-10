@@ -161,11 +161,7 @@ public class ClienteDaoImp implements ClienteDao {
 	}
 
 
-	@Override
-	public Cliente obtenerPorId(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	@Override
 	public boolean actualizarCliente(Cliente cliente) {
@@ -181,6 +177,7 @@ public class ClienteDaoImp implements ClienteDao {
 	
 	private static final String qryValidarEmailNoRepetido = "select * from clientes where correo like ?"; 
 	
+	@Override
 	public boolean verificarEmailIngresado(String email)
 	{
 		boolean resultado = false;
@@ -213,6 +210,7 @@ public class ClienteDaoImp implements ClienteDao {
 	
 	private static final String qryValidarDniRepetido = "select * from clientes where dni like ?"; 
 
+	@Override
 	public boolean verificarDniIngresado(String dni)
 	{
 		boolean resultado = false;
@@ -245,6 +243,7 @@ public class ClienteDaoImp implements ClienteDao {
 	
 	private static final String qryValidarCuilRepetido = "select * from clientes where cuil like ?"; 
 	
+	@Override
 	public boolean verificarCuilIngresado(String cuil)
 	{
 		boolean resultado = false;
@@ -277,6 +276,7 @@ public class ClienteDaoImp implements ClienteDao {
 	
 	private static final String qryValidarTelefonoRepetido = "select * from clientes where telefono like ?"; 
 	
+	@Override
 	public boolean verificarTelefonoIngresado(String telefono)
 	{
 		boolean resultado = false;
@@ -306,4 +306,54 @@ public class ClienteDaoImp implements ClienteDao {
 		return resultado;
 		
 	}
+	
+	private static final String qryObtenerClientePorDni = "SELECT id, dni, cuil, nombre, apellido, sexo, nacionalidad, fecha_nacimiento, direccion, id_localidad, id_provincia, correo, telefono FROM clientes WHERE dni = ?";	
+
+	@Override
+	public Cliente obtenerPorDNI(String dni) {
+	    Cliente cliente = null;
+
+	    try {
+	        Connection con = Conexion.getConexion().getSQLConexion();
+	        System.out.println("[DEBUG] Conexion a la base de datos establecida para obtener cliente por DNI");
+
+	        PreparedStatement statement = con.prepareStatement(qryObtenerClientePorDni);
+	        statement.setString(1, dni); // Asignar el DNI al parametro de la consulta
+
+	        ResultSet resultSet = statement.executeQuery();
+
+	        if (resultSet.next()) {
+	            int id = resultSet.getInt("id");
+	            String cuil = resultSet.getString("cuil");
+	            String nombre = resultSet.getString("nombre");
+	            String apellido = resultSet.getString("apellido");
+	            String sexo = resultSet.getString("sexo");
+	            String nacionalidad = resultSet.getString("nacionalidad");
+	            java.sql.Date sqlDate = resultSet.getDate("fecha_nacimiento");
+	            LocalDate fechaNacimiento = sqlDate != null ? sqlDate.toLocalDate() : null;
+	            String direccion = resultSet.getString("direccion");
+
+	            // Crear los objetos Localidad y Provincia
+	            Localidad localidadCliente = new Localidad();
+	            Provincia provinciaCliente = new Provincia();
+	            localidadCliente.setId(resultSet.getInt("id_localidad"));
+	            provinciaCliente.setId(resultSet.getInt("id_provincia"));
+
+	            String correo = resultSet.getString("correo");
+	            String telefono = resultSet.getString("telefono");
+
+	            // Crear el objeto Cliente con los datos obtenidos
+	            cliente = new Cliente(id, dni, cuil, nombre, apellido, sexo, nacionalidad, 
+	                                  fechaNacimiento, direccion, localidadCliente, provinciaCliente, correo, telefono);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        Conexion.getConexion().cerrarConexion();
+	    }
+
+	    return cliente;
+	}	
+	
+	
 }
