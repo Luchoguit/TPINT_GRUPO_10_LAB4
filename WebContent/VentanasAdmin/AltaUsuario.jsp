@@ -72,6 +72,30 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+        
+       	.volver-menu {
+		    display: flex;               
+		    justify-content: center;     
+		    align-items: center;                     
+		}
+		
+		
+		.btn-volver {
+		    background-color: #007bff;   
+		    color: white;                
+		    padding: 10px 20px;          
+		    border: none;                
+		    border-radius: 5px;          
+		    font-size: 16px;             
+		    cursor: pointer;            
+		    transition: background-color 0.3s ease;  
+		}
+		
+		.btn-volver:hover {
+		    background-color: #0056b3;   
+		}
+        
+        
     </style>
 </head>
 <body>
@@ -138,6 +162,12 @@
             <input type="submit" value="Guardar Usuario">
         </div>
     </form>
+    
+    <!-- Enlace para volver al menu -->
+    <a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp" class="volver-menu">
+        <input type="button" value="Volver al Menu" class="btn-volver">
+    </a>
+    
 </div>
 
 </body>
