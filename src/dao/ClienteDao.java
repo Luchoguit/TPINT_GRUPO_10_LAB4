@@ -12,6 +12,11 @@ public interface ClienteDao {
     Cliente obtenerPorId(int id);
     boolean actualizarCliente(Cliente cliente);
     boolean eliminarCliente(int id);
+    
+    boolean verificarDniIngresado(String dni);
+    boolean verificarCuilIngresado(String cuil);
+    boolean verificarEmailIngresado(String email);
+    boolean verificarTelefonoIngresado(String telefono);
 	
     
 }

@@ -178,5 +178,132 @@ public class ClienteDaoImp implements ClienteDao {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	private static final String qryValidarEmailNoRepetido = "select * from clientes where correo like ?"; 
+	
+	public boolean verificarEmailIngresado(String email)
+	{
+		boolean resultado = false;
+		Cliente aux = null;
+		
+		Connection conexion = Conexion.getConexion().getSQLConexion();
+		
+		try {
+	        PreparedStatement statement = conexion.prepareStatement(qryValidarEmailNoRepetido);
+	        statement.setString(1, email);
+	        ResultSet resultSet = statement.executeQuery();
+	        
+	        while(resultSet.next())
+	        {
+	        	aux = new Cliente();
+	        }
+			
+	        if(aux != null)
+	        {
+	        	resultado = true;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        Conexion.getConexion().cerrarConexion();
+	    }
+		return resultado;
+		
+	}
+	
+	private static final String qryValidarDniRepetido = "select * from clientes where dni like ?"; 
 
+	public boolean verificarDniIngresado(String dni)
+	{
+		boolean resultado = false;
+		Cliente aux = null;
+		
+		Connection conexion = Conexion.getConexion().getSQLConexion();
+		
+		try {
+	        PreparedStatement statement = conexion.prepareStatement(qryValidarDniRepetido);
+	        statement.setString(1, dni);
+	        ResultSet resultSet = statement.executeQuery();
+	        
+	        while(resultSet.next())
+	        {
+	        	aux = new Cliente();
+	        }
+			
+	        if(aux != null)
+	        {
+	        	resultado = true;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        Conexion.getConexion().cerrarConexion();
+	    }
+		return resultado;
+		
+	}
+	
+	private static final String qryValidarCuilRepetido = "select * from clientes where cuil like ?"; 
+	
+	public boolean verificarCuilIngresado(String cuil)
+	{
+		boolean resultado = false;
+		Cliente aux = null;
+		
+		Connection conexion = Conexion.getConexion().getSQLConexion();
+		
+		try {
+	        PreparedStatement statement = conexion.prepareStatement(qryValidarCuilRepetido);
+	        statement.setString(1, cuil);
+	        ResultSet resultSet = statement.executeQuery();
+	        
+	        while(resultSet.next())
+	        {
+	        	aux = new Cliente();
+	        }
+			
+	        if(aux != null)
+	        {
+	        	resultado = true;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        Conexion.getConexion().cerrarConexion();
+	    }
+		return resultado;
+		
+	}
+	
+	private static final String qryValidarTelefonoRepetido = "select * from clientes where telefono like ?"; 
+	
+	public boolean verificarTelefonoIngresado(String telefono)
+	{
+		boolean resultado = false;
+		Cliente aux = null;
+		
+		Connection conexion = Conexion.getConexion().getSQLConexion();
+		
+		try {
+	        PreparedStatement statement = conexion.prepareStatement(qryValidarTelefonoRepetido);
+	        statement.setString(1, telefono);
+	        ResultSet resultSet = statement.executeQuery();
+	        
+	        while(resultSet.next())
+	        {
+	        	aux = new Cliente();
+	        }
+			
+	        if(aux != null)
+	        {
+	        	resultado = true;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        Conexion.getConexion().cerrarConexion();
+	    }
+		return resultado;
+		
+	}
 }

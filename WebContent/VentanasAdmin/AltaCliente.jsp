@@ -64,6 +64,27 @@
         input[type="submit"]:hover {
             background-color: #218838;
         }
+        
+         /* Estilos para el contenedor de mensajes */
+        .message-container {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
     </style>    
 </head>
 
@@ -71,6 +92,23 @@
 
 <div class="form-container">
     <h1>Alta Cliente</h1>
+    
+    
+        <!-- Contenedor de mensajes -->
+    <% 
+        String mensaje = (String) request.getAttribute("mensaje");
+        if (mensaje != null) {
+            String tipoMensaje = "error";
+            if (mensaje.contains("exitoso")) {
+                tipoMensaje = "success";
+            }
+    %>
+        <div class="message-container <%= tipoMensaje %>">
+            <%= mensaje %>
+        </div>
+    <% } %>
+    
+    
     <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletAltaCliente">
         <!-- DNI -->
         <div class="form-group">

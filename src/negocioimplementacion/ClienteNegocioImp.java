@@ -25,4 +25,23 @@ public class ClienteNegocioImp implements ClienteNegocio {
     public List<Cliente> listarClientesSinUsuario() {
         return clienteDao.listarClientesSinUsuario();
     }
+    
+    public boolean verificarDniIngresado(String dni)
+    {
+    	return clienteDao.verificarDniIngresado(dni);
+    }
+    
+    public boolean verificarCuilIngresado(String cuil)
+    {
+    	return clienteDao.verificarCuilIngresado(cuil);
+    }
+    
+    public boolean verificarEmailIngresado(String email) {
+    	return clienteDao.verificarEmailIngresado(email);
+    }
+    
+    public boolean verificarTelefonoIngresado(String telefono)
+    {
+    	return clienteDao.verificarTelefonoIngresado(telefono);
+    }
 }
