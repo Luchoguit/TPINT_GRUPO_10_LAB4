@@ -136,7 +136,7 @@
 
     <ul class="navigation">
         <li><a href="../VentanasUser/VerCuentas.jsp">Seleccionar cuentas <i class="fa fa-list-alt"></i></a></li>
-        <li><a href="../VentanasUser/AltaCuenta.jsp">Crear nueva cuenta <i class="fa fa-plus-circle"></i></a></li>
+        <li><a href=/TPINT_GRUPO_10_LAB4/ServletLAltaUsuario>Crear nueva cuenta <i class="fa fa-plus-circle"></i></a></li>
         <li><a href="../VentanasAdmin/InformacionCompletaCliente.jsp">Ver datos personales <i class="fa fa-user"></i></a></li>
         <li><a href="../LOGIN/Login.jsp">Cerrar sesión <i class="fa fa-sign-out-alt"></i></a></li>
     </ul>

@@ -3,7 +3,7 @@ package entidad;
 import java.time.LocalDateTime;
 
 public class Usuario {
-    private int id;
+    private int idCliente;
     private String nombreUsuario;
     private String contraseña;
     private String tipo; 
@@ -11,20 +11,12 @@ public class Usuario {
     private LocalDateTime fechaCreacion;
 
     public Usuario(int id, String nombreUsuario, String contraseña, String tipo, boolean estado, LocalDateTime fechaCreacion) {
-        this.id = id;
+        this.setIdCliente(id);
         this.nombreUsuario = nombreUsuario;
         this.contraseña = contraseña;
         this.tipo = tipo;
         this.estado = estado;
         this.fechaCreacion = fechaCreacion;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNombreUsuario() {
@@ -71,4 +63,12 @@ public class Usuario {
     public boolean esAdministrador() {
         return "administrador".equals(tipo);
     }
+
+	public int getIdCliente() {
+		return idCliente;
+	}
+
+	public void setIdCliente(int idCliente) {
+		this.idCliente = idCliente;
+	}
 }
