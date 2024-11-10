@@ -9,7 +9,7 @@ import entidad.Usuario;
 public class UsuarioDaoImp implements UsuarioDao {
 
   
-    private static final String qryInsert = "INSERT INTO usuarios (id, nombre_usuario, contraseÃ±a, tipo, estado, fecha_creacion) "
+    private static final String qryInsert = "INSERT INTO usuarios (id, nombre_usuario, contrasenia, tipo, estado, fecha_creacion) "
                                           + "VALUES (?, ?, ?, ?, ?, ?)";
 
     @Override
