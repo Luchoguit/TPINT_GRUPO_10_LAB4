@@ -207,7 +207,7 @@
         <div class="form-group">
             <label for="localidad">Localidad</label>
 			<select id="localidad" name="localidad">
-			    <option value="">Seleccione una provincia</option>
+			    <option value="">Seleccione una localidad</option>
 			    <% 
 			        List<Localidad> listaLocalidades = (List<Localidad>)request.getAttribute("localidades");
             		if (listaLocalidades != null) {

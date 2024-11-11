@@ -135,6 +135,12 @@ public class ServletAltaCliente extends HttpServlet {
             if (resultado) {
             	request.setAttribute("mensaje", "Cliente creado exitosamente.");
                 System.out.println("Alta de cliente exitosa.");
+                
+                // Reenvío al JSP
+                RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasAdmin/AltaCliente.jsp");
+                dispatcher.forward(request, response);
+                return;
+                
             } else {
             	
             	if(dniRepetido == true)
