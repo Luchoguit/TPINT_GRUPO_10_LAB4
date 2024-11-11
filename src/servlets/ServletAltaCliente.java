@@ -201,8 +201,9 @@ public class ServletAltaCliente extends HttpServlet {
                 System.out.println("Alta de cliente exitosa.");
                 
                 // Reenvío al JSP
-                RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasAdmin/AltaCliente.jsp");
-                dispatcher.forward(request, response);
+                //RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasAdmin/AltaCliente.jsp");
+                //dispatcher.forward(request, response);
+                doGet(request, response);
                 return;
                 
             } else {
@@ -244,8 +245,9 @@ public class ServletAltaCliente extends HttpServlet {
                 request.setAttribute("localidades", listaLocalidades);
 
                 // Reenvío al JSP
-                RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasAdmin/AltaCliente.jsp");
-                dispatcher.forward(request, response);
+                //RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasAdmin/AltaCliente.jsp");
+                //dispatcher.forward(request, response);
+                doGet(request, response);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -261,12 +263,18 @@ public class ServletAltaCliente extends HttpServlet {
             request.setAttribute("localidades", listaLocalidades);
 
             // Reenvío al JSP
-            RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasAdmin/AltaCliente.jsp");
-            dispatcher.forward(request, response);
+            //RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasAdmin/AltaCliente.jsp");
+            //dispatcher.forward(request, response);
+            doGet(request, response);
         }
         
     }
-
-
+    
+    private void cargarProvincias(HttpServletRequest request) {
+        // Cargar provincias
+        ProvinciaNegocio provinciaNegocio = new ProvinciaNegocioImp();
+        List<Provincia> listaProvincias = provinciaNegocio.listarProvincias();
+        request.setAttribute("provincias", listaProvincias);
+    }
 
 }
