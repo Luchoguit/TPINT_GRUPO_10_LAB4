@@ -136,13 +136,13 @@
         <!-- DNI -->
         <div class="form-group">
             <label for="dni">DNI</label>
-            <input id="dni" type="number" name="dni" maxlength="11">
+            <input id="dni" type="number" onkeypress="soloNumeros(event)" name="dni" maxlength="11">
         </div>
 
         <!-- CUIL -->
         <div class="form-group">
             <label for="cuil">CUIL</label>
-            <input id="cuil" type="number" name="cuil" maxlength="11">
+            <input id="cuil" type="number" onkeypress="soloNumeros(event)" name="cuil" maxlength="11">
         </div>
 
         <!-- Nombre -->
@@ -221,7 +221,7 @@
         <!-- Teléfono -->
         <div class="form-group">
             <label for="telefono">Teléfono</label>
-            <input id="telefono" type="text" name="telefono" required maxlength="20">
+            <input id="telefono" type="number" onkeypress="soloNumeros(event)" name="telefono" required maxlength="20">
         </div>
        
         <div class="form-group">
@@ -260,6 +260,9 @@
     });
 </script>
 
+
+
+<!-- Script para cargar las localidades-->
 <script>
 
 	document.getElementById('provincia').addEventListener('change', function() {
@@ -314,6 +317,23 @@
 	});
 
 </script>
+
+
+<!-- Script para impedir ingreso de caracteres que no sean numeros -->
+<script>
+	
+	function soloNumeros(event) {
+	    var key = event.keyCode || event.which;
+	    var tecla = String.fromCharCode(key);
+	    var regex = /^[0-9]$/;  
+	    if (!regex.test(tecla)) {
+	        event.preventDefault(); 
+	    }
+	}
+
+</script>
+
+
 
 </body>
 </html>
