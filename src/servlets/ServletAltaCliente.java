@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -27,24 +28,87 @@ public class ServletAltaCliente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	   	
-    	// Carga de provincias
-        ProvinciaNegocio provinciaNegocio = new ProvinciaNegocioImp();
-        List<Provincia> listaProvincias = provinciaNegocio.listarProvincias();
-        request.setAttribute("provincias", listaProvincias);
-        
-        // Carga de localidades
-        LocalidadNegocio localidadesNegocio = new LocalidadNegocioImp();
-        List<Localidad> listaLocalidades = localidadesNegocio.listarLocalidades();
-        request.setAttribute("localidades", listaLocalidades);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        // Reenvío al JSP
-        RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasAdmin/AltaCliente.jsp");
-        dispatcher.forward(request, response);
-        
+	    // Preguntamos si no hay provincia seleccionada (primera carga de la pagina)
+		// De ser asi, cargamos solo las provincias en el desplegable
+	    if (request.getParameter("provinciaId") == null) {
+	    	
+	        ProvinciaNegocio provinciaNegocio = new ProvinciaNegocioImp();
+	        List<Provincia> listaProvincias = provinciaNegocio.listarProvincias();
+	        request.setAttribute("provincias", listaProvincias);
+	        
+	        
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasAdmin/AltaCliente.jsp");
+	        dispatcher.forward(request, response);
+	        
+	    } else {
+	    	
+	        //Si entramos aqui es porque hay una provincia seleccionada, entonces
+	    	// procedemos a cargar las localidades
+	    	
+	        LocalidadNegocio localidadesNegocio = new LocalidadNegocioImp();
 
-    }
+	        int provinciaId = Integer.parseInt(request.getParameter("provinciaId"));
+	        
+	        //Establecemos que se devolvera como respuesta un json
+	        response.setContentType("application/json");
+	        
+	        // El objeto se necesita para escribir la respuesta del servidor al cliente
+	        PrintWriter out = response.getWriter();
+
+	        try {
+	            
+	            List<Localidad> localidades = localidadesNegocio.listarPorProvincia(provinciaId);
+
+	            // Creamos una respuesta JSON para devolver y luego convertir
+	            // en un objeto javascript
+	            // Este objeto sera un array con cada una de las localidades
+	            
+	            //Esta es una representacion de como se veria el resultado final
+	            /*
+	             * [
+					    {"id": "1", "nombre": "Localidad 1"},
+					    {"id": "2", "nombre": "Localidad 2"},
+					    {"id": "3", "nombre": "Localidad 3"}
+					]			
+	             * 
+	             * */
+	            
+	            
+	            StringBuilder jsonResponse = new StringBuilder();
+	            
+	            // Iniciamos el json 
+	            jsonResponse.append("[");
+
+	            for (int i = 0; i < localidades.size(); i++) {
+	                Localidad localidad = localidades.get(i);
+	                jsonResponse.append("{")
+	                        .append("\"id\": \"").append(localidad.getId()).append("\",")
+	                        .append("\"nombre\": \"").append(localidad.getNombre()).append("\"")
+	                        .append("}");
+
+	                if (i < localidades.size() - 1) {
+	                    jsonResponse.append(",");
+	                }
+	            }
+	            
+	            // Finalizamos el json
+	            jsonResponse.append("]");
+
+	            // Escribimos la respuesta json
+	            out.print(jsonResponse.toString());
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            
+	            // En caso de errores con el json, devolvemos un array vacio
+	            out.print("[]"); 
+	        }
+	    }
+	}
+	
+	
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String dni = request.getParameter("dni");

@@ -208,14 +208,6 @@
             <label for="localidad">Localidad</label>
 			<select id="localidad" name="localidad">
 			    <option value="">Seleccione una localidad</option>
-			    <% 
-			        List<Localidad> listaLocalidades = (List<Localidad>)request.getAttribute("localidades");
-            		if (listaLocalidades != null) {
-			        for (Localidad localidad : listaLocalidades) {
-			    %>
-			        <option value="<%= localidad.getId() %>"><%= localidad.getNombre() %></option>
-			    <% } } else {System.out.println("Las localidades no llegaron correctamente.");}
-			    %>
 			</select>
 
         </div>
@@ -268,6 +260,60 @@
     });
 </script>
 
+<script>
+
+	document.getElementById('provincia').addEventListener('change', function() {
+	    var provinciaId = this.value;
+	    
+	    if (!provinciaId || isNaN(provinciaId)) {
+	        console.error('ID de provincia no válido:', provinciaId);
+	        return;
+	    }
+	    
+	    
+	    // Propuesta implementando una solicitud AJAX
+	    // Tecnica utilizada para realizar solicitudes asincronicas
+	    // a un servidor web sin necesidad de recargar toda la pagina
+	    
+	    // Cuando el administrador selecciona una provincia del desplegable,
+	    // se dispara un evento change en Javascript
+	    // Dentro de este evento, se envía una solicitud AJAX al servidor
+	    // para obtener las localidades de esa provincia
+	    
+	    if (provinciaId) {
+	        var xhr = new XMLHttpRequest();
+	        xhr.open('GET', '/TPINT_GRUPO_10_LAB4/ServletAltaCliente?provinciaId=' + provinciaId, true);
+	        xhr.onreadystatechange = function() {
+	            if (xhr.readyState == 4 && xhr.status == 200) {
+
+					// Aqui entramos si la solicitud fue exitosa
+					// Procedemos a limpiar la lista de localidades
+	            	
+	                var localidadSelect = document.getElementById('localidad');
+	                localidadSelect.innerHTML = '<option value="">Seleccione una localidad</option>';
+	                
+	                // Convertimos la respuesta obtenida en formato JSON en un
+	                // objeto de Javascript. Mediante un parseo
+	                var localidades = JSON.parse(xhr.responseText);
+	                
+	                // Aqui teniendo el array de localidades, 
+	                // usamos su contenido para rellenar el select
+	                localidades.forEach(function(localidad) {
+	                    var option = document.createElement('option');
+	                    option.value = localidad.id;
+	                    option.text = localidad.nombre;
+	                    localidadSelect.appendChild(option);
+	                });
+	            }
+	        };
+	        xhr.send();
+	    } else {
+	        // Si no hay provincia seleccionada, limpia el desplegable de localidades
+	        document.getElementById('localidad').innerHTML = '<option value="">Seleccione una localidad</option>';
+	    }
+	});
+
+</script>
 
 </body>
 </html>
