@@ -15,6 +15,7 @@ public interface ClienteNegocio {
     boolean verificarCuilIngresado(String cuil);
     boolean verificarEmailIngresado(String email);
     boolean verificarTelefonoIngresado(String telefono);
+	boolean actualizarCliente(Cliente cliente);
    
 
 }

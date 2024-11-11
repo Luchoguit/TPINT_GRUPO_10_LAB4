@@ -109,7 +109,7 @@
 
         <!-- Boton para modificar -->
         <td>
-            <form method="post" action="/TPINT_GRUPO_10_LAB4/ModificarClienteServlet">
+            <form method="get" action="/TPINT_GRUPO_10_LAB4/ServletModificarCliente">
                 <input type="hidden" name="dniCliente" value="<%= cliente.getDni() %>">
                 <input type="submit" name="btnModificar" value="Modificar">
             </form>
@@ -117,7 +117,7 @@
 
         <!-- Boton para eliminar -->
         <td>
-            <form method="post" action="/TPINT_GRUPO_10_LAB4/EliminarClienteServlet">
+            <form method="post" action="/TPINT_GRUPO_10_LAB4/ServEliminarClienteServlet">
                 <input type="hidden" name="dniCliente" value="<%= cliente.getDni() %>">
                 <input type="submit" name="btnEliminar" value="Eliminar">
             </form>

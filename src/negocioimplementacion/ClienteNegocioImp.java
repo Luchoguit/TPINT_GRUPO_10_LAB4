@@ -49,4 +49,9 @@ public class ClienteNegocioImp implements ClienteNegocio {
 	public Cliente obtenerPorDNI(String dni) {
 		return clienteDao.obtenerPorDNI(dni);
 	}
+
+	@Override
+	public boolean actualizarCliente(Cliente cliente) {
+		return clienteDao.actualizarCliente(cliente);
+	}
 }

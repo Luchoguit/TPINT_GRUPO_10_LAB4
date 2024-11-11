@@ -92,19 +92,17 @@
     <h2>Modificar Cliente</h2>
     
     <form method="post" action="ServletModificarCliente">
-        <!-- ID Cliente (oculto para identificar cliente a modificar) -->
-        <input type="hidden" name="id_cliente" value="${cliente.id_cliente}">
 
         <!-- DNI -->
         <div class="form-group">
             <label for="dni">DNI</label>
-            <input id="dni" type="number" name="dni" maxlength="11" required value="${cliente.dni}">
+            <input id="dni" type="number" name="dni" maxlength="11" readonly required value="${cliente.dni}">
         </div>
 
         <!-- CUIL -->
         <div class="form-group">
             <label for="cuil">CUIL</label>
-            <input id="cuil" type="number" name="cuil" maxlength="11" required value="${cliente.cuil}">
+            <input id="cuil" type="number" name="cuil" maxlength="11" readonly required value="${cliente.cuil}">
         </div>
 
         <!-- Nombre -->
@@ -137,9 +135,9 @@
 
         <!-- Fecha de Nacimiento -->
         <div class="form-group">
-            <label for="fecha_nacimiento">Fecha de Nacimiento</label>
-            <input id="fecha_nacimiento" type="date" required name="fecha_nacimiento" value="${cliente.fecha_nacimiento}">
-        </div>
+    		<label for="fecha_nacimiento">Fecha de Nacimiento</label>
+    		<input id="fecha_nacimiento" type="date" name="fecha_nacimiento" required value="${cliente.fechaNacimiento}">
+		</div>
 
         <!-- Dirección -->
         <div class="form-group">
@@ -150,18 +148,18 @@
         <!-- Localidad -->
         <div class="form-group">
             <label for="localidad">Localidad</label>
-            <select id="localidad" name="localidad" required>
-                <option value="">Seleccione una localidad</option>
-                <!-- Las opciones se llenarán dinámicamente desde la base de datos -->
+            <select id="localidad" name="localidad">
+                <option value="${cliente.localidadCliente.nombre}"></option>
+
             </select>
         </div>
 
         <!-- Provincia -->
         <div class="form-group">
             <label for="provincia">Provincia</label>
-            <select id="provincia" name="provincia" required>
-                <option value="">Seleccione una provincia</option>
-                <!-- Las opciones se llenarán dinámicamente desde la base de datos -->
+            <select id="provincia" name="provincia">
+                <option value="${cliente.provinciaCliente.nombre}"></option>
+               
             </select>
         </div>
 
