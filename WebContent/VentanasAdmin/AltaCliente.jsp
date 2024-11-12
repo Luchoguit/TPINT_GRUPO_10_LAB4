@@ -134,25 +134,25 @@
         <!-- DNI -->
         <div class="form-group">
             <label for="dni">DNI</label>
-            <input id="dni" type="number" onkeypress="soloNumeros(event)" name="dni" maxlength="11">
+            <input id="dni" type="number" onkeypress="soloNumeros(event)" name="dni" value="<%= request.getAttribute("precargaDni") != null ? request.getAttribute("precargaDni") : "" %>" maxlength="11">
         </div>
 
         <!-- CUIL -->
         <div class="form-group">
             <label for="cuil">CUIL</label>
-            <input id="cuil" type="number" onkeypress="soloNumeros(event)" name="cuil" maxlength="11">
+            <input id="cuil" type="number" onkeypress="soloNumeros(event)" name="cuil" value="<%= request.getAttribute("precargaCuil") != null ? request.getAttribute("precargaCuil") : "" %>" maxlength="11">
         </div>
 
         <!-- Nombre -->
         <div class="form-group">
             <label for="nombre">Nombre</label>
-            <input id="nombre" type="text" name="nombre" maxlength="50">
+            <input id="nombre" type="text" name="nombre" value="<%= request.getAttribute("precargaNombre") != null ? request.getAttribute("precargaNombre") : "" %>" maxlength="50">
         </div>
 
         <!-- Apellido -->
         <div class="form-group">
             <label for="apellido">Apellido</label>
-            <input id="apellido" type="text" name="apellido" maxlength="50">
+            <input id="apellido" type="text" name="apellido" value="<%= request.getAttribute("precargaApellido") != null ? request.getAttribute("precargaApellido") : "" %>" maxlength="50">
         </div>
 
         <!-- Sexo -->
@@ -160,15 +160,15 @@
             <label for="sexo">Sexo</label>
             <select id="sexo" name="sexo">
                 <option value="">Seleccione...</option>
-                <option value="M">Masculino</option>
-                <option value="F">Femenino</option>
+                <option value="M" <%= (request.getAttribute("precargaSexo") != null && "M".equals(request.getAttribute("precargaSexo"))) ? "selected" : "" %>>Masculino</option>
+                <option value="F" <%= (request.getAttribute("precargaSexo") != null && "F".equals(request.getAttribute("precargaSexo"))) ? "selected" : "" %>>Femenino</option>
             </select>
         </div>
 
         <!-- Nacionalidad -->
         <div class="form-group">
             <label for="nacionalidad">Nacionalidad</label>
-            <input id="nacionalidad" type="text" name="nacionalidad" maxlength="50">
+            <input id="nacionalidad" type="text" name="nacionalidad" value="<%= request.getAttribute("precargaNacionalidad") != null ? request.getAttribute("precargaNacionalidad") : "" %>" maxlength="50">
         </div>
 
         <!-- Fecha de Nacimiento -->
@@ -180,7 +180,7 @@
         <!-- Dirección -->
         <div class="form-group">
             <label for="direccion">Dirección</label>
-            <input id="direccion" type="text" name="direccion" maxlength="100">
+            <input id="direccion" type="text" name="direccion" value="<%= request.getAttribute("precargaDireccion") != null ? request.getAttribute("precargaDireccion") : "" %>" maxlength="100">
         </div>
 
         <!-- Provincia -->
@@ -213,13 +213,13 @@
         <!-- Correo Electrónico -->
         <div class="form-group">
             <label for="correo">Correo Electrónico</label>
-            <input id="correo" type="email" name="correo" maxlength="100" required>
+            <input id="correo" type="email" name="correo" value="<%= request.getAttribute("precargaCorreo") != null ? request.getAttribute("precargaCorreo") : "" %>" maxlength="100" required>
         </div>
 
         <!-- Teléfono -->
         <div class="form-group">
             <label for="telefono">Teléfono</label>
-            <input id="telefono" type="number" onkeypress="soloNumeros(event)" name="telefono" required maxlength="20">
+            <input id="telefono" type="number" onkeypress="soloNumeros(event)" name="telefono" value="<%= request.getAttribute("precargaTelefono") != null ? request.getAttribute("precargaTelefono") : "" %>" required maxlength="20">
         </div>
        
         <div class="form-group">

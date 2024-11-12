@@ -195,6 +195,29 @@ public class ServletAltaCliente extends HttpServlet {
             {
             	resultado = clienteNegocio.altaCliente(cliente);            	
             }
+            else
+            {
+            	
+            	//Guarda el ingreso del usuario para precargar los campos
+            	
+                request.setAttribute("precargaDni", dni);
+                request.setAttribute("precargaCuil", cuil);
+                request.setAttribute("precargaNombre", nombre);
+                request.setAttribute("precargaApellido", apellido);
+                request.setAttribute("precargaNacionalidad", nacionalidad);
+                request.setAttribute("precargaDireccion", direccion);
+                request.setAttribute("precargaCorreo", correo);
+                request.setAttribute("precargaTelefono", telefono);
+                request.setAttribute("precargaFechaNac", fechaNacimiento);
+                
+                request.setAttribute("precargaSexo", sexo);
+                request.setAttribute("precargaIdProvincia", idProvincia);
+                
+                //String sexo = request.getParameter("sexo");
+                //String fechaNacimientoStr = request.getParameter("fecha_nacimiento");
+
+                
+            }
 
             if (resultado) {
             	request.setAttribute("mensaje", "Cliente creado exitosamente.");
@@ -249,7 +272,10 @@ public class ServletAltaCliente extends HttpServlet {
                 LocalidadNegocio localidadesNegocio = new LocalidadNegocioImp();
                 List<Localidad> listaLocalidades = localidadesNegocio.listarLocalidades();
                 request.setAttribute("localidades", listaLocalidades);
+                
+                
 
+                
                 // Reenvío al JSP
                 //RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasAdmin/AltaCliente.jsp");
                 //dispatcher.forward(request, response);
