@@ -145,6 +145,16 @@
             <label for="usuario">Usuario</label>
             <input id="usuario" type="text" name="usuario" maxlength="50" required>
         </div>
+        
+        <!-- Tipo de Usuario -->
+        
+        <div class="form-group">
+            <label for="tipoUsuario">Seleccione el tipo de Usuario</label>
+			<select id="tipoUsuario" name="tipoUsuario">
+			    <option value="cliente">Cliente</option>
+			    <option value="admin">Administrador</option>
+			</select>
+        </div>
 
         <!-- Contraseña -->
         <div class="form-group">

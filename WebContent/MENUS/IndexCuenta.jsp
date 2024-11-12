@@ -130,7 +130,8 @@
     <h1>CUENTA SUELDO</h1>
 
     <div class="logged-user">
-        Usuario logueado: <%= request.getSession().getAttribute("usuarioLogueado") %>
+        Usuario logueado: ${usuario.nombreUsuario}
+
     </div>
 
     <ul class="navigation">
@@ -138,7 +139,7 @@
         <li><a href="../VentanasUser/Transferencias.jsp">Realizar transferencia <i class="fa fa-exchange-alt"></i></a></li>
         <li><a href="../VentanasUser/GestionPrestamos.jsp">Gestionar préstamos <i class="fa fa-hand-holding-usd"></i></a></li>
         <li><a href="../VentanasUser/VerCuentas.jsp">Consultar cuentas <i class="fa fa-credit-card"></i></a></li>
-        <li><a href="../LOGIN/Login.jsp">Cerrar sesión <i class="fa fa-sign-out-alt"></i></a></li>
+        <li><a href="/TPINT_GRUPO_10_LAB4/ServletCerrarSesion">Cerrar sesión <i class="fa fa-sign-out-alt"></i></a></li>
     </ul>
 
     <div class="message">

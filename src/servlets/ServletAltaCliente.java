@@ -198,6 +198,7 @@ public class ServletAltaCliente extends HttpServlet {
 
             if (resultado) {
             	request.setAttribute("mensaje", "Cliente creado exitosamente.");
+                request.setAttribute("tipoMensaje", "success");
                 System.out.println("Alta de cliente exitosa.");
                 
                 // Reenvío al JSP
@@ -211,26 +212,31 @@ public class ServletAltaCliente extends HttpServlet {
             	if(dniRepetido == true)
             	{
                 	request.setAttribute("mensaje", "Ya existe un cliente con ese DNI.");
+                    request.setAttribute("tipoMensaje", "error");
                 	System.out.println("Error: dni repetido");
             	}
             	else if(cuilRepetido == true)
             	{
                 	request.setAttribute("mensaje", "Ya existe un cliente con ese CUIL.");
+                    request.setAttribute("tipoMensaje", "error");
                 	System.out.println("Error: cuil repetido");
             	}
             	else if(emailRepetido == true)
             	{
                 	request.setAttribute("mensaje", "El correo ingresado ya esta utilizado.");
+                    request.setAttribute("tipoMensaje", "error");
                 	System.out.println("Error: correo repetido");
             	}
             	else if(telefonoRepetido == true)
             	{
                 	request.setAttribute("mensaje", "El telefono ingresado ya esta utilizado.");
+                    request.setAttribute("tipoMensaje", "error");
                 	System.out.println("Error: telefono repetido");
             	}
             	else
             	{
                     System.out.println("Error en el alta de cliente.");
+                    request.setAttribute("tipoMensaje", "error");
                     request.setAttribute("mensaje", "Error en el alta de cliente.");
             	}
 

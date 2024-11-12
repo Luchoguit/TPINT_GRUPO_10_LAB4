@@ -70,6 +70,26 @@
 		color: blue;
 		margin-left: 10px;
 		}        
+		
+		/* Estilos para el contenedor de mensajes */
+        .message-container {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
         
     </style>
 </head>
@@ -77,7 +97,19 @@
 
 <div class="form-container">
     <h2>Login</h2>
-    <form method="post" action="../MENUS/IndexUser.jsp">
+    
+    <!-- Contenedor de mensajes -->
+		<% 
+		    String mensaje = (String) request.getAttribute("mensaje");
+		    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
+		    if (mensaje != null && tipoMensaje != null) {
+		%>
+		    <div class="message-container <%= tipoMensaje %>">
+		        <%= mensaje %>
+		    </div>
+		<% } %>
+    
+    <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletLogin">
  
         <div class="form-group">
             <label for="usuario">Usuario</label>

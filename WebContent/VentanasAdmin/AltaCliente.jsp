@@ -117,19 +117,17 @@
     <h1>Alta Cliente</h1>
     
     
-        <!-- Contenedor de mensajes -->
-    <% 
-        String mensaje = (String) request.getAttribute("mensaje");
-        if (mensaje != null) {
-            String tipoMensaje = "error";
-            if (mensaje.contains("exitoso")) {
-                tipoMensaje = "success";
-            }
-    %>
-        <div class="message-container <%= tipoMensaje %>">
-            <%= mensaje %>
-        </div>
-    <% } %>
+		<!-- Contenedor de mensajes -->
+		<% 
+		    String mensaje = (String) request.getAttribute("mensaje");
+		    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
+		    if (mensaje != null && tipoMensaje != null) {
+		%>
+		    <div class="message-container <%= tipoMensaje %>">
+		        <%= mensaje %>
+		    </div>
+		<% } %>
+
     
     
     <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletAltaCliente">

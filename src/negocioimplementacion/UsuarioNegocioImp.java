@@ -14,4 +14,11 @@ public class UsuarioNegocioImp implements UsuarioNegocio {
     public boolean altaUsuario(Usuario usuario) {
         return usuarioDao.altaUsuario(usuario);
     }
+
+	@Override
+	public Usuario getUsuario(String nombre, String contrasenia) {
+		return usuarioDao.getUsuario(nombre, contrasenia);
+	}
+
+
 }

@@ -1,6 +1,6 @@
 package entidad;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Usuario {
     private int idCliente;
@@ -8,9 +8,9 @@ public class Usuario {
     private String contraseña;
     private String tipo; 
     private boolean estado; 
-    private LocalDateTime fechaCreacion;
+    private LocalDate fechaCreacion;
 
-    public Usuario(int id, String nombreUsuario, String contraseña, String tipo, boolean estado, LocalDateTime fechaCreacion) {
+    public Usuario(int id, String nombreUsuario, String contraseña, String tipo, boolean estado, LocalDate fechaCreacion) {
         this.setIdCliente(id);
         this.nombreUsuario = nombreUsuario;
         this.contraseña = contraseña;
@@ -51,17 +51,17 @@ public class Usuario {
         this.estado = estado;
     }
 
-    public LocalDateTime getFechaCreacion() {
+    public LocalDate getFechaCreacion() {
         return fechaCreacion;
     }
 
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+    public void setFechaCreacion(LocalDate fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
 
     // Métodos adicionales
     public boolean esAdministrador() {
-        return "administrador".equals(tipo);
+        return "admin".equals(tipo);
     }
 
 	public int getIdCliente() {

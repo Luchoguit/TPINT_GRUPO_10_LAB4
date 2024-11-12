@@ -33,6 +33,7 @@ public class ServletLAltaUsuario extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {      
         String usuarioNombre = request.getParameter("usuario");
+        String tipoUsuario = request.getParameter("tipoUsuario");
         String contrasena = request.getParameter("contrasena");
         String contrasena2 = request.getParameter("contrasena2");
         String idClienteStr = request.getParameter("Cliente");
@@ -40,7 +41,7 @@ public class ServletLAltaUsuario extends HttpServlet {
         if (contrasena.equals(contrasena2)) {
             try {
                 int idCliente = Integer.parseInt(idClienteStr);
-                Usuario usuario = new Usuario(idCliente , usuarioNombre, contrasena, "cliente", true, java.time.LocalDateTime.now());
+                Usuario usuario = new Usuario(idCliente , usuarioNombre, contrasena, tipoUsuario, true, java.time.LocalDate.now());
 
                 UsuarioNegocio usuarioNegocio = new UsuarioNegocioImp();
                 boolean usuarioCreado = usuarioNegocio.altaUsuario(usuario);
