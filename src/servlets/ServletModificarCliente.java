@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,7 +16,11 @@ import entidad.Cliente;
 import entidad.Localidad;
 import entidad.Provincia;
 import negocio.ClienteNegocio;
+import negocio.LocalidadNegocio;
+import negocio.ProvinciaNegocio;
 import negocioimplementacion.ClienteNegocioImp;
+import negocioimplementacion.LocalidadNegocioImp;
+import negocioimplementacion.ProvinciaNegocioImp;
 
 /**
  * Servlet implementation class ServletModificarCliente
@@ -40,10 +45,24 @@ public class ServletModificarCliente extends HttpServlet {
 
         ClienteNegocio clienteNegocio = new ClienteNegocioImp();
         Cliente cliente = clienteNegocio.obtenerPorDNI(dniCliente);
+        LocalidadNegocio localidadNegocio = new LocalidadNegocioImp();
+        ProvinciaNegocio provinciaNegocio = new ProvinciaNegocioImp();
 
         if (cliente != null) {
-        	request.setAttribute("cliente", cliente);
         	
+        	 Localidad localidad = localidadNegocio.obtenerLocalidadPorId(cliente.getLocalidadCliente().getId());
+             Provincia provincia = provinciaNegocio.obtenerProvinciaPorId(cliente.getProvinciaCliente().getId());
+             cliente.setLocalidadCliente(localidad);
+             cliente.setProvinciaCliente(provincia);
+             
+             //obtegno todas las provinicas y localidades
+             List<Provincia> listaProvincias = provinciaNegocio.listarProvincias();
+             List<Localidad> listaLocalidades = localidadNegocio.listarLocalidades();
+             
+             request.setAttribute("cliente", cliente);
+             request.setAttribute("listaProvincias", listaProvincias);
+             request.setAttribute("listaLocalidades", listaLocalidades);
+             
             RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/ModificarCliente.jsp");
             dispatcher.forward(request, response);
         } else {
@@ -54,56 +73,7 @@ public class ServletModificarCliente extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String dni = request.getParameter("dni");
-        String cuil = request.getParameter("cuil");
-        String nombre = request.getParameter("nombre");
-        String apellido = request.getParameter("apellido");
-        String sexo = request.getParameter("sexo");
-        String nacionalidad = request.getParameter("nacionalidad");
-        String fechaNacimientoStr = request.getParameter("fecha_nacimiento");
-        String direccion = request.getParameter("direccion");
-        String localidad = request.getParameter("localidad");
-        String provincia = request.getParameter("provincia");
-        String correo = request.getParameter("correo");
-        String telefono = request.getParameter("telefono");
+    
+    
 
-        Cliente cliente = new Cliente();
-        cliente.setDni(dni);
-        cliente.setCuil(cuil);
-        cliente.setNombre(nombre);
-        cliente.setApellido(apellido);
-        cliente.setSexo(sexo);
-        cliente.setNacionalidad(nacionalidad);
-        
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate fechaNacimiento = LocalDate.parse(fechaNacimientoStr, formatter);
-        
-        cliente.setFechaNacimiento(fechaNacimiento);
-        cliente.setDireccion(direccion);
-        
-        int idLocalidad = request.getParameter("localidad") != null ? Integer.parseInt(request.getParameter("localidad")) : -1;
-        int idProvincia = request.getParameter("provincia") != null ? Integer.parseInt(request.getParameter("provincia")) : -1;
-        Localidad localidadCliente = new Localidad();
-        localidadCliente.setId(idLocalidad);
-
-        Provincia provinciaCliente = new Provincia();
-        provinciaCliente.setId(idProvincia);
-        
-        cliente.setLocalidadCliente(localidadCliente);
-        cliente.setProvinciaCliente(provinciaCliente);
-        
-        cliente.setCorreo(correo);
-        cliente.setTelefono(telefono);
-        
-        ClienteNegocio clienteNegocio = new ClienteNegocioImp();
-        boolean actualizado = clienteNegocio.actualizarCliente(cliente);
-
-        if (actualizado) {
-            response.sendRedirect("ListarClientes.jsp");
-        } else {
-            //manejamos error
-        }
     }
-
-}

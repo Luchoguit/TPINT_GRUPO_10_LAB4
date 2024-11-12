@@ -165,31 +165,33 @@ public class ClienteDaoImp implements ClienteDao {
 
 	@Override
 	public boolean actualizarCliente(Cliente cliente) {
-        String sql = "UPDATE clientes SET dni = ?, cuil = ?, nombre = ?, apellido = ?, sexo = ?, nacionalidad = ?, "
-		        		+ "fecha_nacimiento = ?, direccion = ?, localidad = ?, provincia = ?, correo = ?, telefono = ? "
-		        		+ "WHERE dni = ?";
-        Connection conexion = Conexion.getConexion().getSQLConexion();
-        try (PreparedStatement statement = conexion.prepareStatement(sql)) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        String sql = "UPDATE clientes SET nombre = ?, apellido = ?, sexo = ?, nacionalidad = ?, fecha_nacimiento = ?, direccion = ?, id_provincia = ?, id_localidad = ?, correo = ?, telefono = ? WHERE dni = ?";
+        try {
+            conn = Conexion.getConexion().getSQLConexion();
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, cliente.getNombre());
+            stmt.setString(2, cliente.getApellido());
+            stmt.setString(3, cliente.getSexo());
+            stmt.setString(4, cliente.getNacionalidad());
+            stmt.setDate(5, java.sql.Date.valueOf(cliente.getFechaNacimiento()));
+            stmt.setString(6, cliente.getDireccion());
+            stmt.setInt(7, cliente.getProvinciaCliente().getId());
+            stmt.setInt(8, cliente.getLocalidadCliente().getId());
+            stmt.setString(9, cliente.getCorreo());
+            stmt.setString(10, cliente.getTelefono());
+            stmt.setString(11, cliente.getDni());
 
-            statement.setString(1, cliente.getDni());
-            statement.setString(2, cliente.getCuil());
-            statement.setString(3, cliente.getNombre());
-            statement.setString(4, cliente.getApellido());
-            statement.setString(5, cliente.getSexo());
-            statement.setString(6, cliente.getNacionalidad());
-            statement.setDate(7, java.sql.Date.valueOf(cliente.getFechaNacimiento()));
-            statement.setString(8, cliente.getDireccion());
-            statement.setInt(9, cliente.getLocalidadCliente().getId());
-            statement.setInt(10, cliente.getProvinciaCliente().getId());
-            statement.setString(11, cliente.getCorreo());
-            statement.setString(12, cliente.getTelefono());
-
-            int filasActualizadas = statement.executeUpdate();
+            int filasActualizadas = stmt.executeUpdate();
+            conn.commit();
             return filasActualizadas > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        }
+        }finally {
+	        Conexion.getConexion().cerrarConexion();
+	    }
     }
 
 	@Override

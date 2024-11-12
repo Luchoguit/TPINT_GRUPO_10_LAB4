@@ -1,4 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@page import="entidad.Cliente" %>
+<%@page import="java.util.List" %>
+<%@page import="entidad.Provincia" %>
+<%@page import="entidad.Localidad" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -91,99 +95,98 @@
 <div class="form-container">
     <h2>Modificar Cliente</h2>
     
-    <form method="post" action="ServletModificarCliente">
+<form method="post" action="/TPINT_GRUPO_10_LAB4/ServletActualizarCliente">
+    <div class="form-group">
+        <label for="dni">DNI</label>
+        <input id="dni" name="dni" type="number" readonly value="<%= ((Cliente) request.getAttribute("cliente")).getDni() %>">
+    </div>
 
-        <!-- DNI -->
-        <div class="form-group">
-            <label for="dni">DNI</label>
-            <input id="dni" type="number" name="dni" maxlength="11" readonly required value="${cliente.dni}">
-        </div>
+    <div class="form-group">
+        <label for="cuil">CUIL</label>
+        <input id="cuil" name="cuil" type="number" readonly value="<%= ((Cliente) request.getAttribute("cliente")).getCuil() %>">
+    </div>
 
-        <!-- CUIL -->
-        <div class="form-group">
-            <label for="cuil">CUIL</label>
-            <input id="cuil" type="number" name="cuil" maxlength="11" readonly required value="${cliente.cuil}">
-        </div>
+    <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input id="nombre" name="nombre" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getNombre() %>">
+    </div>
 
-        <!-- Nombre -->
-        <div class="form-group">
-            <label for="nombre">Nombre</label>
-            <input id="nombre" type="text" name="nombre" maxlength="50" required value="${cliente.nombre}">
-        </div>
+    <div class="form-group">
+        <label for="apellido">Apellido</label>
+        <input id="apellido" name="apellido" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getApellido() %>">
+    </div>
 
-        <!-- Apellido -->
-        <div class="form-group">
-            <label for="apellido">Apellido</label>
-            <input id="apellido" type="text" name="apellido" maxlength="50" required value="${cliente.apellido}">
-        </div>
+    <div class="form-group">
+        <label for="sexo">Sexo</label>
+        <select id="sexo" name="sexo">
+            <option value="M" <%= ((Cliente) request.getAttribute("cliente")).getSexo().equals("M") ? "selected" : "" %>>Masculino</option>
+            <option value="F" <%= ((Cliente) request.getAttribute("cliente")).getSexo().equals("F") ? "selected" : "" %>>Femenino</option>
+        </select>
+    </div>
 
-        <!-- Sexo -->
-        <div class="form-group">
-            <label for="sexo">Sexo</label>
-            <select id="sexo" name="sexo" required>
-                <option value="">Seleccione...</option>
-                <option value="M" ${cliente.sexo == 'M' ? 'selected' : ''}>Masculino</option>
-                <option value="F" ${cliente.sexo == 'F' ? 'selected' : ''}>Femenino</option>
-            </select>
-        </div>
+    <div class="form-group">
+        <label for="nacionalidad">Nacionalidad</label>
+        <input id="nacionalidad" name="nacionalidad" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getNacionalidad() %>">
+    </div>
 
-        <!-- Nacionalidad -->
-        <div class="form-group">
-            <label for="nacionalidad">Nacionalidad</label>
-            <input id="nacionalidad" type="text" name="nacionalidad" required maxlength="50" value="${cliente.nacionalidad}">
-        </div>
+    <div class="form-group">
+        <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+        <input id="fecha_nacimiento" name="fecha_nacimiento" type="date" value="<%= ((Cliente) request.getAttribute("cliente")).getFechaNacimiento() %>">
+    </div>
 
-        <!-- Fecha de Nacimiento -->
-        <div class="form-group">
-    		<label for="fecha_nacimiento">Fecha de Nacimiento</label>
-    		<input id="fecha_nacimiento" type="date" name="fecha_nacimiento" required value="${cliente.fechaNacimiento}">
-		</div>
+    <div class="form-group">
+        <label for="direccion">Dirección</label>
+        <input id="direccion" name="direccion" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getDireccion() %>">
+    </div>
 
-        <!-- Dirección -->
-        <div class="form-group">
-            <label for="direccion">Dirección</label>
-            <input id="direccion" type="text" name="direccion" required maxlength="100" value="${cliente.direccion}">
-        </div>
+    <div class="form-group">
+        <label for="provincia">Provincia</label>
+        <select id="provincia" name="provincia">
+            <% 
+                List<Provincia> listaProvincias = (List<Provincia>) request.getAttribute("listaProvincias");
+                Provincia provinciaSeleccionada = ((Cliente) request.getAttribute("cliente")).getProvinciaCliente();
+                if (listaProvincias != null) {
+                    for (Provincia provincia : listaProvincias) {
+            %>
+                <option value="<%= provincia.getId() %>" <%= (provinciaSeleccionada != null && provincia.getId() == provinciaSeleccionada.getId()) ? "selected" : "" %>>
+                    <%= provincia.getNombre() %>
+                </option>
+            <%      }
+                }
+            %>
+        </select>
+    </div>
 
-        <!-- Localidad -->
-        <div class="form-group">
-            <label for="localidad">Localidad</label>
-            <select id="localidad" name="localidad">
-                <option value="${cliente.localidadCliente.nombre}"></option>
+    <div class="form-group">
+        <label for="localidad">Localidad</label>
+        <select id="localidad" name="localidad">
+            <% 
+                List<Localidad> listaLocalidades = (List<Localidad>) request.getAttribute("listaLocalidades");
+                Localidad localidadSeleccionada = ((Cliente) request.getAttribute("cliente")).getLocalidadCliente();
+                if (listaLocalidades != null) {
+                    for (Localidad localidad : listaLocalidades) {
+            %>
+                <option value="<%= localidad.getId() %>" <%= (localidadSeleccionada != null && localidad.getId() == localidadSeleccionada.getId()) ? "selected" : "" %>>
+                    <%= localidad.getNombre() %>
+                </option>
+            <%      }
+                }
+            %>
+        </select>
+    </div>
 
-            </select>
-        </div>
+    <div class="form-group">
+        <label for="correo">Correo Electrónico</label>
+        <input id="correo" name="correo" type="email" value="<%= ((Cliente) request.getAttribute("cliente")).getCorreo() %>">
+    </div>
 
-        <!-- Provincia -->
-        <div class="form-group">
-            <label for="provincia">Provincia</label>
-            <select id="provincia" name="provincia">
-                <option value="${cliente.provinciaCliente.nombre}"></option>
-               
-            </select>
-        </div>
+    <div class="form-group">
+        <label for="telefono">Teléfono</label>
+        <input id="telefono" name="telefono" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getTelefono() %>">
+    </div>
 
-        <!-- Correo Electrónico -->
-        <div class="form-group">
-            <label for="correo">Correo Electrónico</label>
-            <input id="correo" type="email" name="correo" maxlength="100" required value="${cliente.correo}">
-        </div>
-
-        <!-- Teléfono -->
-        <div class="form-group">
-            <label for="telefono">Teléfono</label>
-            <input id="telefono" type="text" name="telefono" required maxlength="20" value="${cliente.telefono}">
-        </div>
-
-        <div class="form-group">
-            <input type="submit" value="Modificar Cliente">
-        </div>
-        
-	    <!-- Enlace para volver al menu -->
-	    <a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp" class="volver-menu">
-	        <input type="button" value="Volver al Menu" class="btn-volver">
-    </a>
-    </form>
+    <button type="submit">Guardar cambios</button>
+</form>
 </div>
 
 </body>
