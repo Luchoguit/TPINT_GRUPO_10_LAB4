@@ -185,8 +185,16 @@
         <input id="telefono" name="telefono" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getTelefono() %>">
     </div>
 
-    <button type="submit">Guardar cambios</button>
+	<div class="volver-menu">
+	    <button type="submit" class="btn-volver">Guardar cambios</button>
+	</div>
 </form>
+	
+	    <!-- Enlace para volver al menu -->
+    <a href="/TPINT_GRUPO_10_LAB4/ServletListadoClientes" style="margin-top: 10px;" class="volver-menu">
+        <input type="button" value="Volver al Listado de Clientes" class="btn-volver">
+    </a>
+	
 </div>
 
 </body>
