@@ -143,14 +143,15 @@
             <input id="direccion" type="text" readonly value="<%= request.getAttribute("cliente") != null ? ((Cliente) request.getAttribute("cliente")).getDireccion() : "" %>">
         </div>
 
+		<div class="form-group">
+            <label for="provincia">Provincia</label>
+            <input id="provincia" type="text" readonly value="<%= request.getAttribute("cliente") != null && ((Cliente) request.getAttribute("cliente")).getProvinciaCliente() != null ? ((Cliente) request.getAttribute("cliente")).getProvinciaCliente().getNombre() : "" %>">
+        </div>
+
+
         <div class="form-group">
             <label for="localidad">Localidad</label>
             <input id="localidad" type="text" readonly value="<%= request.getAttribute("cliente") != null && ((Cliente) request.getAttribute("cliente")).getLocalidadCliente() != null ? ((Cliente) request.getAttribute("cliente")).getLocalidadCliente().getNombre() : "" %>">
-        </div>
-
-        <div class="form-group">
-            <label for="provincia">Provincia</label>
-            <input id="provincia" type="text" readonly value="<%= request.getAttribute("cliente") != null && ((Cliente) request.getAttribute("cliente")).getProvinciaCliente() != null ? ((Cliente) request.getAttribute("cliente")).getProvinciaCliente().getNombre() : "" %>">
         </div>
 
         <div class="form-group">
@@ -165,7 +166,7 @@
     </form>
     <div class="button-container">
     <!-- Enlace para ir a la Pagina Principal -->
-    <a href="http://localhost:14591/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp">
+    <a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp">
     <input type="button" value="Ir a la Pagina Principal">
     </a>
 
