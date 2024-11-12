@@ -43,7 +43,7 @@ public class ServletLogin extends HttpServlet {
             request.setAttribute("mensaje", "Datos Incorrectos, intente nuevamente.");
             request.setAttribute("tipoMensaje", "error");
 
-            request.getRequestDispatcher("/Login.jsp").forward(request, response);
+            request.getRequestDispatcher("LOGIN/Login.jsp").forward(request, response);
 
             System.out.println("[DEBUG] No encuentra Usuario");
         }
@@ -51,7 +51,7 @@ public class ServletLogin extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
      
-    	request.getRequestDispatcher("/login.jsp").forward(request, response);
+    	request.getRequestDispatcher("LOGIN/login.jsp").forward(request, response);
     
     }
 }
