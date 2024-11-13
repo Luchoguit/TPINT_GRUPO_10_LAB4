@@ -31,8 +31,8 @@ CREATE TABLE clientes(
     correo VARCHAR(100) UNIQUE NOT NULL,
     telefono VARCHAR(20) NOT NULL,
     FOREIGN KEY (id_localidad) REFERENCES localidades(id),
-    FOREIGN KEY (id_provincia) REFERENCES provincias(id)
-    
+    FOREIGN KEY (id_provincia) REFERENCES provincias(id),
+	estado BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE usuarios(
@@ -60,7 +60,8 @@ CREATE TABLE cuentas(
     id_usuario INT NOT NULL,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id),
     id_tipoCuenta INT NOT NULL,
-    FOREIGN KEY (id_tipoCuenta) REFERENCES tipos_de_cuentas(id)
+    FOREIGN KEY (id_tipoCuenta) REFERENCES tipos_de_cuentas(id),
+	estado BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE tipos_de_movimientos(

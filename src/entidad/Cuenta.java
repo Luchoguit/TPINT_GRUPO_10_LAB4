@@ -11,9 +11,11 @@ public class Cuenta {
     private BigDecimal saldo;
     private Usuario usuario; 
     private TipoCuenta tipoCuenta; 
+    private boolean estado; 
+
 
     public Cuenta(int id, String numeroCuenta, LocalDateTime fechaCreacion, String cbu, 
-                  BigDecimal saldo, Usuario usuario, TipoCuenta tipoCuenta) {
+                  BigDecimal saldo, Usuario usuario, TipoCuenta tipoCuenta, boolean estado) {
         this.id = id;
         this.numeroCuenta = numeroCuenta;
         this.fechaCreacion = fechaCreacion;
@@ -21,9 +23,10 @@ public class Cuenta {
         this.saldo = saldo;
         this.usuario = usuario;
         this.tipoCuenta = tipoCuenta;
+        this.estado = estado;
     }
 
-    public int getId() {
+	public int getId() {
         return id;
     }
 
@@ -78,5 +81,13 @@ public class Cuenta {
     public void setTipoCuenta(TipoCuenta tipoCuenta) {
         this.tipoCuenta = tipoCuenta;
     }
+    
+    public boolean isEstado() {
+		return estado;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
 }
 

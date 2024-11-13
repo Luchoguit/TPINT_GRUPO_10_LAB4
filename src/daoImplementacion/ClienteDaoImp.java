@@ -59,7 +59,7 @@ public class ClienteDaoImp implements ClienteDao {
 	        return isInsertExitoso;
 	    }
 
-	private static final String qrylistarclientes = "SELECT id, dni, cuil, nombre, apellido, sexo, nacionalidad, fecha_nacimiento, direccion, id_localidad, id_provincia, correo, telefono FROM clientes";
+	private static final String qrylistarclientes = "SELECT id, dni, cuil, nombre, apellido, sexo, nacionalidad, fecha_nacimiento, direccion, id_localidad, id_provincia, correo, telefono, estado FROM clientes";
 	
 	@Override
 	public List<Cliente> listarClientes() {
@@ -97,9 +97,11 @@ public class ClienteDaoImp implements ClienteDao {
 	            String correo = resultSet.getString("correo");
 	            String telefono = resultSet.getString("telefono");
 	            String direccion = resultSet.getString("direccion");
+	            boolean estado = resultSet.getBoolean("estado");
+
 	        
 	            Cliente cli = new Cliente(id, dni, cuil, nombre, apellido, sexo, nacionalidad, 
-	            		fechaNacimiento, direccion, localidadCliente, provinciaCliente, correo, telefono);
+	            		fechaNacimiento, direccion, localidadCliente, provinciaCliente, correo, telefono, estado);
 	            clientes.add(cli);
 	        }
 
@@ -114,7 +116,7 @@ public class ClienteDaoImp implements ClienteDao {
 	
 	private static final String qryClientesSinUsuario = 
 		    "SELECT c.id, c.dni, c.cuil, c.nombre, c.apellido, c.sexo, c.nacionalidad, " +
-		    "c.fecha_nacimiento, c.direccion, c.id_localidad, c.id_provincia, c.correo, c.telefono " +
+		    "c.fecha_nacimiento, c.direccion, c.id_localidad, c.id_provincia, c.correo, c.telefono, c.estado " +
 		    "FROM clientes c " +
 		    "LEFT JOIN usuarios u ON c.id = u.id " +
 		    "WHERE u.id IS NULL";
@@ -147,9 +149,11 @@ public class ClienteDaoImp implements ClienteDao {
 	            String correo = resultSet.getString("correo");
 	            String telefono = resultSet.getString("telefono");
 	            String direccion = resultSet.getString("direccion");
+	            boolean estado = resultSet.getBoolean("estado");
+
 	         
 	            Cliente cliente = new Cliente(id, dni, cuil, nombre, apellido, sexo, nacionalidad, 
-	                    fechaNacimiento, direccion, localidadCliente, provinciaCliente, correo, telefono);
+	                    fechaNacimiento, direccion, localidadCliente, provinciaCliente, correo, telefono, estado);
 	            clientesSinUsuario.add(cliente);
 	        }
 	    } catch (SQLException e) {
@@ -194,10 +198,26 @@ public class ClienteDaoImp implements ClienteDao {
 	    }
     }
 
+	private static final String qryEliminarCliente = "UPDATE clientes SET estado = false WHERE id = ?";
+
 	@Override
 	public boolean eliminarCliente(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = Conexion.getConexion().getSQLConexion();
+            stmt = conn.prepareStatement(qryEliminarCliente);
+            stmt.setInt(1, id);
+
+            int filasActualizadas = stmt.executeUpdate();
+            conn.commit();
+            return filasActualizadas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }finally {
+	        Conexion.getConexion().cerrarConexion();
+	    }
 	}
 	
 	private static final String qryValidarEmailNoRepetido = "select * from clientes where correo like ?"; 
@@ -332,7 +352,7 @@ public class ClienteDaoImp implements ClienteDao {
 		
 	}
 	
-	private static final String qryObtenerClientePorDni = "SELECT id, dni, cuil, nombre, apellido, sexo, nacionalidad, fecha_nacimiento, direccion, id_localidad, id_provincia, correo, telefono FROM clientes WHERE dni = ?";	
+	private static final String qryObtenerClientePorDni = "SELECT id, dni, cuil, nombre, apellido, sexo, nacionalidad, fecha_nacimiento, direccion, id_localidad, id_provincia, correo, telefono, estado FROM clientes WHERE dni = ?";	
 
 	@Override
 	public Cliente obtenerPorDNI(String dni) {
@@ -366,10 +386,12 @@ public class ClienteDaoImp implements ClienteDao {
 
 	            String correo = resultSet.getString("correo");
 	            String telefono = resultSet.getString("telefono");
+	            boolean estado = resultSet.getBoolean("estado");
+
 
 	            // Crear el objeto Cliente con los datos obtenidos
 	            cliente = new Cliente(id, dni, cuil, nombre, apellido, sexo, nacionalidad, 
-	                                  fechaNacimiento, direccion, localidadCliente, provinciaCliente, correo, telefono);
+	                                  fechaNacimiento, direccion, localidadCliente, provinciaCliente, correo, telefono, estado);
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();

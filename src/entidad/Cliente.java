@@ -15,10 +15,12 @@ public class Cliente {
     private String correo;
     private String telefono;
     private String direccion;
+    private boolean estado; 
+
 
     public Cliente(int id, String dni, String cuil, String nombre, String apellido, 
                    String sexo, String nacionalidad, LocalDate fechaNacimiento, String direccion, 
-                   Localidad localidadCliente, Provincia provinciaCliente, String correo, String telefono) {
+                   Localidad localidadCliente, Provincia provinciaCliente, String correo, String telefono, boolean estado) {
         this.id = id;
         this.dni = dni;
         this.cuil = cuil;
@@ -32,6 +34,7 @@ public class Cliente {
         this.correo = correo;
         this.telefono = telefono;
         this.setDireccion(direccion);
+        this.estado = estado;
     }
 
     public Cliente() {
@@ -140,6 +143,14 @@ public class Cliente {
 
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
+	}
+
+	public boolean isEstado() {
+		return estado;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
 	}
 }
 

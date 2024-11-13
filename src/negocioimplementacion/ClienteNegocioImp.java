@@ -54,4 +54,9 @@ public class ClienteNegocioImp implements ClienteNegocio {
 	public boolean actualizarCliente(Cliente cliente) {
 		return clienteDao.actualizarCliente(cliente);
 	}
+
+	@Override
+	public boolean eliminarCliente(int id) {
+		return clienteDao.eliminarCliente(id);
+	}
 }
