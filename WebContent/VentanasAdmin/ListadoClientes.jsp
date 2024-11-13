@@ -117,7 +117,7 @@
 
         <!-- Boton para eliminar -->
         <td>
-            <form method="post" action="/TPINT_GRUPO_10_LAB4/ServEliminarClienteServlet">
+            <form id="formEliminar_<%= cliente.getDni() %>" onsubmit="return confirmarEliminacion()" method="post" action="/TPINT_GRUPO_10_LAB4/ServletEliminarCliente">
                 <input type="hidden" name="dniCliente" value="<%= cliente.getDni() %>">
                 <input type="submit" name="btnEliminar" value="Eliminar">
             </form>
@@ -135,6 +135,15 @@
     <a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp" class="volver-menu">
         <input type="button" value="Volver al Menu" class="btn-volver">
     </a>
+
+    <!-- JavaScript para la confirmación de eliminación -->
+    <script type="text/javascript">
+        function confirmarEliminacion() {
+            
+            var respuesta = confirm("¿Estás seguro de que deseas eliminar este cliente?");
+            return respuesta;  
+        }
+    </script>
 
 </body>
 </html>

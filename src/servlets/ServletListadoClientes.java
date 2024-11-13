@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -45,8 +46,19 @@ public class ServletListadoClientes extends HttpServlet {
             }
             listaClientes = clientesFiltrados;
         }
-
-     
+        
+       // Solo dejamos en la lista aquellos clientes activos
+       Iterator<Cliente> iterator = listaClientes.iterator();
+        
+       while (iterator.hasNext()) {
+           Cliente cliente = iterator.next();
+           
+          
+           if (!cliente.isEstado()) {
+               iterator.remove();
+           }
+       }
+        
         request.setAttribute("listaClientes", listaClientes);
 
        
