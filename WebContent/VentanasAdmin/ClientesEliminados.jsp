@@ -1,4 +1,9 @@
-<!DOCTYPE html>
+<%@page import="entidad.Cliente" %>
+<%@page import="java.util.List" %>
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="es">
 <head>
     <meta charset="ISO-8859-1">
@@ -55,7 +60,7 @@
 <h2 style="text-align: center;">Lista de Clientes Eliminados</h2>
 
 <div class="filter-container">
-    <form method="post" action="servletCliente">
+    <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoClientesEliminados">
         <input type="text" name="filtroCliente" placeholder="Ingrese DNI, nombre o apellido">
         <input type="submit" name="btnFiltrar" value="Filtrar">
     </form>
@@ -71,34 +76,33 @@
         <th>Teléfono</th>       
         <th>Activar</th>
     </tr>
+    
+       <% 
+		    List<Cliente> listaClientes = (List<Cliente>)request.getAttribute("listaClientes");
+		    if (listaClientes != null) {
+		        for (Cliente cliente : listaClientes) {
+    	%>
+    	
     <tr>
-        <td>12345678</td>
-        <td>Juan</td>
-        <td>Pérez</td>
-        <td>20123456789</td>
-        <td>juan.perez@example.com</td>
-        <td>123-456-7890</td>      
-        <td>
-            <form method="post" action="servletCliente">
-                <input type="hidden" name="idCliente" value="12345678">
-                <input type="submit" name="btnActivar" value="Activar">
-            </form>
-        </td>
-    </tr>
-    <tr>
-        <td>87654321</td>
-        <td>Ana</td>
-        <td>Gómez</td>
-        <td>20876543210</td>
-        <td>ana.gomez@example.com</td>
-        <td>098-765-4321</td>     
-        <td>
-            <form method="post" action="servletCliente">
+        <td><%= cliente.getDni() %></td>
+        <td><%= cliente.getNombre() %></td>
+        <td><%= cliente.getApellido() %></td>
+        <td><%= cliente.getCuil() %></td>
+        <td><%= cliente.getCorreo() %></td>
+        <td><%= cliente.getTelefono() %></td>
+        <td>    
+        	<form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoClientesEliminados">
                 <input type="hidden" name="idCliente" value="87654321">
                 <input type="submit" name="btnActivar" value="Activar">
             </form>
-        </td>
+       </td>
+       
     </tr>
+    <% } } else { %>
+    <tr>
+        <td colspan="9">No se encontraron clientes.</td>
+    </tr>
+    <% } %>
 </table>
 
 	<!-- Enlace para volver al menu -->

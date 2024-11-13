@@ -135,7 +135,7 @@
     <ul class="navigation">
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletAltaCliente">Agregar nuevo cliente <i class="fa fa-user-plus"></i></a></li>
         <li><a href=/TPINT_GRUPO_10_LAB4/ServletLAltaUsuario>Crear nuevo usuario <i class="fa fa-plus-circle"></i></a></li>
-        <li><a href="../VentanasAdmin/ClientesEliminados.jsp">Ver clientes eliminados <i class="fa fa-trash-alt"></i></a></li>
+        <li><a href="/TPINT_GRUPO_10_LAB4/ServletListadoClientesEliminados">Ver clientes eliminados <i class="fa fa-trash-alt"></i></a></li>
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletListadoClientes">Ver listado de Clientes <i class="fa fa-list-alt"></i></a></li>
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletCerrarSesion">Cerrar sesión <i class="fa fa-sign-out-alt"></i></a></li>
     </ul>
