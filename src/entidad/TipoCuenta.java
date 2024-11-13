@@ -8,6 +8,8 @@ public class TipoCuenta {
         this.id = id;
         this.descripcion = descripcion;
     }
+    
+    public TipoCuenta() {}
 
     public int getId() {
         return id;

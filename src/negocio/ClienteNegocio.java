@@ -11,6 +11,7 @@ public interface ClienteNegocio {
     boolean altaCliente(Cliente cliente);
     List<Cliente> listarClientesSinUsuario();
     Cliente obtenerPorDNI(String dni);
+    Cliente obtenerPorId(int id);
     boolean eliminarCliente(int id);
     boolean activarCliente (int id);
     boolean verificarDniIngresado(String dni);

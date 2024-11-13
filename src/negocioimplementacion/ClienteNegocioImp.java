@@ -64,4 +64,9 @@ public class ClienteNegocioImp implements ClienteNegocio {
 	{
 		return clienteDao.activarCliente(id);
 	}
+
+	@Override
+	public Cliente obtenerPorId(int id) {
+		return clienteDao.obtenerPorId(id);
+	}
 }

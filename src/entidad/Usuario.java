@@ -18,6 +18,8 @@ public class Usuario {
         this.estado = estado;
         this.fechaCreacion = fechaCreacion;
     }
+    
+    public Usuario() {}
 
     public String getNombreUsuario() {
         return nombreUsuario;

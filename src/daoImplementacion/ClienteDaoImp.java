@@ -422,6 +422,58 @@ public class ClienteDaoImp implements ClienteDao {
 	    }
 
 	    return cliente;
+	}
+
+
+	private static final String qryObtenerClientePorId = "SELECT id, dni, cuil, nombre, apellido, sexo, nacionalidad, fecha_nacimiento, direccion, id_localidad, id_provincia, correo, telefono, estado FROM clientes WHERE id = ?";	
+
+
+	@Override
+	public Cliente obtenerPorId(int id) {
+		Cliente cliente = null;
+
+	    try {
+	        Connection con = Conexion.getConexion().getSQLConexion();
+	        System.out.println("[DEBUG] Conexion a la base de datos establecida para obtener cliente por DNI");
+
+	        PreparedStatement statement = con.prepareStatement(qryObtenerClientePorId);
+	        statement.setInt(1, id); // Asignar el DNI al parametro de la consulta
+
+	        ResultSet resultSet = statement.executeQuery();
+
+	        if (resultSet.next()) {
+	            String dni = resultSet.getString("dni");
+	            String cuil = resultSet.getString("cuil");
+	            String nombre = resultSet.getString("nombre");
+	            String apellido = resultSet.getString("apellido");
+	            String sexo = resultSet.getString("sexo");
+	            String nacionalidad = resultSet.getString("nacionalidad");
+	            java.sql.Date sqlDate = resultSet.getDate("fecha_nacimiento");
+	            LocalDate fechaNacimiento = sqlDate != null ? sqlDate.toLocalDate() : null;
+	            String direccion = resultSet.getString("direccion");
+
+	            // Crear los objetos Localidad y Provincia
+	            Localidad localidadCliente = new Localidad();
+	            Provincia provinciaCliente = new Provincia();
+	            localidadCliente.setId(resultSet.getInt("id_localidad"));
+	            provinciaCliente.setId(resultSet.getInt("id_provincia"));
+
+	            String correo = resultSet.getString("correo");
+	            String telefono = resultSet.getString("telefono");
+	            boolean estado = resultSet.getBoolean("estado");
+
+
+	            // Crear el objeto Cliente con los datos obtenidos
+	            cliente = new Cliente(id, dni, cuil, nombre, apellido, sexo, nacionalidad, 
+	                                  fechaNacimiento, direccion, localidadCliente, provinciaCliente, correo, telefono, estado);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        Conexion.getConexion().cerrarConexion();
+	    }
+
+	    return cliente;
 	}	
 	
 	

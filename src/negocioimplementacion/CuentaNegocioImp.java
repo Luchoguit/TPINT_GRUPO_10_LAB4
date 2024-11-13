@@ -3,9 +3,12 @@ package negocioimplementacion;
 import java.util.List;
 
 import dao.CuentaDao;
+import daoImplementacion.CuentaDaoImp;
 import entidad.Cuenta;
+import entidad.Usuario;
+import negocio.CuentaNegocio;
 
-public class CuentaDaoImp implements CuentaDao {
+public class CuentaNegocioImp implements CuentaNegocio{
 	
 	CuentaDao cuentaDao = new CuentaDaoImp();
 
@@ -15,8 +18,8 @@ public class CuentaDaoImp implements CuentaDao {
 	}
 	
 	@Override
-	public List<Cuenta> listarCuentas() {
-		return cuentaDao.listarCuentas();
+	public List<Cuenta> listarCuentas(Usuario usuario) {
+		return cuentaDao.listarCuentas(usuario);
 	}
 
 	@Override

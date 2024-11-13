@@ -1,3 +1,7 @@
+<%@page import="entidad.Cuenta" %>
+<%@page import="entidad.Cliente" %>
+<%@page import="java.util.List" %>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -40,6 +44,7 @@
 
 	<h2 style="text-align: center;">Cuentas disponibles</h2>
 
+	
 	<table>
 	    <tr>
 	        <th>Tipo de cuenta</th>
@@ -52,32 +57,30 @@
 	        <th>Saldo</th>
 	        <th></th>
 	    </tr>
+	     		<% 
+	     			Cliente cliente = (Cliente)request.getAttribute("cliente");
+			    	List<Cuenta> listaCuentas = (List<Cuenta>)request.getAttribute("listaCuentas");
+            		if (listaCuentas != null) {
+			        for (Cuenta cuenta : listaCuentas) {
+			    %>
 	    <tr>
-	        <td>Caja de ahorro</td>
-	        <td>2245567880</td>
-	        <td>1000000009234567891234</td>
-	        <td>11234333</td>
-	        <td>Juan</td>
-	        <td>Perez</td>
-	        <td>01/01/2024</td>
-	        <td>10.000,00</td>
+	        <td><%= cuenta.getTipoCuenta().getDescripcion() %></td>
+	        <td><%= cuenta.getNumeroCuenta() %></td>
+	        <td><%= cuenta.getCbu() %></td>
+	        <td><%= cliente.getDni() %></td>
+	        <td><%= cliente.getNombre() %></td>
+	        <td><%= cliente.getApellido() %></td>
+	        <td><%= cuenta.getFechaCreacion() %></td>
+	        <td><%= cuenta.getSaldo() %></td>
 	        <th><a href="../MENUS/IndexCuenta.jsp">Ver Cuenta</a></th>
 	    </tr>
-	    	    <tr>
-	        <td>Cuenta sueldo</td>
-	        <td>2245567881</td>
-	        <td>1000000009234567891235</td>
-	        <td>11234333</td>
-	        <td>Juan</td>
-	        <td>Perez</td>
-	        <td>01/01/2023</td>
-	        <td>200.000,00</td>
-	        <th><a href="../MENUS/IndexCuenta.jsp">Ver Cuenta</a>
-	    </tr>
+ 				<% } 
+			        } else {System.out.println("Las cuentas no llegaron correctamente.");}
+			    %>
 	</table>
 
 	<div style="text-align: center;">
-    	<form method="post" action="servletCuentas">
+    	<form method="post" action="../MENUS/IndexUser.jsp">
         	<input type="submit" name="btnRegresar" value="Regresar">
     	</form>
 	</div>

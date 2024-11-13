@@ -1,13 +1,23 @@
 package daoImplementacion;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import dao.CuentaDao;
+import entidad.Cliente;
 import entidad.Cuenta;
+import entidad.Localidad;
+import entidad.Provincia;
+import entidad.TipoCuenta;
+import entidad.Usuario;
 
 public class CuentaDaoImp implements CuentaDao {
 	
@@ -51,11 +61,52 @@ public class CuentaDaoImp implements CuentaDao {
 
         return isInsertExitoso;
 	}
+	
+	private static final String qryListarCuentas = "SELECT * FROM cuentas WHERE id_usuario = ?";
 
 	@Override
-	public List<Cuenta> listarCuentas() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Cuenta> listarCuentas(Usuario usuario) {
+		
+		List<Cuenta> listaCuentas = new ArrayList<>();
+
+	    try {
+	     
+	        Connection con = Conexion.getConexion().getSQLConexion();	
+	        System.out.println("[DEBUG] Conexión a la base de datos establecida");
+
+	        System.out.println("[DEBUG] Conexión establecida: " + con);
+
+	        PreparedStatement statement = con.prepareStatement(qryListarCuentas);
+            statement.setInt(1, usuario.getIdCliente());
+	        ResultSet resultSet = statement.executeQuery();
+
+	        while (resultSet.next()) {
+	        	int id = resultSet.getInt("id");
+	            String numeroCuenta = resultSet.getString("numero_cuenta");
+	            LocalDateTime fechaCreacion = resultSet.getTimestamp("fecha_creacion").toLocalDateTime();
+	            String cbu = resultSet.getString("cbu");
+	            BigDecimal saldo = resultSet.getBigDecimal("saldo");
+	            
+	            Usuario usuarioCuenta = new Usuario();
+	            usuarioCuenta.setIdCliente(resultSet.getInt("id_usuario")); ;
+	            
+	            TipoCuenta tipoCuenta = new TipoCuenta();
+	            tipoCuenta.setId(resultSet.getInt("id_tipoCuenta"));
+	            	            			            
+	            boolean estado = resultSet.getBoolean("estado");
+
+	        
+	            Cuenta cuenta = new Cuenta(id, numeroCuenta, fechaCreacion, cbu, saldo, usuarioCuenta, tipoCuenta, estado);
+	            listaCuentas.add(cuenta);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        Conexion.getConexion().cerrarConexion();
+	    }
+
+	    return listaCuentas;
 	}
 
 	@Override
