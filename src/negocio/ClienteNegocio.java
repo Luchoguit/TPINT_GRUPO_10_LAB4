@@ -12,6 +12,7 @@ public interface ClienteNegocio {
     List<Cliente> listarClientesSinUsuario();
     Cliente obtenerPorDNI(String dni);
     boolean eliminarCliente(int id);
+    boolean activarCliente (int id);
     boolean verificarDniIngresado(String dni);
     boolean verificarCuilIngresado(String cuil);
     boolean verificarEmailIngresado(String email);

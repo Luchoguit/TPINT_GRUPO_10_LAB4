@@ -91,8 +91,8 @@
         <td><%= cliente.getCorreo() %></td>
         <td><%= cliente.getTelefono() %></td>
         <td>    
-        	<form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoClientesEliminados">
-                <input type="hidden" name="idCliente" value="87654321">
+        	<form method="post" action="/TPINT_GRUPO_10_LAB4/ServletActivarCliente">
+                <input type="hidden" name="dniCliente" value="<%= cliente.getDni() %>">
                 <input type="submit" name="btnActivar" value="Activar">
             </form>
        </td>
@@ -100,7 +100,7 @@
     </tr>
     <% } } else { %>
     <tr>
-        <td colspan="9">No se encontraron clientes.</td>
+        <td colspan="9">No se encontraron clientes. Presione filtrar para recargar</td>
     </tr>
     <% } %>
 </table>

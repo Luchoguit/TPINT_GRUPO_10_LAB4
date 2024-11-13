@@ -13,6 +13,7 @@ public interface ClienteDao {
     List<Cliente> listarClientesSinUsuario();
     boolean actualizarCliente(Cliente cliente);
     boolean eliminarCliente(int id);
+    boolean activarCliente (int id);
     
     boolean verificarDniIngresado(String dni);
     boolean verificarCuilIngresado(String cuil);

@@ -59,4 +59,9 @@ public class ClienteNegocioImp implements ClienteNegocio {
 	public boolean eliminarCliente(int id) {
 		return clienteDao.eliminarCliente(id);
 	}
+	
+	public boolean activarCliente (int id)
+	{
+		return clienteDao.activarCliente(id);
+	}
 }

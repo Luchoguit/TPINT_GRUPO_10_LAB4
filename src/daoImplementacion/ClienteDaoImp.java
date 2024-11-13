@@ -220,6 +220,28 @@ public class ClienteDaoImp implements ClienteDao {
 	    }
 	}
 	
+	private static final String qryActivarCliente = "UPDATE clientes SET estado = true WHERE id = ?";
+	
+	public boolean activarCliente (int id)
+	{
+		Connection conn = null;
+        PreparedStatement stmt = null;
+        try {
+            conn = Conexion.getConexion().getSQLConexion();
+            stmt = conn.prepareStatement(qryActivarCliente);
+            stmt.setInt(1, id);
+
+            int filasActualizadas = stmt.executeUpdate();
+            conn.commit();
+            return filasActualizadas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }finally {
+	        Conexion.getConexion().cerrarConexion();
+	    }
+	}
+	
 	private static final String qryValidarEmailNoRepetido = "select * from clientes where correo like ?"; 
 	
 	@Override

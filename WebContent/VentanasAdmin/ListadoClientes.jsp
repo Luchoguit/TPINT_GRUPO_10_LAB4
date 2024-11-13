@@ -125,7 +125,7 @@
     </tr>
     <% } } else { %>
     <tr>
-        <td colspan="9">No se encontraron clientes.</td>
+        <td colspan="9">No se encontraron clientes. Presione filtrar para recargar</td>
     </tr>
     <% } %>
     
