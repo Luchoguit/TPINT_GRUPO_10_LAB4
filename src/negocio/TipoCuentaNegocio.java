@@ -7,5 +7,5 @@ import entidad.TipoCuenta;
 public interface TipoCuentaNegocio {
 
 	List<TipoCuenta> ObtenerTiposCuenta();
-
+	TipoCuenta ObtenerPorId(int id);
 }

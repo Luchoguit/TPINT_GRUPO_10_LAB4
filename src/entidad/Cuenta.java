@@ -1,9 +1,13 @@
 package entidad;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 public class Cuenta {
+    private static BigInteger numeroCuentaInicial = new BigInteger("1000000000");  
+    private static BigInteger cbuInicial = new BigInteger("1000000000000000000000"); 
+
     private int id;
     private String numeroCuenta;
     private LocalDateTime fechaCreacion;
@@ -11,22 +15,43 @@ public class Cuenta {
     private BigDecimal saldo;
     private Usuario usuario; 
     private TipoCuenta tipoCuenta; 
-    private boolean estado; 
+    
+    
+    public Cuenta(int id, String numeroCuenta, LocalDateTime fechaCreacion, String cbu, BigDecimal saldo,
+			Usuario usuario, TipoCuenta tipoCuenta, boolean estado) {
+		this.id = id;
+		this.numeroCuenta = numeroCuenta;
+		this.fechaCreacion = fechaCreacion;
+		this.cbu = cbu;
+		this.saldo = saldo;
+		this.usuario = usuario;
+		this.tipoCuenta = tipoCuenta;
+		this.estado = estado;
+	}
 
+	private boolean estado; 
 
-    public Cuenta(int id, String numeroCuenta, LocalDateTime fechaCreacion, String cbu, 
-                  BigDecimal saldo, Usuario usuario, TipoCuenta tipoCuenta, boolean estado) {
-        this.id = id;
-        this.numeroCuenta = numeroCuenta;
-        this.fechaCreacion = fechaCreacion;
-        this.cbu = cbu;
-        this.saldo = saldo;
+    public Cuenta(Usuario usuario, TipoCuenta tipoCuenta) {
+        this.numeroCuenta = generarNumeroCuenta();
+        this.fechaCreacion = LocalDateTime.now(); 
+        this.cbu = generarCbu();
+        this.saldo = BigDecimal.valueOf(10000);  
         this.usuario = usuario;
         this.tipoCuenta = tipoCuenta;
-        this.estado = estado;
+        this.estado = true;  
     }
 
-	public int getId() {
+    private static synchronized String generarNumeroCuenta() {
+        numeroCuentaInicial = numeroCuentaInicial.add(BigInteger.ONE);  // Incrementa el número de cuenta
+        return String.format("%010d", numeroCuentaInicial);  // Formatea con 10 dígitos, rellena con ceros a la izquierda
+    }
+
+    private static synchronized String generarCbu() {
+        cbuInicial = cbuInicial.add(BigInteger.ONE);  // Incrementa el CBU
+        return String.format("%022d", cbuInicial);  // Formatea con 22 dígitos, rellena con ceros a la izquierda
+    }
+
+    public int getId() {
         return id;
     }
 
@@ -83,11 +108,10 @@ public class Cuenta {
     }
     
     public boolean isEstado() {
-		return estado;
-	}
+        return estado;
+    }
 
-	public void setEstado(boolean estado) {
-		this.estado = estado;
-	}
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
 }
-

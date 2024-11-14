@@ -64,6 +64,15 @@ CREATE TABLE cuentas(
 	estado BOOLEAN NOT NULL DEFAULT TRUE
 );
 
+CREATE TABLE Solicitudes_alta_cuenta(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT NOT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id),
+    id_tipoCuenta INT NOT NULL,
+    FOREIGN KEY (id_tipoCuenta) REFERENCES tipos_de_cuentas(id),
+	respondida BOOLEAN NOT NULL DEFAULT FALSE
+);
+
 CREATE TABLE tipos_de_movimientos(
 	id INT AUTO_INCREMENT PRIMARY KEY,
     descripcion VARCHAR(25) NOT NULL

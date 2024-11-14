@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.TipoCuentaDao;
+import entidad.Provincia;
 import entidad.TipoCuenta;
 
 public class TipoCuentaDaoImp implements TipoCuentaDao {
@@ -42,7 +43,31 @@ public class TipoCuentaDaoImp implements TipoCuentaDao {
 
 	    return listaTC;
 	}
-
 	
+	
+	private static final String qryIdTipoCuenta = "SELECT * FROM tipos_de_cuentas WHERE id = ?";
+
+	@Override
+	public TipoCuenta ObtenerPorId(int id) {
+		TipoCuenta tipoCuenta = null;
+
+	    try {
+	        Connection con = Conexion.getConexion().getSQLConexion();
+	        PreparedStatement statement = con.prepareStatement(qryIdTipoCuenta);
+	        statement.setInt(1, id);
+	        ResultSet resultSet = statement.executeQuery();
+
+	        if (resultSet.next()) {
+	            tipoCuenta = new TipoCuenta();
+	            tipoCuenta.setId(resultSet.getInt("id"));
+	            tipoCuenta.setDescripcion(resultSet.getString("descripcion"));
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return tipoCuenta;
+	}
 
 }

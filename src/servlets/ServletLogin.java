@@ -7,8 +7,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import entidad.Cliente;
 import entidad.Usuario;
+import negocio.ClienteNegocio;
 import negocio.UsuarioNegocio;
+import negocioimplementacion.ClienteNegocioImp;
 import negocioimplementacion.UsuarioNegocioImp;
 
 @WebServlet("/ServletLogin")
@@ -28,6 +31,11 @@ public class ServletLogin extends HttpServlet {
         if (usuario != null && usuario.isEstado()) {
             // Almacenar el usuario en la sesión
             request.getSession().setAttribute("usuario", usuario);
+            
+            ClienteNegocio clienteNegocio = new ClienteNegocioImp();
+            Cliente cliente = clienteNegocio.obtenerPorId(usuario.getIdCliente());
+            
+            request.getSession().setAttribute("cliente", cliente);
 
             System.out.println("[DEBUG] Encuentra Usuario");
 

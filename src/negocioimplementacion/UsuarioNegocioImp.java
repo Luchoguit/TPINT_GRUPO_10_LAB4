@@ -20,5 +20,10 @@ public class UsuarioNegocioImp implements UsuarioNegocio {
 		return usuarioDao.getUsuario(nombre, contrasenia);
 	}
 
+	@Override
+	public Usuario obtenerUsuarioPorId(int id) {
+		return usuarioDao.obtenerUsuarioPorId(id);
+	}
+
 
 }

@@ -7,5 +7,6 @@ import entidad.TipoCuenta;
 public interface TipoCuentaDao {
 	
 	List<TipoCuenta> ObtenerTiposCuenta();
+	TipoCuenta ObtenerPorId(int id);
 
 }

@@ -1,3 +1,7 @@
+<%@page import="entidad.Cliente" %>
+<%@page import="entidad.TipoCuenta" %>
+<%@page import="java.util.List" %>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -65,32 +69,73 @@
             border: 1px solid #ccc; 
         }
         
+        /* Estilos para el contenedor de mensajes */
+        .message-container {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        
     </style>
 </head>
 <body>
 	
 	<div class="form-container">
-		<h1>Alta Cuenta</h1>
+		<h1>Alta Cuenta</h1>	 
+		
+				<!-- Contenedor de mensajes -->
+		<% 
+		    String mensaje = (String) request.getAttribute("mensaje");
+		    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
+		    if (mensaje != null && tipoMensaje != null) {
+		%>
+		    <div class="message-container <%= tipoMensaje %>">
+		        <%= mensaje %>
+		    </div>
+		<% } %>	
 	 	
-	 	</br>
+	 
 	 	
+	 	<form method="post" action="/TPINT_GRUPO_10_LAB4/ServletSolicitarAltaCuenta">
+	 	
+	 	<% Cliente cliente = (Cliente) session.getAttribute("cliente"); %>
+
 	 	<div class="form-group">
 	 		<label for="dniUsuario">DNI Usuario</label>
-            <input type="number" min="1" step="1" name="dniUsuario" required>
+            <input type="number" min="1" step="1" name="dniUsuario" class="readonly-input" readonly 
+            value="<%= cliente != null ? cliente.getDni() : "" %>" >
             <label for="apellidoUsuario">Apellido: </label>
-            <input type="text" name="apellidoUsuario" class="readonly-input" readonly>
+            <input type="text" name="apellidoUsuario" class="readonly-input" readonly
+            value="<%= cliente != null ? cliente.getApellido() : "" %>" >
             <label for="nombreUsuario">Nombre: </label>
-            <input type="text" name="nombreUsuario" class="readonly-input" readonly>
+            <input type="text" name="nombreUsuario" class="readonly-input" readonly
+            value="<%= cliente != null ? cliente.getNombre() : "" %>" >
 	 	</div>
 	 
+	 <% List<TipoCuenta> listaTC = (List<TipoCuenta>)request.getAttribute("listaTC"); %>
 	     <div class="form-group">
 			<select id="tipoCuenta" name="tipoCuenta" required>
                 <option value="">Seleccione...</option>
-                <option value="Caja de ahorro">Caja de ahorro</option>
-                <option value="Cuenta corriente">Cuenta corriente</option>
+                <% if (listaTC != null) {
+                    for (TipoCuenta tipoCuenta : listaTC) { %>
+                <option value="<%= tipoCuenta.getId() %>"><%= tipoCuenta.getDescripcion() %></option>
+         <% } } %>
             </select>
         </div>
-        
         
          <div class="form-group">
             <input type="submit" value="Enviar solicitud">
@@ -100,6 +145,7 @@
         <!-- El usuario solo podra tener 3 cuentas activas -->
         <label> </label>
         
+         </form>
 	 </div>
 	
 </body>

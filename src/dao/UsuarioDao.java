@@ -9,5 +9,7 @@ public interface UsuarioDao {
 	boolean altaUsuario(Usuario Usuario);
    
 	Usuario getUsuario(String nombre, String contrasenia);
+	
+	Usuario obtenerUsuarioPorId(int id);
     
 }

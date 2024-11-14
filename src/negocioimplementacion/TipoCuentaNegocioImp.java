@@ -16,4 +16,8 @@ public class TipoCuentaNegocioImp implements TipoCuentaNegocio {
 		return tipoCuentaDao.ObtenerTiposCuenta();
 	}
 
+	@Override
+	public TipoCuenta ObtenerPorId(int id) {
+		return tipoCuentaDao.ObtenerPorId(id);
+	}
 }

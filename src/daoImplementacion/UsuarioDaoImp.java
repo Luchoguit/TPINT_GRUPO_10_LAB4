@@ -98,6 +98,43 @@ public class UsuarioDaoImp implements UsuarioDao {
 	    }
 
 	    return user;
+	}
+
+	
+    private static final String qryObtenerUsuarioPorId = "SELECT id, nombre_usuario, contrasenia, tipo, estado, fecha_creacion FROM Usuarios WHERE id = ?";
+
+    
+	@Override
+	public Usuario obtenerUsuarioPorId(int id) {
+		Usuario user = null;
+
+	    try {
+	        Connection con = Conexion.getConexion().getSQLConexion();
+	        System.out.println("[DEBUG] Conexion a la base de datos establecida para obtener Usuario por Id");
+
+	        PreparedStatement statement = con.prepareStatement(qryObtenerUsuarioPorId);
+	        statement.setInt(1, id);
+
+	        ResultSet resultSet = statement.executeQuery();
+
+	        if (resultSet.next()) {
+	            String nombreUsuario = resultSet.getString("nombre_usuario");
+	            String contraseña = resultSet.getString("contrasenia");
+	            String tipo = resultSet.getString("tipo");
+	            boolean estado = resultSet.getBoolean("estado");
+	            java.sql.Date sqlDate = resultSet.getDate("fecha_creacion");
+	            LocalDate fecha_creacion = sqlDate != null ? sqlDate.toLocalDate() : null;
+
+
+	            user = new Usuario(id, nombreUsuario, contraseña, tipo, estado, fecha_creacion);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        Conexion.getConexion().cerrarConexion();
+	    }
+
+	    return user;
 	}	
 	
 }

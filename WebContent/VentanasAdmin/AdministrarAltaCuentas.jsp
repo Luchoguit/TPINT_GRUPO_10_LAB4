@@ -1,3 +1,6 @@
+<%@page import="entidad.SolicitudAltaCuenta" %>
+<%@page import="java.util.List" %>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -72,10 +75,8 @@
 </head>
 <body>
 
-	<h2 style="text-align: center;">Administrar solicitud alta cuentas</h2>
-
-
-	<table>
+<h2 style="text-align: center;">Administrar solicitud alta cuentas</h2>
+<table>
 	    <thead>
 	        <tr>
 	            <th>Nombre</th>
@@ -87,18 +88,32 @@
 	        </tr>
 	    </thead>
 	    <tbody>
+	 
+	    <% 
+    List<SolicitudAltaCuenta> listaSolicitudes = (List<SolicitudAltaCuenta>)request.getAttribute("listaSolicitudes");
+    if (listaSolicitudes != null) {
+        for (SolicitudAltaCuenta solicitud : listaSolicitudes) {
+    %>
+    
 	        <tr>
-	            <td>Juan</td>
-	            <td>Perez</td>
-	            <td>123456789</td>
-	            <td>Caja de ahorro</td>
+	            <td><%= solicitud.getCliente().getNombre() %></td>
+	            <td><%= solicitud.getCliente().getApellido() %></td>
+	            <td><%= solicitud.getCliente().getDni() %></td>
+	            <td><%= solicitud.getTipoCuenta().getDescripcion() %></td>
 	            <td>
-	                <button type="button" id="aceptar" >Aceptar</button>
-	            </td>
-	            <td>
-	                <button type="button" id="rechazar">Rechazar</button>
-	            </td>
-	        </tr>
+            <form action="/TPINT_GRUPO_10_LAB4/ServletAdministrarAltaCuentas" method="post">
+                <input type="hidden" name="solicitudId" value="<%= solicitud.getId() %>">
+                <button type="submit" name="accion" value="aceptar" id="aceptar">Aceptar</button>
+            </form>
+        </td>
+        <td>
+            <form action="/TPINT_GRUPO_10_LAB4/ServletAdministrarAltaCuentas" method="post">
+                <input type="hidden" name="solicitudId" value="<%= solicitud.getId() %>">
+                <button type="submit" name="accion" value="rechazar" id="rechazar">Rechazar</button>
+            </form>
+        </td>
+                </tr>
+	        <% } } %>
 	    </tbody>
 	</table>
 
