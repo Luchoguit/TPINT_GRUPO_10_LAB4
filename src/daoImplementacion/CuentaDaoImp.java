@@ -122,6 +122,58 @@ public class CuentaDaoImp implements CuentaDao {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	@Override
+	public List<Cuenta> listarTodasLasCuentas() {
+	    List<Cuenta> listaCuentas = new ArrayList<>();
+
+	    try (Connection con = Conexion.getConexion().getSQLConexion()) {
+	        System.out.println("[DEBUG] Conexion a la base de datos establecida");
+
+	    
+	        String qryListarCuentas = 
+	            "SELECT c.id, c.numero_cuenta, t.id AS tipo_cuenta_id, t.descripcion AS tipo_cuenta_desc, c.id_usuario, c.estado " +
+	            "FROM cuentas c " +
+	            "JOIN tipos_de_cuentas t ON c.id_tipoCuenta = t.id ";
+	         
+	        PreparedStatement statementCuentas = con.prepareStatement(qryListarCuentas);
+	        ResultSet resultSetCuentas = statementCuentas.executeQuery();
+
+	        
+	        while (resultSetCuentas.next()) {
+	            Cuenta cuenta = new Cuenta(0, null, null, null, null, null, null, false);
+
+	            cuenta.setId(resultSetCuentas.getInt("id"));
+	            cuenta.setNumeroCuenta(resultSetCuentas.getString("numero_cuenta"));
+	            
+	       
+	            TipoCuenta tipoCuenta = new TipoCuenta();
+	            tipoCuenta.setId(resultSetCuentas.getInt("tipo_cuenta_id"));
+	            tipoCuenta.setDescripcion(resultSetCuentas.getString("tipo_cuenta_desc"));
+
+	           
+	            cuenta.setTipoCuenta(tipoCuenta);
+	            
+	            Usuario usuarioCuenta = new Usuario();
+	            usuarioCuenta.setIdCliente(resultSetCuentas.getInt("id_usuario")); ;
+	            
+	            cuenta.setUsuario(usuarioCuenta);
+	            cuenta.setEstado(resultSetCuentas.getBoolean("estado"));
+
+	          
+	            listaCuentas.add(cuenta);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    finally {
+	        Conexion.getConexion().cerrarConexion();
+	    }
+
+	    // Devolvemos solo la lista de cuentas
+	    return listaCuentas;
+	}
 
 
 

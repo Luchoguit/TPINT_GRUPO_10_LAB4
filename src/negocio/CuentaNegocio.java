@@ -11,5 +11,5 @@ public interface CuentaNegocio {
 	List<Cuenta> listarCuentas(Usuario usuario);
 	boolean modificarCuenta(Cuenta cuenta);
 	boolean eliminarCuenta (Cuenta cuenta);
-
+	public List<Cuenta> listarTodasLasCuentas();
 }

@@ -31,6 +31,11 @@ public class CuentaNegocioImp implements CuentaNegocio{
 	public boolean eliminarCuenta(Cuenta cuenta) {
 		return cuentaDao.eliminarCuenta(cuenta);
 	}
+	
+	@Override
+    public List<Cuenta> listarTodasLasCuentas() {
+        return cuentaDao.listarTodasLasCuentas();
+    }
 
 
 }
