@@ -67,8 +67,9 @@ public ProvinciaDaoImp() {};
 
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-	    }
-
+	    } finally {
+            Conexion.getConexion().cerrarConexion(); // Cerrar la conexión
+        }
 	    return provincia;
 	}
 

@@ -95,7 +95,7 @@
 <div class="form-container">
     <h2>Modificar Cliente</h2>
     
-<form method="post" action="/TPINT_GRUPO_10_LAB4/ServletActualizarCliente">
+<form method="post" action="/TPINT_GRUPO_10_LAB4/ServletModificarCliente">
 	
 	<input id="id" name="id" type="hidden" value="<%= ((Cliente) request.getAttribute("cliente")).getId() %>">
 

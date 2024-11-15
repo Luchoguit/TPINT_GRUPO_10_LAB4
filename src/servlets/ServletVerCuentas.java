@@ -32,14 +32,13 @@ public class ServletVerCuentas extends HttpServlet {
 
 				CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
 				TipoCuentaNegocio tcNegocio = new TipoCuentaNegocioImp();
-				ClienteNegocio clienteNegocio = new ClienteNegocioImp();
 				
 				
 				Usuario userActual = new Usuario();
 				userActual = (Usuario) request.getSession().getAttribute("usuario");
 				
 				Cliente clienteActual = new Cliente();
-				clienteActual = clienteNegocio.obtenerPorId(userActual.getIdCliente());
+				clienteActual = (Cliente) request.getSession().getAttribute("cliente");
 				
 				request.setAttribute("cliente", clienteActual);
 				
@@ -58,10 +57,7 @@ public class ServletVerCuentas extends HttpServlet {
 				    }
 				}
 				
-				request.setAttribute("listaCuentas", listaCuentas);
-				
-				
-				
+				request.setAttribute("listaCuentas", listaCuentas);	
 				
 		        System.out.println(listaCuentas.size());
 

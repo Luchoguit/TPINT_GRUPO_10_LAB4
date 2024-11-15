@@ -233,6 +233,8 @@ public class ClienteDaoImp implements ClienteDao {
 	            if (conn != null) Conexion.getConexion().cerrarConexion();
 	        } catch (SQLException e) {
 	            e.printStackTrace();
+	        } finally {
+	            Conexion.getConexion().cerrarConexion(); // Cerrar la conexión
 	        }
 	    }
 	}

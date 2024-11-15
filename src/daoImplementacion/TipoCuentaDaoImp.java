@@ -39,7 +39,9 @@ public class TipoCuentaDaoImp implements TipoCuentaDao {
 
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-	    }
+	    } finally {
+            Conexion.getConexion().cerrarConexion(); // Cerrar la conexión
+        }
 
 	    return listaTC;
 	}
@@ -65,7 +67,9 @@ public class TipoCuentaDaoImp implements TipoCuentaDao {
 
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-	    }
+	    } finally {
+            Conexion.getConexion().cerrarConexion(); // Cerrar la conexión
+        }
 
 	    return tipoCuenta;
 	}
