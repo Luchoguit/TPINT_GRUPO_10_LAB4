@@ -52,12 +52,43 @@
 		.btn-volver:hover {
 		    background-color: #0056b3;   
 		}
+		
+		/* Estilos para el contenedor de mensajes */
+        .message-container {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
         
     </style>
 </head>
 <body>
 
 <h2 style="text-align: center;">Lista de Clientes Eliminados</h2>
+
+			<!-- Contenedor de mensajes -->
+		<% 
+		    String mensaje = (String) request.getAttribute("mensaje");
+		    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
+		    if (mensaje != null && tipoMensaje != null) {
+		%>
+		    <div class="message-container <%= tipoMensaje %>">
+		        <%= mensaje %>
+		    </div>
+		<% } %>	
 
 <div class="filter-container">
     <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoClientesEliminados">

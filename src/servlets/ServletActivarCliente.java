@@ -39,6 +39,9 @@ public class ServletActivarCliente extends HttpServlet {
 			
 			Boolean resultado = clienteNegocio.activarCliente(aux.getId());
 			
+        	request.setAttribute("mensaje", "Cliente activado exitosamente.");
+            request.setAttribute("tipoMensaje", "success");
+			
             RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/ClientesEliminados.jsp");
             dispatcher.forward(request, response);
 		}
