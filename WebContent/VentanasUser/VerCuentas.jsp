@@ -80,7 +80,7 @@
 	</table>
 
 	<div style="text-align: center;">
-    	<form method="post" action="../MENUS/IndexUser.jsp">
+    	<form method="post" action="/TPINT_GRUPO_10_LAB4/MENUS/IndexUser.jsp">
         	<input type="submit" name="btnRegresar" value="Regresar">
     	</form>
 	</div>
