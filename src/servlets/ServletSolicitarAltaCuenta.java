@@ -62,12 +62,14 @@ public class ServletSolicitarAltaCuenta extends HttpServlet {
 
 			boolean registroExitoso = solicitudNegocio.registrarSolicitud(solicitudAC);
 			if (registroExitoso) {
-			    request.setAttribute("mensajeExito", "La solicitud de alta de cuenta se ha registrado exitosamente.");
+			    request.setAttribute("mensaje", "La solicitud de alta de cuenta se ha registrado exitosamente.");
+			    request.setAttribute("tipoMensaje", "success");
 			    doGet(request, response);
                 return;
 			
 			} else {
-			    request.setAttribute("mensajeError", "Hubo un problema al registrar la solicitud. Intente nuevamente.");
+			    request.setAttribute("mensaje", "Hubo un problema al registrar la solicitud. Intente nuevamente.");
+			    request.setAttribute("tipoMensaje", "error");
 			    doGet(request, response);
                 return;
 			}
