@@ -69,6 +69,14 @@ public class ServletListadoCuentas extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     
+    	int idCuenta = Integer.parseInt(request.getParameter("idCuenta"));
+        System.out.println("[DEBUG] id cuenta: " + idCuenta);
+
+    	CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
+	    boolean resultado = cuentaNegocio.eliminarCuenta(idCuenta);
+    	    	
+        System.out.println("[DEBUG] resultado: " + resultado);
+
         doGet(request, response);
     }
 }

@@ -115,13 +115,6 @@ public class CuentaDaoImp implements CuentaDao {
 		return false;
 	}
 
-	private static final String qryEliminarCuenta = "UPDATE cuentas SET estado = false WHERE id = ?";
-
-	@Override
-	public boolean eliminarCuenta(Cuenta cuenta) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 	@Override
 	public List<Cuenta> listarTodasLasCuentas() {
@@ -173,6 +166,41 @@ public class CuentaDaoImp implements CuentaDao {
 
 	    // Devolvemos solo la lista de cuentas
 	    return listaCuentas;
+	}
+
+	private static final String qryEliminarCuenta = "UPDATE cuentas SET estado = false WHERE id = ?";
+	
+
+	@Override
+	public boolean eliminarCuenta(int id) {
+		try (Connection con = Conexion.getConexion().getSQLConexion();
+		          PreparedStatement statement = con.prepareStatement(qryEliminarCuenta)) {
+
+		
+		         if (!con.getAutoCommit()) {
+		             con.setAutoCommit(true); 
+		             System.out.println("[DEBUG] Autocommit habilitado");
+		         }
+
+		         statement.setInt(1, id);
+
+		         int rowsAffected = statement.executeUpdate();
+		         System.out.println("[DEBUG] filas afectadas: " + rowsAffected);
+
+		         if (rowsAffected > 0 && !con.getAutoCommit()) {
+		             con.commit();  
+		             System.out.println("[DEBUG] Commit realizado");
+		         }
+
+		         return rowsAffected > 0;
+
+		     } catch (SQLException e) {
+		         e.printStackTrace();
+			    } finally {
+			        Conexion.getConexion().cerrarConexion();
+			    }
+		     
+		     return false;
 	}
 
 

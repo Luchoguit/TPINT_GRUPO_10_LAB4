@@ -121,7 +121,7 @@
         <td><%= cliente != null ? cliente.getNombre() : "No encontrado" %></td> <!-- Mostrar nombre -->
         <td><%= cliente != null ? cliente.getApellido() : "No encontrado" %></td> <!-- Mostrar apellido -->
         <td>
-            <form method="post" action="servletCuentas">
+            <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletMovimientos">
                 <input type="hidden" name="idCuenta" value="<%= cuenta.getId() %>">
                 <input type="submit" name="btnMovimientos" value="+">
             </form>
@@ -134,7 +134,7 @@
             <% } %>
         </td>
         <td>
-            <form method="post" action="servletCuentas">
+            <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoCuentas">
                 <input type="hidden" name="idCuenta" value="<%= cuenta.getId() %>">
                 <input type="submit" name="btnEliminar" value="Deshabilitar">
             </form>

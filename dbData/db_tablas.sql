@@ -67,7 +67,7 @@ CREATE TABLE cuentas(
 CREATE TABLE Solicitudes_alta_cuenta(
 	id INT AUTO_INCREMENT PRIMARY KEY,
     id_cliente INT NOT NULL,
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id),
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id),
     id_tipoCuenta INT NOT NULL,
     FOREIGN KEY (id_tipoCuenta) REFERENCES tipos_de_cuentas(id),
 	respondida BOOLEAN NOT NULL DEFAULT FALSE

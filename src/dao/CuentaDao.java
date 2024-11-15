@@ -10,7 +10,7 @@ public interface CuentaDao {
 	boolean altaCuenta (Cuenta cuenta);
 	List<Cuenta> listarCuentas(Usuario usuario);
 	boolean modificarCuenta(Cuenta cuenta);
-	boolean eliminarCuenta (Cuenta cuenta);
+	boolean eliminarCuenta (int id);
 	public List<Cuenta> listarTodasLasCuentas();
 
 }

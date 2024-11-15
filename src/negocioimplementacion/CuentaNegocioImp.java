@@ -28,8 +28,8 @@ public class CuentaNegocioImp implements CuentaNegocio{
 	}
 
 	@Override
-	public boolean eliminarCuenta(Cuenta cuenta) {
-		return cuentaDao.eliminarCuenta(cuenta);
+	public boolean eliminarCuenta(int id) {
+		return cuentaDao.eliminarCuenta(id);
 	}
 	
 	@Override
