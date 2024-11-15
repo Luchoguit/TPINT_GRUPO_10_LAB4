@@ -96,14 +96,20 @@
     <h2>Modificar Cliente</h2>
     
 <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletActualizarCliente">
+	
+	<input id="id" name="id" type="hidden" value="<%= ((Cliente) request.getAttribute("cliente")).getId() %>">
+
     <div class="form-group">
         <label for="dni">DNI</label>
-        <input id="dni" name="dni" type="number" readonly value="<%= ((Cliente) request.getAttribute("cliente")).getDni() %>">
+        <input id="dni" name="dni" type="number"  value="<%= ((Cliente) request.getAttribute("cliente")).getDni() %>">
+        <label name="validacionDNI" for="dni">
+        <%= request.getAttribute("mensaje") != null ? request.getAttribute("mensaje") : "" %>
+    </label>
     </div>
 
     <div class="form-group">
         <label for="cuil">CUIL</label>
-        <input id="cuil" name="cuil" type="number" readonly value="<%= ((Cliente) request.getAttribute("cliente")).getCuil() %>">
+        <input id="cuil" name="cuil" type="number"  value="<%= ((Cliente) request.getAttribute("cliente")).getCuil() %>">
     </div>
 
     <div class="form-group">
@@ -135,7 +141,7 @@
     </div>
 
     <div class="form-group">
-        <label for="direccion">Dirección</label>
+        <label for="direccion">Direccion</label>
         <input id="direccion" name="direccion" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getDireccion() %>">
     </div>
 
@@ -176,12 +182,12 @@
     </div>
 
     <div class="form-group">
-        <label for="correo">Correo Electrónico</label>
+        <label for="correo">Correo Electronico</label>
         <input id="correo" name="correo" type="email" value="<%= ((Cliente) request.getAttribute("cliente")).getCorreo() %>">
     </div>
 
     <div class="form-group">
-        <label for="telefono">Teléfono</label>
+        <label for="telefono">Telofono</label>
         <input id="telefono" name="telefono" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getTelefono() %>">
     </div>
 

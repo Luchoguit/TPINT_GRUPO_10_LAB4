@@ -41,10 +41,12 @@ public class ServletModificarCliente extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String dniCliente = request.getParameter("dniCliente");
+    	 String idClienteStr = request.getParameter("idcliente");
+    	    
+    	    int idCliente = Integer.parseInt(idClienteStr);
 
         ClienteNegocio clienteNegocio = new ClienteNegocioImp();
-        Cliente cliente = clienteNegocio.obtenerPorDNI(dniCliente);
+        Cliente cliente = clienteNegocio.obtenerPorId(idCliente);
         LocalidadNegocio localidadNegocio = new LocalidadNegocioImp();
         ProvinciaNegocio provinciaNegocio = new ProvinciaNegocioImp();
 
@@ -77,3 +79,4 @@ public class ServletModificarCliente extends HttpServlet {
     
 
     }
+

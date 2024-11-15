@@ -58,6 +58,7 @@
 		.btn-volver:hover {
 		    background-color: #0056b3;   
 		}
+		
         
         
     </style>
@@ -110,7 +111,7 @@
         <!-- Boton para modificar -->
         <td>
             <form method="get" action="/TPINT_GRUPO_10_LAB4/ServletModificarCliente">
-                <input type="hidden" name="dniCliente" value="<%= cliente.getDni() %>">
+                <input type="hidden" name="idcliente" value="<%= cliente.getId() %>">
                 <input type="submit" name="btnModificar" value="Modificar">
             </form>
         </td>
@@ -136,11 +137,11 @@
         <input type="button" value="Volver al Menu" class="btn-volver">
     </a>
 
-    <!-- JavaScript para la confirmación de eliminación -->
+    <!-- JavaScript para la confirmacion de eliminacion -->
     <script type="text/javascript">
         function confirmarEliminacion() {
             
-            var respuesta = confirm("¿Estás seguro de que deseas eliminar este cliente?");
+            var respuesta = confirm("Estas seguro de que deseas eliminar este cliente?");
             return respuesta;  
         }
     </script>

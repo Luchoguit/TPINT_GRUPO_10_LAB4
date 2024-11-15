@@ -48,7 +48,12 @@ public class ServletActualizarCliente extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Obtener los parámetros del formulario
+        // Obtener los parametros del formulario
+		String idClienteStr = request.getParameter("id");
+	    
+	    int idCliente = Integer.parseInt(idClienteStr);
+		
+		
         String dni = request.getParameter("dni");
         String cuil = request.getParameter("cuil");
         String nombre = request.getParameter("nombre");
@@ -79,10 +84,11 @@ public class ServletActualizarCliente extends HttpServlet {
 
         // Crear y configurar el objeto Cliente
         ClienteNegocio clienteNegocio = new ClienteNegocioImp();
-        Cliente cliente = clienteNegocio.obtenerPorDNI(dni); // Obtener el cliente existente
+        Cliente cliente = clienteNegocio.obtenerPorId(idCliente); // Obtener el cliente existente
 
         if (cliente != null) {
             // Actualizar los datos del cliente
+        	cliente.setDni(dni);
             cliente.setCuil(cuil);
             cliente.setNombre(nombre);
             cliente.setApellido(apellido);
@@ -99,12 +105,12 @@ public class ServletActualizarCliente extends HttpServlet {
             boolean actualizado = clienteNegocio.actualizarCliente(cliente);
 
             if (actualizado) {
-                // Redirigir o mostrar un mensaje de éxito
+                // Redirigir o mostrar un mensaje de exito
                 request.setAttribute("mensaje", "Cliente actualizado correctamente.");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/ListadoClientes.jsp");
                 dispatcher.forward(request, response);
             } else {
-                request.setAttribute("error", "Ocurrió un error al actualizar el cliente.");
+                request.setAttribute("error", "Ocurrio un error al actualizar el cliente.");
 
 
                 request.setAttribute("cliente", cliente);
@@ -121,10 +127,11 @@ public class ServletActualizarCliente extends HttpServlet {
             }
         } else {
             // Manejar el caso en que no se encuentra el cliente
-            request.setAttribute("error", "No se encontró el cliente con el DNI proporcionado.");
+            request.setAttribute("error", "No se encontro el cliente con el DNI proporcionado.");
             RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/ListaClientes.jsp");
             dispatcher.forward(request, response);
         }
     }
 
 }
+
