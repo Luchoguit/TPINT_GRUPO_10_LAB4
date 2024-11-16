@@ -13,20 +13,33 @@ public class Prestamo {
 	private int plazoMeses;
 	private BigDecimal importeMensual;
 	private int cantidadCuotas;
+	private boolean estado;
 	
 	
 	public Prestamo() {	}
-
-
-	public Prestamo(Cliente cliente, Cuenta cuenta, BigDecimal importePedido, int plazoMeses,
-			BigDecimal importeMensual, int cantidadCuotas) {
+	
+	public Prestamo(int idPrestamo, Cliente cliente, Cuenta cuenta, LocalDateTime fechaAlta, BigDecimal importePedido,
+			int plazoMeses, BigDecimal importeMensual, int cantidadCuotas, boolean estado) {
+		this.idPrestamo = idPrestamo;
 		this.cliente = cliente;
 		this.cuenta = cuenta;
+		this.fechaAlta = fechaAlta;
 		this.importePedido = importePedido;
 		this.plazoMeses = plazoMeses;
 		this.importeMensual = importeMensual;
 		this.cantidadCuotas = cantidadCuotas;
+		this.estado = estado;
 	}
+
+	public Prestamo(Cliente cliente, Cuenta cuenta, BigDecimal importePedido, int plazoMeses,
+			BigDecimal importeMensual, int cantidadCuotas) {
+			this.cliente = cliente;
+			this.cuenta = cuenta;
+			this.importePedido = importePedido;
+			this.plazoMeses = plazoMeses;
+			this.importeMensual = importeMensual;
+			this.cantidadCuotas = cantidadCuotas;
+		}
 
 
 	public int getIdPrestamo() {
@@ -106,6 +119,15 @@ public class Prestamo {
 
 	public void setCantidadCuotas(int cantidadCuotas) {
 		this.cantidadCuotas = cantidadCuotas;
+	}
+
+	public boolean isEstado() {
+		return estado;
+	}
+
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
 	}
 	
 	

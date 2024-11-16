@@ -102,9 +102,19 @@ CREATE TABLE Prestamos (
     plazo_meses INT NOT NULL,
     importe_mensual DECIMAL(15, 2) NOT NULL,
     cantidad_cuotas INT NOT NULL,
+    estado BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (id_cliente) REFERENCES Clientes(id),
     FOREIGN KEY (id_cuenta) REFERENCES Cuentas(id)
 );
+
+CREATE TABLE Solicitudes_Prestamos(
+id_solicitud INT PRIMARY KEY AUTO_INCREMENT,
+id_prestamo INT NOT NULL,
+FOREIGN KEY (id_prestamo) REFERENCES Prestamos(id_prestamo),
+aprobado BOOLEAN NOT NULL DEFAULT FALSE,
+estado BOOLEAN NOT NULL DEFAULT TRUE
+);
+
 
 CREATE TABLE Cuotas (
     id_cuota INT PRIMARY KEY AUTO_INCREMENT,
@@ -135,6 +145,19 @@ BEGIN
 
     SET NEW.cbu = nuevoCbu;
 END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER insertSolicitudPrestamo
+AFTER INSERT ON Prestamos
+FOR EACH ROW
+BEGIN
+    INSERT INTO Solicitudes_Prestamos (id_prestamo)
+    VALUES (NEW.id_prestamo);
+END;
+//
 
 DELIMITER ;
 

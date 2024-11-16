@@ -91,7 +91,7 @@ public class CuentaDaoImp implements CuentaDao {
 	            BigDecimal saldo = resultSet.getBigDecimal("saldo");
 	            
 	            Usuario usuarioCuenta = new Usuario();
-	            usuarioCuenta.setIdCliente(resultSet.getInt("id_usuario")); ;
+	            usuarioCuenta.setIdCliente(resultSet.getInt("id_usuario"));
 	            
 	            TipoCuenta tipoCuenta = new TipoCuenta();
 	            tipoCuenta.setId(resultSet.getInt("id_tipoCuenta"));

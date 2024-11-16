@@ -19,8 +19,10 @@ import entidad.Prestamo;
 import entidad.Usuario;
 import negocio.CuentaNegocio;
 import negocio.PrestamoNegocio;
+import negocio.SolicitudPrestamoNegocio;
 import negocioimplementacion.CuentaNegocioImp;
 import negocioimplementacion.PrestamoNegocioImp;
+import negocioimplementacion.SolicitudPrestamoNegocioImp;
 
 @WebServlet("/ServletPedirPrestamo")
 public class ServletPedirPrestamo extends HttpServlet {
@@ -56,9 +58,9 @@ public class ServletPedirPrestamo extends HttpServlet {
 	    Prestamo prestamo = new Prestamo(cliente, cuenta, importePedido, plazoMeses, importeMensual, cantidadCuotas);
 
 	    PrestamoNegocio prestamoNegocio = new PrestamoNegocioImp();
-	    boolean resultado = prestamoNegocio.altaPrestamo(prestamo);
-
-	    if (resultado) {
+	    boolean resultadoAltaPrestamo = prestamoNegocio.altaPrestamo(prestamo);
+	    
+	    if (resultadoAltaPrestamo) {
         	request.setAttribute("mensaje", "Solicitud enviada con exito.");
             request.setAttribute("tipoMensaje", "success");
             

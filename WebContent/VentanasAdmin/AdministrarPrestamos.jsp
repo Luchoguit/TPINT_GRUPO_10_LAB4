@@ -1,3 +1,6 @@
+<%@page import="entidad.Prestamo" %>
+<%@page import="java.util.List" %>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -79,33 +82,48 @@
 <table>
     <thead>
         <tr>
-            <th>Nombre Usuario</th>
-            <th>ID Usuario</th>
-            <th>ID Cuenta</th>
-            <th>CBU</th>
+            <th>Cliente</th>
+            <th>DNI</th>
+            <th>Numero de Cuenta</th>
             <th>Monto del prestamo</th>
             <th>Cuotas</th>
+            <th>Importe mensual</th>
+            <th>A pagar en</th>
 			<th>Fecha de Solicitud</th>
             <th></th>
             <th></th>
         </tr>
     </thead>
     <tbody>
+    
+      <% 
+    List<Prestamo> listaPrestamos = (List<Prestamo>)request.getAttribute("listaPrestamos");
+    if (listaPrestamos != null) {
+        for (Prestamo prestamo : listaPrestamos) {
+    %>
         <tr>
-            <td>Juan Perez</td>
-            <td>123</td>
-            <td>456</td>
-            <td>000123456789</td>
-            <td>1.500.000$</td>
-            <td>6</td>
-            <td>01/01/2024</td>
+            <td><%= prestamo.getCliente().getNombre() + " " + prestamo.getCliente().getApellido()%></td>
+            <td><%= prestamo.getCliente().getDni() %></td>
+            <td><%= prestamo.getCuenta().getNumeroCuenta() %></td>
+            <td><%= prestamo.getImportePedido() %>$</td>
+            <td><%= prestamo.getCantidadCuotas() %></td>
+            <td><%= prestamo.getImporteMensual() %></td>
+            <td><%= prestamo.getPlazoMeses() + " meses" %></td>
+            <td><%= prestamo.getFechaAlta()%></td>
             <td>
-                <button type="button" id="aceptar" >Aceptar</button>
+    	 	<form method="post" action="/TPINT_GRUPO_10_LAB4/ServletSolicitudesPrestamos">
+    	 	    <input type="hidden" name="idPrestamo" value="<%= prestamo.getIdPrestamo() %>">
+                <button type="submit" name="accion" value="aceptar" id="aceptar">Aceptar</button>
+            </form>
             </td>
             <td>
-                <button type="button" id="rechazar">Rechazar</button>
-            </td>
+            <form action="/TPINT_GRUPO_10_LAB4/ServletSolicitudesPrestamos" method="post">
+                <input type="hidden" name="idPrestamo" value="<%= prestamo.getIdPrestamo() %>">
+                <button type="submit" name="accion" value="rechazar" id="rechazar">Rechazar</button>
+            </form>
+        </td>
         </tr>
+     <% } } %>
     </tbody>
 </table>
 

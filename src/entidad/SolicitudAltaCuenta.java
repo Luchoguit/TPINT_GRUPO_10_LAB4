@@ -2,6 +2,14 @@ package entidad;
 
 public class SolicitudAltaCuenta {
 	
+	private int id;
+	private Cliente cliente;
+	private TipoCuenta tipoCuenta;
+	private boolean respondida;	
+	
+	public SolicitudAltaCuenta() {}
+
+	
 	public SolicitudAltaCuenta(int id, Cliente cliente, TipoCuenta tipoCuenta, boolean respondida) {
 		super();
 		this.id = id;
@@ -10,14 +18,6 @@ public class SolicitudAltaCuenta {
 		this.respondida = respondida;
 	}
 
-
-	public SolicitudAltaCuenta() {}
-
-
-	private int id;
-	private Cliente cliente;
-	private TipoCuenta tipoCuenta;
-	private boolean respondida;	
 	
 	public boolean isRespondida() {
 		return respondida;
