@@ -33,7 +33,7 @@ public class ServletEliminarCliente extends HttpServlet {
         	request.setAttribute("mensaje", "Cliente eliminado exitosamente.");
             request.setAttribute("tipoMensaje", "success");
 			
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/ListadoClientes.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/ServletListadoClientes");
             dispatcher.forward(request, response);
 		}
 		
