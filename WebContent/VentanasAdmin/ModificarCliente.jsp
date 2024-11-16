@@ -85,6 +85,25 @@
 		    background-color: #0056b3;   
 		}
         
+        /* Estilos para el contenedor de mensajes */
+        .message-container {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
         
     </style>
 </head>
@@ -95,16 +114,27 @@
 <div class="form-container">
     <h2>Modificar Cliente</h2>
     
+    <!-- Contenedor de mensajes -->
+		<% 
+		    String mensaje = (String) request.getAttribute("mensaje");
+		    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
+		    if (mensaje != null && tipoMensaje != null) {
+		%>
+		    <div class="message-container <%= tipoMensaje %>">
+		        <%= mensaje %>
+		    </div>
+		<% } %>
+    
 <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletModificarCliente">
 	
 	<input id="id" name="id" type="hidden" value="<%= ((Cliente) request.getAttribute("cliente")).getId() %>">
 
+	<input id="dniOriginal" name="dniOriginal" type="hidden" value="<%= ((Cliente) request.getAttribute("cliente")).getDni() %>">
+	<input id="cuilOriginal" name="cuilOriginal" type="hidden" value="<%= ((Cliente) request.getAttribute("cliente")).getCuil() %>">
+
     <div class="form-group">
         <label for="dni">DNI</label>
         <input id="dni" name="dni" type="number"  value="<%= ((Cliente) request.getAttribute("cliente")).getDni() %>">
-        <label name="validacionDNI" for="dni">
-        <%= request.getAttribute("mensaje") != null ? request.getAttribute("mensaje") : "" %>
-    </label>
     </div>
 
     <div class="form-group">
