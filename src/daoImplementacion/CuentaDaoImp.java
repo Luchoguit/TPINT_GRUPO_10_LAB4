@@ -36,7 +36,7 @@ public class CuentaDaoImp implements CuentaDao {
 
             // Seteando los parámetros de la consulta
             statement.setString(1, cuenta.getNumeroCuenta());
-            statement.setTimestamp(2, Timestamp.valueOf(cuenta.getFechaCreacion()));
+            statement.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
             statement.setString(3, cuenta.getCbu());
             statement.setBigDecimal(4, cuenta.getSaldo());
             statement.setInt(5, cuenta.getUsuario().getIdCliente());

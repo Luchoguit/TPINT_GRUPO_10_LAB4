@@ -16,7 +16,9 @@ public class Cuenta {
     private TipoCuenta tipoCuenta; 
     
     
-    public Cuenta(int id, String numeroCuenta, LocalDateTime fechaCreacion, String cbu, BigDecimal saldo,
+    public Cuenta() {}
+
+	public Cuenta(int id, String numeroCuenta, LocalDateTime fechaCreacion, String cbu, BigDecimal saldo,
 			Usuario usuario, TipoCuenta tipoCuenta, boolean estado) {
 		this.id = id;
 		this.numeroCuenta = numeroCuenta;

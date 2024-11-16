@@ -61,7 +61,7 @@
     <h2 style="text-align: center;">Solicitar Préstamo</h2>
 
     <div class="form-container">
-        <form method="post" action="">
+        <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletPedirPrestamo">
             <div class="form-group">
                 <label for="monto">Monto del Préstamo:</label>
                 <input type="text" id="monto" name="monto" required oninput="formatCurrency(this)">
@@ -76,6 +76,16 @@
                     <option value="24">24 Cuotas</option>
                 </select>
             </div>
+            
+            <div class="form-group">
+                <label for="plazo">Plazo de pago:</label>
+                <select id="plazo" name="plazo" required>
+                    <option value="6">6 meses</option>
+                    <option value="12">12 meses</option>
+                    <option value="18">18 meses</option>
+                    <option value="24">24 meses</option>
+                </select>
+            </div>
 
             <div class="form-group">
     <label for="cuenta">Cuenta de Depósito:</label>
@@ -87,7 +97,7 @@
                     String descripcion = cuenta.getTipoCuenta().getDescripcion();
                     String numeroCuenta = cuenta.getNumeroCuenta();
         %>
-                    <option value="<%= numeroCuenta %>">
+                    <option value="<%= cuenta.getId() %>">
                         <%= descripcion %> - <%= numeroCuenta %>
                     </option>
         <%
