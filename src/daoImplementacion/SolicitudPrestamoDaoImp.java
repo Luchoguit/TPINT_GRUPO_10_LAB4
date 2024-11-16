@@ -160,50 +160,52 @@ public class SolicitudPrestamoDaoImp implements SolicitudPrestamoDao {
 	private static final String qryActualizarPrestamo = "UPDATE prestamos SET estado = 1 WHERE id_prestamo = ?;";
 	private static final String qryActualizarSolicitud = "UPDATE Solicitudes_Prestamos SET aprobado = 1, estado = 0 WHERE id_prestamo = ?;";
 
-	@Override
-	public boolean aceptarPrestamo(int id) {
-	    // Usar autocommit en la base de datos para manejar la transacción automáticamente.
-	    try (Connection con = Conexion.getConexion().getSQLConexion()) {
 
-	        // Desactivar el autocommit para manejar la transacción de manera manual
-	        con.setAutoCommit(false);
+@Override
+public boolean aceptarPrestamo(int id) {
+    Connection con = null;
+    try {
+        con = Conexion.getConexion().getSQLConexion();
 
-	        try (PreparedStatement statementPrestamo = con.prepareStatement(qryActualizarPrestamo);
-	             PreparedStatement statementSolicitud = con.prepareStatement(qryActualizarSolicitud)) {
+        con.setAutoCommit(false);
 
-	            statementPrestamo.setInt(1, id);
-	            statementSolicitud.setInt(1, id);
+        try (PreparedStatement statementPrestamo = con.prepareStatement(qryActualizarPrestamo);
+             PreparedStatement statementSolicitud = con.prepareStatement(qryActualizarSolicitud)) {
 
-	            // Ejecutar los updates
-	            int rowsAffectedPrestamo = statementPrestamo.executeUpdate();
-	            int rowsAffectedSolicitud = statementSolicitud.executeUpdate();
+            statementPrestamo.setInt(1, id);
+            statementSolicitud.setInt(1, id);
 
-	            // Verificar si ambos updates fueron exitosos
-	            if (rowsAffectedPrestamo > 0 && rowsAffectedSolicitud > 0) {
-	                // Realizar commit si todo fue exitoso
-	                con.commit();
-	                return true;
-	            } else {
-	                // Si alguno de los updates falla, hacer rollback
-	                con.rollback();
-	                return false;
-	            }
-	        } catch (SQLException e) {
-	            // Si ocurre un error, hacer rollback de la transacción
-	            e.printStackTrace();
-	            con.rollback();
-	            return false;
-	        }
+            int rowsAffectedPrestamo = statementPrestamo.executeUpdate();
+            int rowsAffectedSolicitud = statementSolicitud.executeUpdate();
 
-	    } catch (SQLException e) {
-	        // Manejar excepciones de conexión o de transacción
-	        e.printStackTrace();
-	        return false;
-	    } finally {
-	    	//con.setAutoCommit(true);
-	    	Conexion.getConexion().cerrarConexion();
-	        }
-	    }
+            if (rowsAffectedPrestamo > 0 && rowsAffectedSolicitud > 0) {
+                con.commit();
+                return true;
+            } else {
+                con.rollback();
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            con.rollback();
+            return false;
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    } finally {
+        if (con != null) {
+            try {
+                con.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                Conexion.getConexion().cerrarConexion();
+            }
+        }
+    }
+}
 	
 
 
@@ -215,44 +217,47 @@ public class SolicitudPrestamoDaoImp implements SolicitudPrestamoDao {
 
 	@Override
 	public boolean rechazarPrestamo(int id) {
-	    try (Connection con = Conexion.getConexion().getSQLConexion()) {
+	    Connection con = null;
+	    try {
+	        con = Conexion.getConexion().getSQLConexion();
 
-	        // Desactivar el autocommit para manejar la transacción manualmente
 	        con.setAutoCommit(false);
 
 	        try (PreparedStatement statementPrestamo = con.prepareStatement(qryRechazarPrestamo);
 	             PreparedStatement statementSolicitud = con.prepareStatement(qryRechazarSolicitud)) {
 
-	            // Asignar el parámetro `id` a las consultas
 	            statementPrestamo.setInt(1, id);
 	            statementSolicitud.setInt(1, id);
 
-	            // Ejecutar los updates
 	            int rowsAffectedPrestamo = statementPrestamo.executeUpdate();
 	            int rowsAffectedSolicitud = statementSolicitud.executeUpdate();
 
-	            // Verificar si ambos updates tuvieron éxito
 	            if (rowsAffectedPrestamo > 0 && rowsAffectedSolicitud > 0) {
-	                con.commit(); // Confirmar cambios en la base de datos
+	                con.commit();
 	                return true;
 	            } else {
-	                con.rollback(); // Revertir cambios si algo falla
+	                con.rollback();
 	                return false;
 	            }
 	        } catch (SQLException e) {
-	            // Si ocurre un error, revertir la transacción
 	            e.printStackTrace();
 	            con.rollback();
 	            return false;
 	        }
 
 	    } catch (SQLException e) {
-	        // Manejar errores de conexión o transacción
 	        e.printStackTrace();
 	        return false;
 	    } finally {
-	    	//con.setAutoCommit(true);
-	        Conexion.getConexion().cerrarConexion(); // Cerrar la conexión
+	        if (con != null) {
+	            try {
+	                con.setAutoCommit(true);
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            } finally {
+	                Conexion.getConexion().cerrarConexion();
+	            }
+	        }
 	    }
 	}
 
