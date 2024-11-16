@@ -62,7 +62,10 @@ public class CuentaDaoImp implements CuentaDao {
         return isInsertExitoso;
 	}
 	
-	private static final String qryListarCuentas = "SELECT * FROM cuentas WHERE id_usuario = ?";
+	private static final String qryListarCuentas = "SELECT C.*, TC.descripcion AS tipoCuentaDescripcion "
+			+ "FROM cuentas C "
+			+ "JOIN tipos_de_cuentas TC ON TC.id = C.id_tipoCuenta "
+			+ "WHERE C.id_usuario = ?";
 
 	@Override
 	public List<Cuenta> listarCuentas(Usuario usuario) {
@@ -92,6 +95,7 @@ public class CuentaDaoImp implements CuentaDao {
 	            
 	            TipoCuenta tipoCuenta = new TipoCuenta();
 	            tipoCuenta.setId(resultSet.getInt("id_tipoCuenta"));
+	            tipoCuenta.setDescripcion(resultSet.getString("tipoCuentaDescripcion"));
 	            	            			            
 	            boolean estado = resultSet.getBoolean("estado");
 

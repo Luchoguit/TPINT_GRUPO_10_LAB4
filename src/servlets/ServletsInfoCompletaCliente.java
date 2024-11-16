@@ -46,16 +46,7 @@ public class ServletsInfoCompletaCliente extends HttpServlet {
             // Buscar cliente por DNI
             Cliente cliente = clienteNegocio.obtenerPorDNI(dni);
 
-            if (cliente != null) {
-                // Obtener Localidad y Provincia por sus IDs
-                Localidad localidad = localidadNegocio.obtenerLocalidadPorId(cliente.getLocalidadCliente().getId());
-                Provincia provincia = provinciaNegocio.obtenerProvinciaPorId(cliente.getProvinciaCliente().getId());
-
-                          
-                cliente.setLocalidadCliente(localidad);
-                cliente.setProvinciaCliente(provincia);
-
-        
+            if (cliente != null) {        
                 request.setAttribute("cliente", cliente);
             } else {
                 // Enviar un mensaje de error si no se encuentra el cliente

@@ -1,3 +1,6 @@
+<%@page import="entidad.Cuenta" %>
+<%@page import="java.util.List" %>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -75,14 +78,28 @@
             </div>
 
             <div class="form-group">
-                <label for="cuenta">Cuenta de Depósito:</label>
-                <select id="cuenta" name="cuenta" required>
-                    <option value="2245567880">Caja de Ahorro - 2245567880</option>
-                    <option value="2245567881">Cuenta Sueldo - 2245567881</option>
-                    <option value="2245567882">Cuenta de Ahorro - 2245567882</option>
-                    <option value="2245567883">Cuenta Corriente - 2245567883</option>
-                </select>
-            </div>
+    <label for="cuenta">Cuenta de Depósito:</label>
+    <select id="cuenta" name="cuenta" required>
+        <%
+            List<Cuenta> listaCuentas = (List<Cuenta>) request.getAttribute("listaCuentas");
+            if (listaCuentas != null) {
+                for (Cuenta cuenta : listaCuentas) {
+                    String descripcion = cuenta.getTipoCuenta().getDescripcion();
+                    String numeroCuenta = cuenta.getNumeroCuenta();
+        %>
+                    <option value="<%= numeroCuenta %>">
+                        <%= descripcion %> - <%= numeroCuenta %>
+                    </option>
+        <%
+                }
+            } else {
+        %>
+            <option value="">No hay cuentas disponibles</option>
+        <%
+            }
+        %>
+    </select>
+</div>
 
             <div class="action-buttons">
                 <input type="submit" value="Solicitar Préstamo">

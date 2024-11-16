@@ -59,7 +59,11 @@ public class ClienteDaoImp implements ClienteDao {
 	        return isInsertExitoso;
 	    }
 
-	private static final String qrylistarclientes = "SELECT id, dni, cuil, nombre, apellido, sexo, nacionalidad, fecha_nacimiento, direccion, id_localidad, id_provincia, correo, telefono, estado FROM clientes";
+	private static final String qrylistarclientes = "SELECT C.*, P.nombre AS nombreProv, L.nombre AS nombreLoc "
+			+ "FROM clientes C "
+			+ "JOIN provincias P ON P.id = id_provincia "
+			+ "JOIN localidades L ON L.id = id_localidad";
+
 	
 	@Override
 	public List<Cliente> listarClientes() {
@@ -89,9 +93,12 @@ public class ClienteDaoImp implements ClienteDao {
 
 	            
 	            Localidad localidadCliente = new Localidad();
-	            Provincia provinciaCliente = new Provincia();
 	            localidadCliente.setId(resultSet.getInt("id_localidad"));
+	            localidadCliente.setNombre(resultSet.getString("nombreLoc"));
+	            
+	            Provincia provinciaCliente = new Provincia();
 	            provinciaCliente.setId(resultSet.getInt("id_provincia"));
+	            provinciaCliente.setNombre(resultSet.getString("nombreProv"));
 
 	            
 	            String correo = resultSet.getString("correo");
@@ -115,11 +122,12 @@ public class ClienteDaoImp implements ClienteDao {
 	}
 	
 	private static final String qryClientesSinUsuario = 
-		    "SELECT c.id, c.dni, c.cuil, c.nombre, c.apellido, c.sexo, c.nacionalidad, " +
-		    "c.fecha_nacimiento, c.direccion, c.id_localidad, c.id_provincia, c.correo, c.telefono, c.estado " +
-		    "FROM clientes c " +
-		    "LEFT JOIN usuarios u ON c.id = u.id " +
-		    "WHERE u.id IS NULL";
+			"SELECT C.*, P.nombre AS nombreProv, L.nombre AS nombreLoc " 
+		    + "FROM clientes c "
+			+ "JOIN provincias P ON P.id = id_provincia "
+			+ "JOIN localidades L ON L.id = id_localidad "
+		    + "LEFT JOIN usuarios u ON c.id = u.id "
+		    + "WHERE u.id IS NULL";
  
 	@Override
 	public List<Cliente> listarClientesSinUsuario() {
@@ -142,9 +150,12 @@ public class ClienteDaoImp implements ClienteDao {
 	            LocalDate fechaNacimiento = sqlDate != null ? sqlDate.toLocalDate() : null;
 	            
 	            Localidad localidadCliente = new Localidad();
-	            Provincia provinciaCliente = new Provincia();
 	            localidadCliente.setId(resultSet.getInt("id_localidad"));
+	            localidadCliente.setNombre(resultSet.getString("nombreLoc"));
+	            
+	            Provincia provinciaCliente = new Provincia();
 	            provinciaCliente.setId(resultSet.getInt("id_provincia"));
+	            provinciaCliente.setNombre(resultSet.getString("nombreProv"));
 
 	            String correo = resultSet.getString("correo");
 	            String telefono = resultSet.getString("telefono");
@@ -415,8 +426,14 @@ public class ClienteDaoImp implements ClienteDao {
 		
 	}
 	
-	private static final String qryObtenerClientePorDni = "SELECT id, dni, cuil, nombre, apellido, sexo, nacionalidad, fecha_nacimiento, direccion, id_localidad, id_provincia, correo, telefono, estado FROM clientes WHERE dni = ?";	
-
+	private static final String qryObtenerClientePorDni =	
+	    "SELECT C.*, P.nombre AS nombreProv, L.nombre AS nombreLoc " 
+	    + "FROM clientes c "
+		+ "JOIN provincias P ON P.id = id_provincia "
+		+ "JOIN localidades L ON L.id = id_localidad "
+	    + "WHERE c.dni = ?";
+	
+	
 	@Override
 	public Cliente obtenerPorDNI(String dni) {
 	    Cliente cliente = null;
@@ -443,9 +460,12 @@ public class ClienteDaoImp implements ClienteDao {
 
 	            // Crear los objetos Localidad y Provincia
 	            Localidad localidadCliente = new Localidad();
-	            Provincia provinciaCliente = new Provincia();
 	            localidadCliente.setId(resultSet.getInt("id_localidad"));
+	            localidadCliente.setNombre(resultSet.getString("nombreLoc"));
+	            
+	            Provincia provinciaCliente = new Provincia();
 	            provinciaCliente.setId(resultSet.getInt("id_provincia"));
+	            provinciaCliente.setNombre(resultSet.getString("nombreProv"));
 
 	            String correo = resultSet.getString("correo");
 	            String telefono = resultSet.getString("telefono");
@@ -466,8 +486,12 @@ public class ClienteDaoImp implements ClienteDao {
 	}
 
 
-	private static final String qryObtenerClientePorId = "SELECT id, dni, cuil, nombre, apellido, sexo, nacionalidad, fecha_nacimiento, direccion, id_localidad, id_provincia, correo, telefono, estado FROM clientes WHERE id = ?";	
-
+	private static final String qryObtenerClientePorId = 	    
+			"SELECT C.*, P.nombre AS nombreProv, L.nombre AS nombreLoc " 
+		    + "FROM clientes c "
+			+ "JOIN provincias P ON P.id = id_provincia "
+			+ "JOIN localidades L ON L.id = id_localidad "
+		    + "WHERE c.id = ?";
 
 	@Override
 	public Cliente obtenerPorId(int id) {
@@ -495,9 +519,12 @@ public class ClienteDaoImp implements ClienteDao {
 
 	            // Crear los objetos Localidad y Provincia
 	            Localidad localidadCliente = new Localidad();
-	            Provincia provinciaCliente = new Provincia();
 	            localidadCliente.setId(resultSet.getInt("id_localidad"));
+	            localidadCliente.setNombre(resultSet.getString("nombreLoc"));
+	            
+	            Provincia provinciaCliente = new Provincia();
 	            provinciaCliente.setId(resultSet.getInt("id_provincia"));
+	            provinciaCliente.setNombre(resultSet.getString("nombreProv"));
 
 	            String correo = resultSet.getString("correo");
 	            String telefono = resultSet.getString("telefono");

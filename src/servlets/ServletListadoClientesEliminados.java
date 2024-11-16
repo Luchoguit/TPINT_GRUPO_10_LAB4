@@ -16,19 +16,10 @@ import entidad.Cliente;
 import negocio.ClienteNegocio;
 import negocioimplementacion.ClienteNegocioImp;
 
-/**
- * Servlet implementation class ServletListadoClientesEliminados
- */
+
 @WebServlet("/ServletListadoClientesEliminados")
 public class ServletListadoClientesEliminados extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-
-    public ServletListadoClientesEliminados() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		cargarClientes(request, response, null);
@@ -71,8 +62,7 @@ public class ServletListadoClientesEliminados extends HttpServlet {
        }
         
         request.setAttribute("listaClientes", listaClientes);
-
-       
+      
         RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/ClientesEliminados.jsp");
         dispatcher.forward(request, response);
     }

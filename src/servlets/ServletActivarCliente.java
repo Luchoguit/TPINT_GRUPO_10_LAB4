@@ -12,18 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import entidad.Cliente;
 import negocioimplementacion.ClienteNegocioImp;
 
-/**
- * Servlet implementation class ServletRecuperarCliente
- */
+
 @WebServlet("/ServletActivarCliente")
 public class ServletActivarCliente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-
-    public ServletActivarCliente() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

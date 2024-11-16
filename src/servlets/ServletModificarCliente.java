@@ -38,12 +38,7 @@ public class ServletModificarCliente extends HttpServlet {
         ProvinciaNegocio provinciaNegocio = new ProvinciaNegocioImp();
 
         if (cliente != null) {
-        	
-        	 Localidad localidad = localidadNegocio.obtenerLocalidadPorId(cliente.getLocalidadCliente().getId());
-             Provincia provincia = provinciaNegocio.obtenerProvinciaPorId(cliente.getProvinciaCliente().getId());
-             cliente.setLocalidadCliente(localidad);
-             cliente.setProvinciaCliente(provincia);
-             
+               
              //obtegno todas las provinicas y localidades
              List<Provincia> listaProvincias = provinciaNegocio.listarProvincias();
              List<Localidad> listaLocalidades = localidadNegocio.listarLocalidades();

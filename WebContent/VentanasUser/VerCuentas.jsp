@@ -72,7 +72,12 @@
 	        <td><%= cliente.getApellido() %></td>
 	        <td><%= cuenta.getFechaCreacion() %></td>
 	        <td><%= cuenta.getSaldo() %></td>
-	        <th><a href="../MENUS/IndexCuenta.jsp">Ver Cuenta</a></th>
+	        <td>
+        <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletVerCuentas">
+            <input type="hidden" name="idCuenta" value="<%= cuenta.getId() %>">
+            <input type="submit" value="Ver Cuenta">
+        </form>
+    </td>
 	    </tr>
  				<% } 
 			        } else {System.out.println("Las cuentas no llegaron correctamente.");}

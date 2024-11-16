@@ -12,24 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import entidad.Cliente;
 import negocioimplementacion.ClienteNegocioImp;
 
-/**
- * Servlet implementation class ServletEliminarCliente
- */
+
 @WebServlet("/ServletEliminarCliente")
 public class ServletEliminarCliente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ServletEliminarCliente() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(request.getParameter("dniCliente") != null)
@@ -50,13 +37,9 @@ public class ServletEliminarCliente extends HttpServlet {
             dispatcher.forward(request, response);
 		}
 		
-
 	}
 
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
 		doGet(request,response);
 	}
 

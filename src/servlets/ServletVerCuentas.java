@@ -69,8 +69,17 @@ public class ServletVerCuentas extends HttpServlet {
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+
+		// PARA ENVIAR LA CUENTA SELECCIONADA
+		/*String idCuenta = request.getParameter("idCuenta");
+
+	    CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
+	    Cuenta cuenta = cuentaNegocio.obtenerCuentaPorId(Integer.parseInt(idCuenta));
+
+	    request.setAttribute("cuenta", cuenta);*/
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("ServletGestionPrestamos");
+	    dispatcher.forward(request, response);
+		
 	}
 	
 

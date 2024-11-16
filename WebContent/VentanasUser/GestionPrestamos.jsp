@@ -71,7 +71,7 @@
     </table>
 
     <div class="action-buttons">
-        <a href="PedirPrestamo.jsp">Solicitar nuevo Préstamo</a>
+        <a href="/TPINT_GRUPO_10_LAB4/ServletPedirPrestamo">Solicitar nuevo Préstamo</a>
     </div>
 
 </body>
