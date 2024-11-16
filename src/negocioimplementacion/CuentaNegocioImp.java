@@ -37,5 +37,10 @@ public class CuentaNegocioImp implements CuentaNegocio{
         return cuentaDao.listarTodasLasCuentas();
     }
 
+	@Override
+	public Cuenta obtenerCuentaPorId(int id) {
+		return cuentaDao.obtenerCuentaPorId(id);
+	}
+
 
 }

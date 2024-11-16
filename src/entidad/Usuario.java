@@ -1,20 +1,21 @@
 package entidad;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Usuario {
     private int idCliente;
     private String nombreUsuario;
     private String contraseña;
-    private String tipo; 
+    private String tipoUsuario; 
     private boolean estado; 
-    private LocalDate fechaCreacion;
+    private LocalDateTime fechaCreacion;
 
-    public Usuario(int id, String nombreUsuario, String contraseña, String tipo, boolean estado, LocalDate fechaCreacion) {
+    public Usuario(int id, String nombreUsuario, String contraseña, String tipoUsuario, boolean estado, LocalDateTime fechaCreacion) {
         this.setIdCliente(id);
         this.nombreUsuario = nombreUsuario;
         this.contraseña = contraseña;
-        this.tipo = tipo;
+        this.tipoUsuario = tipoUsuario;
         this.estado = estado;
         this.fechaCreacion = fechaCreacion;
     }
@@ -37,12 +38,12 @@ public class Usuario {
         this.contraseña = contraseña;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getTipoUsuario() {
+        return tipoUsuario;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setTipoUsuario(String tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }
 
     public boolean isEstado() {
@@ -53,17 +54,17 @@ public class Usuario {
         this.estado = estado;
     }
 
-    public LocalDate getFechaCreacion() {
+    public LocalDateTime getFechaCreacion() {
         return fechaCreacion;
     }
 
-    public void setFechaCreacion(LocalDate fechaCreacion) {
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
 
     // Métodos adicionales
     public boolean esAdministrador() {
-        return "admin".equals(tipo);
+        return "admin".equals(tipoUsuario);
     }
 
 	public int getIdCliente() {

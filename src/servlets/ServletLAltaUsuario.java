@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -38,10 +39,11 @@ public class ServletLAltaUsuario extends HttpServlet {
         String contrasena2 = request.getParameter("contrasena2");
         String idClienteStr = request.getParameter("Cliente");
 
+
         if (contrasena.equals(contrasena2)) {
             try {
                 int idCliente = Integer.parseInt(idClienteStr);
-                Usuario usuario = new Usuario(idCliente , usuarioNombre, contrasena, tipoUsuario, true, java.time.LocalDate.now());
+                Usuario usuario = new Usuario(idCliente , usuarioNombre, contrasena, tipoUsuario, true, LocalDateTime.now());
 
                 UsuarioNegocio usuarioNegocio = new UsuarioNegocioImp();
                 boolean usuarioCreado = usuarioNegocio.altaUsuario(usuario);

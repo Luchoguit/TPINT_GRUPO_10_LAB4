@@ -1,3 +1,6 @@
+<%@page import="entidad.Prestamo" %>
+<%@page import="java.util.List" %>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -49,25 +52,24 @@
             <th>Saldo Restante</th>
             <th>Acciones</th>
         </tr>
+        	     	
+        	     	
+        	   	<% 
+			    	List<Prestamo> listaPrestamos = (List<Prestamo>)request.getAttribute("listaPrestamos");
+            		if (listaPrestamos != null) {
+			        for (Prestamo prestamo : listaPrestamos) {
+			    %>
+        <tr>
+            <td><%= prestamo.getIdPrestamo() %></td>
+            <td>0 / <%= prestamo.getCantidadCuotas() %></td>
+            <td>$<%= prestamo.getImporteMensual() %></td>
+            <td>$<%= prestamo.getImportePedido() %></td>
+            <td><%= prestamo.getFechaAlta() %></td>
+            <td>$<%= prestamo.getImportePedido() %></td>
+            <td><a href="PagarPrestamo.jsp">Pagar cuota</a></td>
+        </tr>
         
-        <tr>
-            <td>002</td>
-            <td>3 / 10</td>
-            <td>$7,500</td>
-            <td>$75,000</td>
-            <td>10/03/2024</td>
-            <td>$52,500</td>
-            <td><a href="PagarPrestamo.jsp">Pagar cuota</a></td>
-        </tr>
-        <tr>
-            <td>003</td>
-            <td>9 / 24</td>
-            <td>$3,000</td>
-            <td>$72,000</td>
-            <td>25/08/2023</td>
-            <td>$45,000</td>
-            <td><a href="PagarPrestamo.jsp">Pagar cuota</a></td>
-        </tr>
+         		<% } ;} %>
     </table>
 
     <div class="action-buttons">

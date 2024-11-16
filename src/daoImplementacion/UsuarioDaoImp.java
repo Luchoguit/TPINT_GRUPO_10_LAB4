@@ -4,12 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import dao.UsuarioDao;
 import entidad.Cliente;
 import entidad.Localidad;
 import entidad.Provincia;
+import entidad.TipoCuenta;
 import entidad.Usuario;
 
 public class UsuarioDaoImp implements UsuarioDao {
@@ -30,9 +33,9 @@ public class UsuarioDaoImp implements UsuarioDao {
             statement.setInt(1, usuario.getIdCliente()); 
             statement.setString(2, usuario.getNombreUsuario());
             statement.setString(3, usuario.getContraseña());
-            statement.setString(4, usuario.getTipo()); //
+            statement.setString(4, usuario.getTipoUsuario()); //
             statement.setBoolean(5, usuario.isEstado());
-            statement.setDate(6, java.sql.Date.valueOf(usuario.getFechaCreacion()));
+            statement.setTimestamp(6, Timestamp.valueOf(usuario.getFechaCreacion()));
 
            
             if (statement.executeUpdate() > 0) {
@@ -83,13 +86,12 @@ public class UsuarioDaoImp implements UsuarioDao {
 	            int id = resultSet.getInt("id");
 	            String nombreUsuario = resultSet.getString("nombre_usuario");
 	            String contraseña = resultSet.getString("contrasenia");
-	            String tipo = resultSet.getString("tipo");
+	            String tipoUsuario = resultSet.getString("tipo");
 	            boolean estado = resultSet.getBoolean("estado");
-	            java.sql.Date sqlDate = resultSet.getDate("fecha_creacion");
-	            LocalDate fecha_creacion = sqlDate != null ? sqlDate.toLocalDate() : null;
+	            Timestamp sqlTimestamp = resultSet.getTimestamp("fecha_creacion");
+	            LocalDateTime fechaCreacion = sqlTimestamp != null ? sqlTimestamp.toLocalDateTime() : null;
 
-
-	            user = new Usuario(id, nombreUsuario, contraseña, tipo, estado, fecha_creacion);
+	            user = new Usuario(id, nombreUsuario, contraseña, tipoUsuario, estado, fechaCreacion);
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -122,11 +124,11 @@ public class UsuarioDaoImp implements UsuarioDao {
 	            String contraseña = resultSet.getString("contrasenia");
 	            String tipo = resultSet.getString("tipo");
 	            boolean estado = resultSet.getBoolean("estado");
-	            java.sql.Date sqlDate = resultSet.getDate("fecha_creacion");
-	            LocalDate fecha_creacion = sqlDate != null ? sqlDate.toLocalDate() : null;
+	            Timestamp sqlTimestamp = resultSet.getTimestamp("fecha_creacion");
+	            LocalDateTime fechaCreacion = sqlTimestamp != null ? sqlTimestamp.toLocalDateTime() : null;
 
 
-	            user = new Usuario(id, nombreUsuario, contraseña, tipo, estado, fecha_creacion);
+	            user = new Usuario(id, nombreUsuario, contraseña, tipo, estado, fechaCreacion);
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();

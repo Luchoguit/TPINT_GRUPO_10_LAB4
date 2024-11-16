@@ -26,5 +26,10 @@ public class PrestamoNegocioImp implements PrestamoNegocio{
 		return prestamoDao.obtenerPrestamoPorId(id);
 	}
 
+	@Override
+	public List<Prestamo> listarPrestamosCuenta(int idCuenta) {
+		return prestamoDao.listarPrestamosCuenta(idCuenta);
+	}
+
 
 }

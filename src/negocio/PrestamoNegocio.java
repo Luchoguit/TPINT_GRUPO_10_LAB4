@@ -9,6 +9,8 @@ public interface PrestamoNegocio {
 	boolean altaPrestamo(Prestamo prestamo);
 	List<Prestamo> listarPrestamos();
 	Prestamo obtenerPrestamoPorId(int id);
+	List<Prestamo> listarPrestamosCuenta(int idCuenta);
+
 
 
 }

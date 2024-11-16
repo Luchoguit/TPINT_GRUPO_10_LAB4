@@ -251,4 +251,95 @@ public class PrestamoDaoImp implements PrestamoDao {
 	    return prestamo;
 	}
 
+	private static final String qrylistarPrestamosCuenta = "SELECT P.*, Cl.*, Cu.* "
+			+ "FROM prestamos P "
+			+ "JOIN clientes Cl ON Cl.id = P.id_cliente "
+			+ "JOIN cuentas Cu ON Cu.id = id_cuenta "
+			+ "WHERE P.estado = 1 AND Cu.id = ?";
+	
+	@Override
+	public List<Prestamo> listarPrestamosCuenta(int idCuenta) {
+		List<Prestamo> listaPrestamos = new ArrayList<>();
+
+	    try {
+	     
+	        Connection con = Conexion.getConexion().getSQLConexion();
+	        PreparedStatement statement = con.prepareStatement(qrylistarPrestamosCuenta);
+	        statement.setInt(1, idCuenta); 
+	        ResultSet resultSet = statement.executeQuery();
+
+	        while (resultSet.next()) {
+            
+	            int idPrestamo = resultSet.getInt("P.id_prestamo");
+	            
+	            // CLIENTE
+	        	Cliente cliente = new Cliente();
+	        	cliente.setId(resultSet.getInt("Cl.id"));
+	        	cliente.setDni(resultSet.getString("Cl.dni"));
+	        	cliente.setCuil(resultSet.getString("Cl.cuil"));
+	        	cliente.setNombre(resultSet.getString("Cl.nombre"));
+	        	cliente.setApellido(resultSet.getString("Cl.apellido"));
+	        	cliente.setSexo(resultSet.getString("Cl.sexo"));
+	        	cliente.setNacionalidad(resultSet.getString("Cl.nacionalidad"));
+	        	
+	        	java.sql.Date sqlDate = resultSet.getDate("Cl.fecha_nacimiento");
+	            LocalDate fechaNacimiento = sqlDate != null ? sqlDate.toLocalDate() : null;
+	            cliente.setFechaNacimiento(fechaNacimiento);
+	            
+	            Localidad localidadCliente = new Localidad();
+	            localidadCliente.setId(resultSet.getInt("Cl.id_localidad"));
+	        	cliente.setLocalidadCliente(localidadCliente);
+	        	
+	        	Provincia provinciaCliente = new Provincia();
+	            provinciaCliente.setId(resultSet.getInt("Cl.id_provincia"));
+	        	cliente.setProvinciaCliente(provinciaCliente);
+	        	
+	        	cliente.setCorreo(resultSet.getString("Cl.correo"));
+	        	cliente.setTelefono(resultSet.getString("Cl.telefono"));
+	        	cliente.setDireccion(resultSet.getString("Cl.direccion"));
+	        	cliente.setEstado(resultSet.getBoolean("Cl.estado"));
+	        	
+	        	// CUENTA
+	        	Cuenta cuenta = new Cuenta();
+	        	cuenta.setId(resultSet.getInt("Cu.id"));
+	        	cuenta.setNumeroCuenta(resultSet.getString("Cu.numero_cuenta"));
+	        	cuenta.setFechaCreacion(resultSet.getTimestamp("Cu.fecha_creacion").toLocalDateTime());
+	        	cuenta.setCbu(resultSet.getString("Cu.cbu"));
+	        	cuenta.setSaldo(resultSet.getBigDecimal("Cu.saldo"));
+	        	
+	        	Usuario usuario = new Usuario();
+	        	usuario.setIdCliente(resultSet.getInt("Cu.id_usuario"));
+	        	cuenta.setUsuario(usuario);
+	        	
+	        	TipoCuenta tipoCuenta = new TipoCuenta();
+	            tipoCuenta.setId(resultSet.getInt("Cu.id_tipoCuenta"));
+	        	cuenta.setTipoCuenta(tipoCuenta);
+	        	
+	            cuenta.setEstado(resultSet.getBoolean("Cu.estado"));
+
+	        	
+	        	// FECHAALTA
+	            java.sql.Timestamp sqlTimestampAlta = resultSet.getTimestamp("P.fecha_alta");
+	            LocalDateTime fechaAlta = sqlTimestampAlta != null ? sqlTimestampAlta.toLocalDateTime() : null;
+        	
+	        	
+	        	BigDecimal importePedido = resultSet.getBigDecimal("P.importe_pedido");
+	        	int plazoMeses = resultSet.getInt("P.plazo_meses");
+	        	BigDecimal importeMensual = resultSet.getBigDecimal("P.importe_mensual");
+	        	int cantidadCuotas = resultSet.getInt("P.cantidad_cuotas");
+	        	boolean estado = resultSet.getBoolean("P.estado");
+
+	            Prestamo prestamo = new Prestamo(idPrestamo, cliente, cuenta, fechaAlta, importePedido, plazoMeses, importeMensual, cantidadCuotas, estado);
+	            listaPrestamos.add(prestamo);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        Conexion.getConexion().cerrarConexion();
+	    }
+
+	    return listaPrestamos;
+	}
+
 }

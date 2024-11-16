@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,15 +10,26 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/ServletGestionPrestamos")
-public class ServletGestionPrestamos extends HttpServlet {
+import entidad.Cuenta;
+import entidad.Prestamo;
+import negocio.PrestamoNegocio;
+import negocioimplementacion.PrestamoNegocioImp;
+
+@WebServlet("/ServletVerPrestamos")
+public class ServletVerPrestamos extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
        
+		Cuenta cuenta = (Cuenta) request.getSession().getAttribute("cuenta");
+		PrestamoNegocio prestamoNegocio = new PrestamoNegocioImp();
+		List<Prestamo> listaPrestamos = prestamoNegocio.listarPrestamosCuenta(cuenta.getId());
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasUser/GestionPrestamos.jsp");
+		request.setAttribute("listaPrestamos", listaPrestamos);
+		
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasUser/VerPrestamos.jsp");
         dispatcher.forward(request, response);
 	}
 

@@ -137,7 +137,7 @@
     <ul class="navigation">
         <li><a href="/TPINT_GRUPO_10_LAB4/VentanasUser/Movimientos.jsp">Consultar movimientos <i class="fa fa-list-alt"></i></a></li>
         <li><a href="/TPINT_GRUPO_10_LAB4/VentanasUser/Transferencias.jsp">Realizar transferencia <i class="fa fa-exchange-alt"></i></a></li>
-        <li><a href="/TPINT_GRUPO_10_LAB4/ServletGestionPrestamos">Gestionar préstamos <i class="fa fa-hand-holding-usd"></i></a></li>
+        <li><a href="/TPINT_GRUPO_10_LAB4/ServletVerPrestamos">Gestionar préstamos <i class="fa fa-hand-holding-usd"></i></a></li>
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletVerCuentas">Volver a cuentas <i class="fa fa-credit-card"></i></a></li>
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletCerrarSesion">Cerrar sesión <i class="fa fa-sign-out-alt"></i></a></li>
     </ul>

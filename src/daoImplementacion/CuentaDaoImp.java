@@ -207,6 +207,65 @@ public class CuentaDaoImp implements CuentaDao {
 		     return false;
 	}
 
+	private static final String qryObtenerCuentaPorId = "SELECT C.*, TC.descripcion, U.* "
+			+ "FROM cuentas C "
+			+ "JOIN tipos_de_cuentas TC ON TC.id = C.id_tipoCuenta "
+			+ "JOIN usuarios U ON U.id = C.id_usuario "
+			+ "WHERE C.id = ?";
+	
+	@Override
+	public Cuenta obtenerCuentaPorId(int id) {
+		Cuenta cuenta = new Cuenta();
+
+	    try {
+	     
+	        Connection con = Conexion.getConexion().getSQLConexion();	
+	        System.out.println("[DEBUG] Conexión a la base de datos establecida");
+
+	        System.out.println("[DEBUG] Conexión establecida: " + con);
+
+	        PreparedStatement statement = con.prepareStatement(qryObtenerCuentaPorId);
+            statement.setInt(1, id);
+	        ResultSet resultSet = statement.executeQuery();
+
+	        if (resultSet.next()) {
+	            cuenta.setId(id);
+	            cuenta.setNumeroCuenta(resultSet.getString("C.numero_cuenta"));
+	            
+	            LocalDateTime fechaCreacion = resultSet.getTimestamp("C.fecha_creacion").toLocalDateTime();
+	            cuenta.setFechaCreacion(fechaCreacion);
+	            cuenta.setCbu(resultSet.getString("C.cbu"));
+	            cuenta.setSaldo(resultSet.getBigDecimal("C.saldo"));
+	            
+	            TipoCuenta tipoCuenta = new TipoCuenta();
+	            tipoCuenta.setId(resultSet.getInt("C.id_tipoCuenta"));
+	            tipoCuenta.setDescripcion(resultSet.getString("TC.descripcion"));
+	            
+	            cuenta.setTipoCuenta(tipoCuenta);
+	            
+	            Usuario usuario = new Usuario();
+	            usuario.setIdCliente(resultSet.getInt("U.id"));
+	            usuario.setNombreUsuario(resultSet.getString("U.nombre_usuario"));
+	            usuario.setContraseña(resultSet.getString("U.contrasenia"));
+	            
+	            LocalDateTime fechaCreacionUsuario = resultSet.getTimestamp("U.fecha_creacion").toLocalDateTime();
+	            usuario.setFechaCreacion(fechaCreacionUsuario);
+	            usuario.setTipoUsuario(resultSet.getString("U.tipo"));
+	            usuario.setEstado(resultSet.getBoolean("U.estado"));
+	            
+	            cuenta.setUsuario(usuario);
+	            cuenta.setEstado(resultSet.getBoolean("C.estado"));
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        Conexion.getConexion().cerrarConexion();
+	    }
+
+	    return cuenta;
+	}
+
 
 
 }

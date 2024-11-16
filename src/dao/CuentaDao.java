@@ -12,5 +12,6 @@ public interface CuentaDao {
 	boolean modificarCuenta(Cuenta cuenta);
 	boolean eliminarCuenta (int id);
 	public List<Cuenta> listarTodasLasCuentas();
+	Cuenta obtenerCuentaPorId(int id);
 
 }

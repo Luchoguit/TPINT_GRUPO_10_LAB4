@@ -14,6 +14,7 @@ public class Cuenta {
     private BigDecimal saldo;
     private Usuario usuario; 
     private TipoCuenta tipoCuenta; 
+    private boolean estado; 
     
     
     public Cuenta() {}
@@ -30,7 +31,6 @@ public class Cuenta {
 		this.estado = estado;
 	}
 
-	private boolean estado; 
 
     public Cuenta(Usuario usuario, TipoCuenta tipoCuenta) {
         this.numeroCuenta = generarNumeroCuenta();
