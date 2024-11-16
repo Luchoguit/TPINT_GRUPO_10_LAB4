@@ -77,7 +77,7 @@ public class ServletVerCuentas extends HttpServlet {
 	    Cuenta cuenta = cuentaNegocio.obtenerCuentaPorId(Integer.parseInt(idCuenta));
 
 	    request.setAttribute("cuenta", cuenta);*/
-	    RequestDispatcher dispatcher = request.getRequestDispatcher("ServletGestionPrestamos");
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("MENUS/IndexCuenta.jsp");
 	    dispatcher.forward(request, response);
 		
 	}

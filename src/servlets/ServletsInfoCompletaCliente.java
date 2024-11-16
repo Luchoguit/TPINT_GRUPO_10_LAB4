@@ -28,9 +28,8 @@ public class ServletsInfoCompletaCliente extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+       	
         
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -40,8 +39,6 @@ public class ServletsInfoCompletaCliente extends HttpServlet {
         if (dni != null && !dni.isEmpty()) {
            
         	ClienteNegocio clienteNegocio = new ClienteNegocioImp();
-            LocalidadNegocio localidadNegocio = new LocalidadNegocioImp();
-            ProvinciaNegocio provinciaNegocio = new ProvinciaNegocioImp();
 
             // Buscar cliente por DNI
             Cliente cliente = clienteNegocio.obtenerPorDNI(dni);

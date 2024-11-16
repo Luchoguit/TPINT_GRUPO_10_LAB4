@@ -47,15 +47,11 @@
 	
 	<table>
 	    <tr>
+	        <th></th>
+	        <th>Saldo</th>
 	        <th>Tipo de cuenta</th>
 	        <th>Numero de cuenta</th>
 	        <th>CBU</th>
-	        <th>DNI Titular</th>
-	        <th>Nombre titular</th>
-	        <th>Apellido titular</th>
-	        <th>Fecha de creacion</th>
-	        <th>Saldo</th>
-	        <th></th>
 	    </tr>
 	     		<% 
 	     			Cliente cliente = (Cliente)request.getAttribute("cliente");
@@ -64,20 +60,16 @@
 			        for (Cuenta cuenta : listaCuentas) {
 			    %>
 	    <tr>
+	        <td>
+       		 <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletVerCuentas">
+           		 <input type="hidden" name="idCuenta" value="<%= cuenta.getId() %>">
+          		  <input type="submit" value="Ver Cuenta">
+       		 </form>
+  			</td>
+	        <td><%= cuenta.getSaldo() %></td>
 	        <td><%= cuenta.getTipoCuenta().getDescripcion() %></td>
 	        <td><%= cuenta.getNumeroCuenta() %></td>
 	        <td><%= cuenta.getCbu() %></td>
-	        <td><%= cliente.getDni() %></td>
-	        <td><%= cliente.getNombre() %></td>
-	        <td><%= cliente.getApellido() %></td>
-	        <td><%= cuenta.getFechaCreacion() %></td>
-	        <td><%= cuenta.getSaldo() %></td>
-	        <td>
-        <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletVerCuentas">
-            <input type="hidden" name="idCuenta" value="<%= cuenta.getId() %>">
-            <input type="submit" value="Ver Cuenta">
-        </form>
-    </td>
 	    </tr>
  				<% } 
 			        } else {System.out.println("Las cuentas no llegaron correctamente.");}

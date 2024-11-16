@@ -125,7 +125,6 @@
 		    <input type="text" id="sexo" name="sexo" value="${cliente.sexo == 'M' ? 'Masculino' : 'Femenino'}" readonly>
 		</div>
 
-
         <div class="form-group">
             <label for="nacionalidad">Nacionalidad</label>
             <input id="nacionalidad" type="text" readonly value="<%= request.getAttribute("cliente") != null ? ((Cliente) request.getAttribute("cliente")).getNacionalidad() : "" %>">
@@ -164,13 +163,8 @@
     </form>
     <div class="button-container">
     <!-- Enlace para ir a la Pagina Principal -->
-    <a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp">
+    <a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexUser.jsp">
     <input type="button" value="Ir a la Pagina Principal">
-    </a>
-
-    <!-- Enlace para volver al Listado de Clientes -->
-    <a href="/TPINT_GRUPO_10_LAB4/ServletListadoClientes">
-        <input type="button" value="Volver al Listado de Clientes">
     </a>
 </div>
 </div>

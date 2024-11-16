@@ -115,6 +115,29 @@ CREATE TABLE Cuotas (
     FOREIGN KEY (id_prestamo) REFERENCES Prestamos(id_prestamo)
 );
 
+DELIMITER //
+
+CREATE TRIGGER GenerarCbu
+BEFORE INSERT ON cuentas
+FOR EACH ROW
+BEGIN
+    DECLARE nuevoCbu VARCHAR(22);
+    DECLARE duplicado BOOLEAN;
+
+    SET NEW.cbu = NULL;
+
+    REPEAT
+        SET nuevoCbu = LPAD(FLOOR(RAND() * 10000000000000000000000), 22, '0');
+
+        SELECT EXISTS(SELECT 1 FROM cuentas WHERE cbu = nuevoCbu) INTO duplicado;
+    UNTIL duplicado = FALSE
+    END REPEAT;
+
+    SET NEW.cbu = nuevoCbu;
+END //
+
+DELIMITER ;
+
 -- Insercion TiposDeMovimiento
 INSERT INTO tipos_de_movimientos (id, descripcion) VALUES
 (1, 'Alta de cuenta'),

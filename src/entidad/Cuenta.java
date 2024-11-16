@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 
 public class Cuenta {
     private static BigInteger numeroCuentaInicial = new BigInteger("1000000000");  
-    private static BigInteger cbuInicial = new BigInteger("1000000000000000000000"); 
 
     private int id;
     private String numeroCuenta;
@@ -34,7 +33,7 @@ public class Cuenta {
     public Cuenta(Usuario usuario, TipoCuenta tipoCuenta) {
         this.numeroCuenta = generarNumeroCuenta();
         this.fechaCreacion = LocalDateTime.now(); 
-        this.cbu = generarCbu();
+        this.cbu = null;
         this.saldo = BigDecimal.valueOf(10000);  
         this.usuario = usuario;
         this.tipoCuenta = tipoCuenta;
@@ -44,11 +43,6 @@ public class Cuenta {
     private static synchronized String generarNumeroCuenta() {
         numeroCuentaInicial = numeroCuentaInicial.add(BigInteger.ONE);  // Incrementa el número de cuenta
         return String.format("%010d", numeroCuentaInicial);  // Formatea con 10 dígitos, rellena con ceros a la izquierda
-    }
-
-    private static synchronized String generarCbu() {
-        cbuInicial = cbuInicial.add(BigInteger.ONE);  // Incrementa el CBU
-        return String.format("%022d", cbuInicial);  // Formatea con 22 dígitos, rellena con ceros a la izquierda
     }
 
     public int getId() {
