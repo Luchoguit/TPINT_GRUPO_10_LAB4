@@ -23,12 +23,15 @@ public class ServletListadoCuentas extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
+        
+    	
+    	CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
         ClienteNegocio clienteNegocio = new ClienteNegocioImp();
         String filtroCliente = request.getParameter("filtroCliente");
     
         List<Cuenta> cuentas = cuentaNegocio.listarTodasLasCuentas(); 
         List<Cliente> clientes = clienteNegocio.listarClientes(); 
+        
         
         List<Cliente> clientesFiltrados = new ArrayList<>();
         List<Cuenta> cuentasFiltradas = new ArrayList<>();
@@ -58,9 +61,10 @@ public class ServletListadoCuentas extends HttpServlet {
             cuentasFiltradas = cuentas;
         }
 
-     
+        
         request.setAttribute("clientesFiltrados", clientesFiltrados);
         request.setAttribute("cuentasFiltradas", cuentasFiltradas);
+        
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/ListadoCuentas.jsp");
         dispatcher.forward(request, response);
@@ -69,14 +73,32 @@ public class ServletListadoCuentas extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     
-    	int idCuenta = Integer.parseInt(request.getParameter("idCuenta"));
+ 
+        int idCuenta = 0;
+        String idCuentaParam = request.getParameter("idCuenta");
+
+ 
+        if (idCuentaParam != null && !idCuentaParam.trim().isEmpty()) {
+            try {
+                idCuenta = Integer.parseInt(idCuentaParam);
+            } catch (NumberFormatException e) {
+             
+                return;
+            }
+        } else {
+            doGet(request, response);      
+        }
+
+  
         System.out.println("[DEBUG] id cuenta: " + idCuenta);
 
-    	CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
-	    boolean resultado = cuentaNegocio.eliminarCuenta(idCuenta);
-    	    	
+        CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
+        boolean resultado = cuentaNegocio.eliminarCuenta(idCuenta);
+
         System.out.println("[DEBUG] resultado: " + resultado);
 
         doGet(request, response);
     }
+    
+    
 }
