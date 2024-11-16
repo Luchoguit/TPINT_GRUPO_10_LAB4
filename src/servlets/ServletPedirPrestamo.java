@@ -57,7 +57,15 @@ public class ServletPedirPrestamo extends HttpServlet {
 
 	    PrestamoNegocio prestamoNegocio = new PrestamoNegocioImp();
 	    boolean resultado = prestamoNegocio.altaPrestamo(prestamo);
-	    System.out.println("[DEBUG] Resultado: " + resultado);
+
+	    if (resultado) {
+        	request.setAttribute("mensaje", "Solicitud enviada con exito.");
+            request.setAttribute("tipoMensaje", "success");
+            
+        } else {
+        	request.setAttribute("mensaje", "No se pudo realizar la solicitud.");
+            request.setAttribute("tipoMensaje", "error");
+        }
 
 	    doGet(request, response);
 	}

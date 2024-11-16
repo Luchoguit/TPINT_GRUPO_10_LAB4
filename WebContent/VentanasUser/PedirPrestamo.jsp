@@ -45,6 +45,26 @@
         .action-buttons input[type="submit"]:hover {
             background-color: #45a049;
         }
+        
+         /* Estilos para el contenedor de mensajes */
+        .message-container {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
     </style>
     <script>
         function formatCurrency(input) {
@@ -60,6 +80,18 @@
 
     <h2 style="text-align: center;">Solicitar Préstamo</h2>
 
+
+		<!-- Contenedor de mensajes -->
+		<% 
+		    String mensaje = (String) request.getAttribute("mensaje");
+		    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
+		    if (mensaje != null && tipoMensaje != null) {
+		%>
+		    <div class="message-container <%= tipoMensaje %>">
+		        <%= mensaje %>
+		    </div>
+		<% } %>
+		
     <div class="form-container">
         <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletPedirPrestamo">
             <div class="form-group">
@@ -118,7 +150,7 @@
     </div>
 
     <div class="action-buttons">
-        <form method="post" action="servletPrestamos">
+        <form method="post" action="/TPINT_GRUPO_10_LAB4/MENUS/IndexCuenta.jsp">
             <input type="submit" name="btnRegresar" value="Regresar">
         </form>
     </div>
