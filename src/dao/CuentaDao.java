@@ -14,4 +14,6 @@ public interface CuentaDao {
 	public List<Cuenta> listarTodasLasCuentas();
 	Cuenta obtenerCuentaPorId(int id);
 
+	Cuenta obtenerCuentaPorCBU(String cbu);
+	
 }

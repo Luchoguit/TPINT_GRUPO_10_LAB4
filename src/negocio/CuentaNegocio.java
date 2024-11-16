@@ -13,5 +13,9 @@ public interface CuentaNegocio {
 	boolean eliminarCuenta (int id);
 	public List<Cuenta> listarTodasLasCuentas();
 	Cuenta obtenerCuentaPorId(int id);
+	
+	
+	
+	Cuenta obtenerCuentaPorCBU(String cbu);
 
 }

@@ -1,3 +1,5 @@
+<%@page import="entidad.Cuenta" %>
+<%@page import="entidad.Usuario" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -76,11 +78,30 @@
 </head>
 <body>
 
+<%Cuenta cuenta = null;
+	Usuario user = null;
+	if (request.getAttribute("Cuenta") != null){
+		cuenta = (Cuenta)request.getAttribute("Cuenta");
+	}
+%>
+
 <h2 style="text-align: center;">Transferir</h2>
 
 <div>
 <div class="container" style="margin-left: 100px">
-    <form method="post" action="" style="display: flex; align-items: center; gap: 10px;">
+
+		<% 
+		    String mensaje = (String) request.getAttribute("mensaje");
+		    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
+		    if (mensaje != null && tipoMensaje != null) {
+		%>
+		    <div class="message-container <%= tipoMensaje %>">
+		        <%= mensaje %>
+		    </div>
+		<% } %>
+
+
+    <form  method="post" action="/TPINT_GRUPO_10_LAB4/servletTransferencia" style="display: flex; align-items: center; gap: 10px;">
         <h2 style="text-align: center; margin: 10;">CBU </h2>
         <input type="text" name="inputCBU" placeholder="Ingrese CBU a transferir" style="margin-left: 5px; width: 250px;">
         <input type="submit" name="btnCBU" value="Buscar" style="margin-left: 5px">
@@ -101,18 +122,29 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Juan Perez</td>
-                    <td>123</td>
-                    <td>456</td>
-                    <td>000123456789</td>
-                    <td>
-                <form onsubmit="mostrarFormulario(event)">
-                    <input type="hidden" name="CBU" value="">
-                    <input type="submit" value="Transferencia">
-                </form>
-            </td>
-                </tr>
+
+                	<tr>
+					    <td><%= cuenta != null && cuenta.getUsuario() != null && cuenta.getUsuario().getNombreUsuario() != null 
+					             ? cuenta.getUsuario().getNombreUsuario() 
+					             : "--" %></td>
+					    <td><%= cuenta != null && cuenta.getUsuario() != null 
+					             ? cuenta.getUsuario().getIdCliente() 
+					             : "--" %></td>
+					    <td><%= cuenta != null 
+					             ? cuenta.getId() 
+					             : "--" %></td>
+					    <td><%= cuenta != null && cuenta.getCbu() != null 
+					             ? cuenta.getCbu() 
+					             : "--" %></td>
+					      	<td><form onsubmit="mostrarFormulario(event)">
+			                    <input type="hidden" name="CBU" value="<%= cuenta != null ? cuenta.getCbu() : 0%>">
+			                    <% if (cuenta != null) { %>
+        							<button type="button" onclick="realizarTransferencia()">Transferencia</button>
+    							<% } %>
+		                		</form>
+		                	</td>
+           				 
+					</tr>
             </tbody>
         </table>
  
