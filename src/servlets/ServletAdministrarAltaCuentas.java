@@ -73,51 +73,60 @@ public class ServletAdministrarAltaCuentas extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String accion = request.getParameter("accion");
-        int solicitudId = Integer.parseInt(request.getParameter("solicitudId"));    
-        
-        System.out.println("[DEBUG] Entra al doPost");
-        System.out.println("[DEBUG] accion: " + accion);
-        System.out.println("[DEBUG] id de solicitud: " + solicitudId);
+	    String accion = request.getParameter("accion");
+	    int solicitudId = Integer.parseInt(request.getParameter("solicitudId"));    
 
+	    System.out.println("[DEBUG] Entra al doPost");
+	    System.out.println("[DEBUG] accion: " + accion);
+	    System.out.println("[DEBUG] id de solicitud: " + solicitudId);
 
-        SolicitudAltaCuentaNegocio solicitudNegocio = new SolicitudAltaCuentaNegocioImp();
-        SolicitudAltaCuenta solicitud = solicitudNegocio.obtenerSolicitudPorId(solicitudId);
-        
-        System.out.println("[DEBUG] id de objeto solicitud: " + solicitud.getId());
+	    SolicitudAltaCuentaNegocio solicitudNegocio = new SolicitudAltaCuentaNegocioImp();
+	    SolicitudAltaCuenta solicitud = solicitudNegocio.obtenerSolicitudPorId(solicitudId);
 
+	    System.out.println("[DEBUG] id de objeto solicitud: " + solicitud.getId());
 
-        try {
-	    if ("aceptar".equals(accion)) {
-	    	
-	    	UsuarioNegocio userNegocio = new UsuarioNegocioImp();
-	    	Usuario user = userNegocio.obtenerUsuarioPorId(solicitud.getCliente().getId());
-	    	TipoCuenta tipoCuenta = solicitud.getTipoCuenta();
-	    	
-	        System.out.println("[DEBUG] tipo de cuenta: " + solicitud.getTipoCuenta().getDescripcion());
+	    try {
+	        if ("aceptar".equals(accion)) {
 
-	    	
-	    	CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
-	    	Cuenta cuenta = new Cuenta(user,tipoCuenta);
-	    	
-	        System.out.println("[DEBUG] id de cuenta: " + cuenta.getId());
+	            UsuarioNegocio userNegocio = new UsuarioNegocioImp();
+	            Usuario user = userNegocio.obtenerUsuarioPorId(solicitud.getCliente().getId());
 
-	    	boolean resultadoAlta = cuentaNegocio.altaCuenta(cuenta);
-	    	
-	        System.out.println("[DEBUG] resultado alta cuenta: " + resultadoAlta);
+	            // Validar cuántas cuentas activas tiene el usuario
+	            CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
+	            int cuentasActivas = cuentaNegocio.contarCuentasActivasPorUsuario(user.getIdCliente());
 
-	    } 
+	            if (cuentasActivas >= 3) {
+	            
+	            	request.setAttribute("mensaje", "El cliente ya tiene 3 cuentas activas.");
+	                request.setAttribute("tipoMensaje", "error");
+	                RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/AdministrarAltaCuentas.jsp");
+	                dispatcher.forward(request, response);
+	                return;
+	            }
 
-	    boolean resultadoRespuesta = solicitudNegocio.responderSolicitud(solicitudId);
-        System.out.println("[DEBUG] resultado respuesta de solicitud: " + resultadoRespuesta);
+	            else {
+	            TipoCuenta tipoCuenta = solicitud.getTipoCuenta();
 
+	            System.out.println("[DEBUG] tipo de cuenta: " + tipoCuenta.getDescripcion());
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
+	            Cuenta cuenta = new Cuenta(user, tipoCuenta);
+	            System.out.println("[DEBUG] id de cuenta: " + cuenta.getId());
+
+	            boolean resultadoAlta = cuentaNegocio.altaCuenta(cuenta);
+
+	            System.out.println("[DEBUG] resultado alta cuenta: " + resultadoAlta);
+	            }
+	        }
+
+	      
+	        boolean resultadoRespuesta = solicitudNegocio.responderSolicitud(solicitudId);
+	        System.out.println("[DEBUG] resultado respuesta de solicitud: " + resultadoRespuesta);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
 	    doGet(request, response);
-	
 	}
 
 }

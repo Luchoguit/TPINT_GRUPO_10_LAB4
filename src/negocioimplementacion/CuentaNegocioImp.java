@@ -46,6 +46,10 @@ public class CuentaNegocioImp implements CuentaNegocio{
 	public Cuenta obtenerCuentaPorCBU(String cbu) {
 		return cuentaDao.obtenerCuentaPorCBU(cbu);
 	}
-
+	
+	@Override
+	public int contarCuentasActivasPorUsuario(int id){
+		return cuentaDao.contarCuentasActivasPorUsuario(id);
+	}
 
 }

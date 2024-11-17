@@ -320,6 +320,33 @@ public class CuentaDaoImp implements CuentaDao {
 	    return cuenta;
 	       
 		}
+	
+	public int contarCuentasActivasPorUsuario(int idUsuario) {
+	    int cuentasActivas = 0;
+	    String qryContarCuentasActivas = "SELECT COUNT(*) FROM cuentas C WHERE C.id_usuario = ? AND C.estado = TRUE";
+
+	    try {
+	   
+	        Connection con = Conexion.getConexion().getSQLConexion();
+	        System.out.println("[DEBUG] Conexión a la base de datos establecida");
+
+	 
+	        PreparedStatement statement = con.prepareStatement(qryContarCuentasActivas);
+	        statement.setInt(1, idUsuario);  
+	        ResultSet resultSet = statement.executeQuery();
+
+	        if (resultSet.next()) {
+	            cuentasActivas = resultSet.getInt(1); 
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        Conexion.getConexion().cerrarConexion(); 
+	    }
+
+	    return cuentasActivas;  
+	}
 		
 		
 }

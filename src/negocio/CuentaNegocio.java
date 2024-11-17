@@ -17,5 +17,6 @@ public interface CuentaNegocio {
 	
 	
 	Cuenta obtenerCuentaPorCBU(String cbu);
+	int contarCuentasActivasPorUsuario(int id);
 
 }

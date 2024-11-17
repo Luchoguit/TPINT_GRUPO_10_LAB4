@@ -91,6 +91,40 @@
 		.btn-volver:hover {
 		    background-color: #0056b3;   
 		}
+		.message-container {
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 4px;
+    font-size: 16px;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.message-container.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+
+.message-container.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+
+.message-container.warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+		
+		
     
 </style>
 
@@ -110,6 +144,12 @@
 	        </tr>
 	    </thead>
 	    <tbody>
+	 
+	 <%-- Verifica si hay un mensaje de error en el request --%>
+<% String error = (String) request.getAttribute("error"); %>
+
+
+
 	 
 	    <% 
     List<SolicitudAltaCuenta> listaSolicitudes = (List<SolicitudAltaCuenta>)request.getAttribute("listaSolicitudes");
@@ -138,6 +178,17 @@
 	        <% } } %>
 	    </tbody>
 	</table>
+	
+	
+<%
+    String mensaje = (String) request.getAttribute("mensaje");
+    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
+    if (mensaje != null && tipoMensaje != null) {
+%>
+    <div class="message-container <%= tipoMensaje %>">
+        <%= mensaje %>
+    </div>
+<% } %>
 
 	<div class="volver-menu">
      <!-- Enlace para volver al menu -->
@@ -147,4 +198,5 @@
      </div>
 
 </body>
+
 </html>

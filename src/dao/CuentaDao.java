@@ -15,5 +15,6 @@ public interface CuentaDao {
 	Cuenta obtenerCuentaPorId(int id);
 
 	Cuenta obtenerCuentaPorCBU(String cbu);
+	int contarCuentasActivasPorUsuario(int id);
 	
 }
