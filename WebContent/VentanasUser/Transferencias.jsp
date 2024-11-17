@@ -147,7 +147,7 @@
 
     <form  method="post" action="/TPINT_GRUPO_10_LAB4/servletTransferencia" style="display: flex; align-items: center; gap: 10px;">
         <h2 style="text-align: center; margin: 10;">CBU </h2>
-        <input type="text" name="inputCBU" placeholder="Ingrese CBU a transferir" style="margin-left: 5px; width: 250px;">
+        <input type="text" name="inputCBU" onkeypress="soloNumeros(event)" placeholder="Ingrese CBU a transferir" style="margin-left: 5px; width: 250px;">
         <input type="submit" name="btnCBU" value="Buscar" style="margin-left: 5px">
     </form>
 </div>
@@ -252,6 +252,16 @@
    	 event.preventDefault(); // Evita el envío del formulario
         document.getElementById("formularioMonto").style.display = "block"; // Muestra el formulario de monto
    }
+    
+	function soloNumeros(event) {
+	    var key = event.keyCode || event.which;
+	    var tecla = String.fromCharCode(key);
+	    var regex = /^[0-9]$/;  
+	    if (!regex.test(tecla)) {
+	        event.preventDefault(); 
+	    }
+	}
+    
 </script>
 
 </body>
