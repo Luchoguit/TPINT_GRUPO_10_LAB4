@@ -55,9 +55,8 @@ public class servletTransferencia extends HttpServlet {
 			
 			if(request.getSession().getAttribute("cuenta") != null)
 			{
-				System.out.println("Llego una cuenta");
+				System.out.println("[DEBUG] Llego una cuenta");
 				Cuenta cuentaCliente = (Cuenta) request.getSession().getAttribute("cuenta");
-				System.out.println(cuentaCliente.getCbu());
 			}
 			
 			Cuenta cuentaCliente = (Cuenta) request.getSession().getAttribute("cuenta");
@@ -65,28 +64,24 @@ public class servletTransferencia extends HttpServlet {
 			
 			if(existeCuentaConCbu == false)
 			{
-				System.out.println("CBU Invalido");
+				System.out.println("[DEBUG] CBU Invalido");
 				request.setAttribute("mensaje", "Debe seleccionar un cbu Valido");
 	            request.setAttribute("tipoMensaje", "error");
 			}
 			else {
-				System.out.println("CBU valido");
+				System.out.println("[DEBUG] CBU valido");
 			}
 			
 			if(cuentaCliente.getCbu().equals(cbu))
 			{
-				System.out.println("Son el mismo CBU");
+				System.out.println("[DEBUG] Son el mismo CBU");
 				request.setAttribute("mensaje", "No puede transferir a la misma cuenta en uso");
 	            request.setAttribute("tipoMensaje", "error");
-				System.out.println(cuentaCliente.getCbu());
-				System.out.println(cbu);
 				request.setAttribute("mismaCuenta", "error");
 				
 			}
 			else {
-				System.out.println("Son distintos CBU");
-				System.out.println(cuentaCliente.getCbu());
-				System.out.println(cbu);
+				System.out.println("[DEBUG] Son distintos CBU");
 				
 			}
 
@@ -118,27 +113,14 @@ public class servletTransferencia extends HttpServlet {
 			String cbuDestino = (String) request.getSession().getAttribute("cbuDestino");
 			Cuenta cuentaDestino = negocioImp.obtenerCuentaPorCBU(cbuDestino);
 			
-			System.out.println("CBU capturado: " + cbuDestino);
-			System.out.println("Datos de la cuenta destino");
-			System.out.println(cuentaDestino.getCbu());
-			System.out.println(cuentaDestino.getNumeroCuenta());
-			System.out.println(cuentaDestino.getSaldo());
-			
 			Movimiento movimiento = new Movimiento(1, cuentaOrigen, tipoMovimiento, detalle, fechaHora, importe, cuentaDestino);
 			
-			BigDecimal saldoActualizado = movimiento.getCuentaDestino().getSaldo().subtract(movimiento.getImporte());
+			BigDecimal saldoActualizado = movimiento.getCuentaOrigen().getSaldo().subtract(movimiento.getImporte());
 			
 			if(saldoActualizado.floatValue() >= 0.00)
 			{
 				if(negocioImp.realizarTransferencia(movimiento))
 				{	
-					//Actualizamos saldo cuenta origen
-					negocioImp.actualizarSaldo(movimiento, true);
-					
-					//Actualzamos saldo cuenta destino
-					Movimiento movimientoDestino = new Movimiento(1, cuentaDestino, tipoMovimiento, detalle, fechaHora, importe, cuentaOrigen);
-					negocioImp.actualizarSaldo(movimientoDestino, false);
-					
 					request.setAttribute("mensaje", "Transferencia realizada exitosamente");
 		            request.setAttribute("tipoMensaje", "success");
 				}

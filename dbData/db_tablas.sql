@@ -161,11 +161,42 @@ END;
 
 DELIMITER ;
 
+
+DELIMITER $$
+
+CREATE TRIGGER after_transferencia
+AFTER INSERT ON movimientos
+FOR EACH ROW
+BEGIN
+    
+    IF NEW.id_cuentaDestino IS NOT NULL THEN
+      
+        IF (SELECT saldo FROM cuentas WHERE id = NEW.id_cuenta) < NEW.importe THEN
+           
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Saldo insuficiente en la cuenta de origen';
+        ELSE
+            
+            UPDATE cuentas
+            SET saldo = saldo - NEW.importe
+            WHERE id = NEW.id_cuenta;
+
+           
+            UPDATE cuentas
+            SET saldo = saldo + NEW.importe
+            WHERE id = NEW.id_cuentaDestino;
+        END IF;
+    END IF;
+END $$
+
+DELIMITER ;
+
+
+
 -- Insercion TiposDeMovimiento
 INSERT INTO tipos_de_movimientos (id, descripcion) VALUES
 (1, 'Alta de cuenta'),
-(2, 'Alta de prÃ©stamo'),
-(3, 'Pago de prÃ©stamo'),
+(2, 'Alta de prestamo'),
+(3, 'Pago de prestamo'),
 (4, 'Transferencia');
 
 
