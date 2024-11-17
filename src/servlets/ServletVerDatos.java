@@ -24,8 +24,13 @@ public class ServletVerDatos extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-            Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
+		 String idClienteStr = request.getParameter("idCliente");
 
+		 int idCliente = Integer.parseInt(idClienteStr);
+		 
+		 ClienteNegocio clienteNegocio = new ClienteNegocioImp();
+         Cliente cliente = clienteNegocio.obtenerPorId(idCliente);
+		 
             if (cliente != null) {        
                 request.setAttribute("cliente", cliente);
             } else {
