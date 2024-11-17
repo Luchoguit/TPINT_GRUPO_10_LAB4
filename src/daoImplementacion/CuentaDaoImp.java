@@ -131,7 +131,7 @@ public class CuentaDaoImp implements CuentaDao {
 	        String qryListarCuentas = 
 	            "SELECT c.id, c.numero_cuenta, t.id AS tipo_cuenta_id, t.descripcion AS tipo_cuenta_desc, c.id_usuario, c.estado " +
 	            "FROM cuentas c " +
-	            "JOIN tipos_de_cuentas t ON c.id_tipoCuenta = t.id ";
+	            "JOIN tipos_de_cuentas t ON c.id_tipoCuenta = t.id where c.estado= 1";
 	         
 	        PreparedStatement statementCuentas = con.prepareStatement(qryListarCuentas);
 	        ResultSet resultSetCuentas = statementCuentas.executeQuery();
@@ -346,6 +346,92 @@ public class CuentaDaoImp implements CuentaDao {
 	    }
 
 	    return cuentasActivas;  
+	}
+	
+	private static final String qryActivarCuenta = "UPDATE cuentas SET estado = true WHERE id = ?";
+	
+	@Override
+	public boolean ActivarCuenta(int id) {
+		try (Connection con = Conexion.getConexion().getSQLConexion();
+		          PreparedStatement statement = con.prepareStatement(qryActivarCuenta)) {
+
+		
+		         if (!con.getAutoCommit()) {
+		             con.setAutoCommit(true); 
+		             System.out.println("[DEBUG] Autocommit habilitado");
+		         }
+
+		         statement.setInt(1, id);
+
+		         int rowsAffected = statement.executeUpdate();
+		         System.out.println("[DEBUG] filas afectadas: " + rowsAffected);
+
+		         if (rowsAffected > 0 && !con.getAutoCommit()) {
+		             con.commit();  
+		             System.out.println("[DEBUG] Commit realizado");
+		         }
+
+		         return rowsAffected > 0;
+
+		     } catch (SQLException e) {
+		         e.printStackTrace();
+			    } finally {
+			        Conexion.getConexion().cerrarConexion();
+			    }
+		     
+		     return false;
+	}
+	
+	@Override
+	public List<Cuenta> listarTodasLasCuentasEliminadas() {
+	    List<Cuenta> listaCuentas = new ArrayList<>();
+
+	    try (Connection con = Conexion.getConexion().getSQLConexion()) {
+	        System.out.println("[DEBUG] Conexion a la base de datos establecida");
+
+	    
+	        String qryListarCuentas = 
+	            "SELECT c.id, c.numero_cuenta, t.id AS tipo_cuenta_id, t.descripcion AS tipo_cuenta_desc, c.id_usuario, c.estado " +
+	            "FROM cuentas c " +
+	            "JOIN tipos_de_cuentas t ON c.id_tipoCuenta = t.id where c.estado= 0";
+	         
+	        PreparedStatement statementCuentas = con.prepareStatement(qryListarCuentas);
+	        ResultSet resultSetCuentas = statementCuentas.executeQuery();
+
+	        
+	        while (resultSetCuentas.next()) {
+	            Cuenta cuenta = new Cuenta(0, null, null, null, null, null, null, false);
+
+	            cuenta.setId(resultSetCuentas.getInt("id"));
+	            cuenta.setNumeroCuenta(resultSetCuentas.getString("numero_cuenta"));
+	            
+	       
+	            TipoCuenta tipoCuenta = new TipoCuenta();
+	            tipoCuenta.setId(resultSetCuentas.getInt("tipo_cuenta_id"));
+	            tipoCuenta.setDescripcion(resultSetCuentas.getString("tipo_cuenta_desc"));
+
+	           
+	            cuenta.setTipoCuenta(tipoCuenta);
+	            
+	            Usuario usuarioCuenta = new Usuario();
+	            usuarioCuenta.setIdCliente(resultSetCuentas.getInt("id_usuario")); ;
+	            
+	            cuenta.setUsuario(usuarioCuenta);
+	            cuenta.setEstado(resultSetCuentas.getBoolean("estado"));
+
+	          
+	            listaCuentas.add(cuenta);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    finally {
+	        Conexion.getConexion().cerrarConexion();
+	    }
+
+	    // Devolvemos solo la lista de cuentas
+	    return listaCuentas;
 	}
 		
 		

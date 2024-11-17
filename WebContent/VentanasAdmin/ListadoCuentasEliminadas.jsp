@@ -9,25 +9,6 @@
 <title>Cuentas del cliente</title>
 
 <style>
- .message-container {
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
     table {
         width: 80%;
         margin: 20px auto;
@@ -108,26 +89,16 @@
 </head>
 <body>
 
-<h2 style="text-align: center;">Cuentas de clientes</h2>
-
-<% 
-		    String mensaje = (String) request.getAttribute("mensaje");
-		    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
-		    if (mensaje != null && tipoMensaje != null) {
-		%>
-		    <div class="message-container <%= tipoMensaje %>">
-		        <%= mensaje %>
-		    </div>
-		<% } %>
+<h2 style="text-align: center;">Cuentas de clientes deshabilitadas</h2>
 
 <!-- Leyenda de colores -->
 <div class="leyenda">
-    <span class="estado-verde"></span> Activo
+    <span class="estado-rojo"></span> Deshabilitado
     <br>
 </div>
 
 <div class="filter-container">
-    <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoCuentas">
+    <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoCuentasEliminadas">
         <input type="text" name="filtroCliente" placeholder="Ingrese DNI del titular , nombre o apellido">
         <input type="submit" name="btnFiltrar" value="Filtrar">
     </form>
@@ -184,9 +155,9 @@
             <% } %>
         </td>
         <td>
-            <form onsubmit="return confirmarEliminacion()" method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoCuentas">
+            <form onsubmit="return confirmarEliminacion()" method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoCuentasEliminadas">
                 <input type="hidden" name="idCuenta" value="<%= cuenta.getId() %>">
-                <input type="submit" name="btnEliminar" value="Deshabilitar">
+                <input type="submit" name="btnHabilitar" value="Habilitar">
             </form>
         </td>
     </tr>
@@ -209,7 +180,7 @@
 <script type="text/javascript">
         function confirmarEliminacion() {
             
-            var respuesta = confirm("Estas seguro de que deseas eliminar esta cuenta?");
+            var respuesta = confirm("Estas seguro de que deseas habilitar esta cuenta?");
             return respuesta;  
         }
     </script>

@@ -51,5 +51,16 @@ public class CuentaNegocioImp implements CuentaNegocio{
 	public int contarCuentasActivasPorUsuario(int id){
 		return cuentaDao.contarCuentasActivasPorUsuario(id);
 	}
+	
+	@Override
+	public boolean ActivarCuenta(int id) {
+		
+		return cuentaDao.ActivarCuenta(id);
+	};
+	
+	@Override
+	public List<Cuenta> listarTodasLasCuentasEliminadas(){
+		return cuentaDao.listarTodasLasCuentasEliminadas();
+	};
 
 }

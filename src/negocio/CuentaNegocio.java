@@ -12,11 +12,12 @@ public interface CuentaNegocio {
 	boolean modificarCuenta(Cuenta cuenta);
 	boolean eliminarCuenta (int id);
 	public List<Cuenta> listarTodasLasCuentas();
+	public List<Cuenta> listarTodasLasCuentasEliminadas();
 	Cuenta obtenerCuentaPorId(int id);
 	
 	
 	
 	Cuenta obtenerCuentaPorCBU(String cbu);
 	int contarCuentasActivasPorUsuario(int id);
-
+	public boolean ActivarCuenta(int id);
 }
