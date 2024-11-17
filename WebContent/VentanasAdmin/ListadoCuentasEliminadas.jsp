@@ -9,6 +9,26 @@
 <title>Cuentas del cliente</title>
 
 <style>
+
+	.message-container {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
     table {
         width: 80%;
         margin: 20px auto;
@@ -91,6 +111,16 @@
 
 <h2 style="text-align: center;">Cuentas de clientes deshabilitadas</h2>
 
+<% 
+		    String mensaje = (String) request.getAttribute("mensaje");
+		    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
+		    if (mensaje != null && tipoMensaje != null) {
+		%>
+		    <div class="message-container <%= tipoMensaje %>">
+		        <%= mensaje %>
+		    </div>
+		<% } %>
+
 <!-- Leyenda de colores -->
 <div class="leyenda">
     <span class="estado-rojo"></span> Deshabilitado
@@ -143,7 +173,7 @@
         <td><%= cliente != null ? cliente.getApellido() : "No encontrado" %></td> <!-- Mostrar apellido -->
         <td>
             <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletMovimientos">
-                <input type="hidden" name="idCuenta" value="<%= cuenta.getId() %>">
+                <input type="hidden" name="idCuenta" value="<%= cuenta.getId() %>">               
                 <input type="submit" name="btnMovimientos" value="+">
             </form>
         </td>
@@ -157,6 +187,7 @@
         <td>
             <form onsubmit="return confirmarEliminacion()" method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoCuentasEliminadas">
                 <input type="hidden" name="idCuenta" value="<%= cuenta.getId() %>">
+                <input type="hidden" name="idCliente" value="<%= cliente.getId() %>">
                 <input type="submit" name="btnHabilitar" value="Habilitar">
             </form>
         </td>

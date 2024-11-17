@@ -132,6 +132,17 @@
 <body>
 
 <h2 style="text-align: center;">Administrar solicitud alta cuentas</h2>
+
+<%
+    String mensaje = (String) request.getAttribute("mensaje");
+    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
+    if (mensaje != null && tipoMensaje != null) {
+%>
+    <div class="message-container <%= tipoMensaje %>">
+        <%= mensaje %>
+    </div>
+<% } %>
+
 <table>
 	    <thead>
 	        <tr>
@@ -180,15 +191,7 @@
 	</table>
 	
 	
-<%
-    String mensaje = (String) request.getAttribute("mensaje");
-    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
-    if (mensaje != null && tipoMensaje != null) {
-%>
-    <div class="message-container <%= tipoMensaje %>">
-        <%= mensaje %>
-    </div>
-<% } %>
+
 
 	<div class="volver-menu">
      <!-- Enlace para volver al menu -->

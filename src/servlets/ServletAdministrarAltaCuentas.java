@@ -114,6 +114,12 @@ public class ServletAdministrarAltaCuentas extends HttpServlet {
 
 	            boolean resultadoAlta = cuentaNegocio.altaCuenta(cuenta);
 
+	            if (resultadoAlta) {
+		            
+	            	request.setAttribute("mensaje", "Cuenta dada de alta exitosamente");
+	                request.setAttribute("tipoMensaje", "success");	               
+	               
+	            }
 	            System.out.println("[DEBUG] resultado alta cuenta: " + resultadoAlta);
 	            }
 	        }

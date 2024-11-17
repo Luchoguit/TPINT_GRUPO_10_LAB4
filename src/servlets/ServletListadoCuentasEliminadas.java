@@ -73,7 +73,29 @@ public class ServletListadoCuentasEliminadas extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     
- 
+    	
+    		CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
+    		String idclientestring = request.getParameter("idCliente");
+    		int idCliente = 0; 
+    	
+    	    if (idclientestring != null && !idclientestring.isEmpty()) {
+    	        idCliente = Integer.parseInt(idclientestring);}
+    	
+    	
+    	int cuentasActivas = cuentaNegocio.contarCuentasActivasPorUsuario(idCliente);
+    	
+    	System.out.println("[DEBUG] id cliente: " + idCliente);
+    	
+        if (cuentasActivas >= 3) {
+        
+        	request.setAttribute("mensaje", "El cliente ya tiene 3 cuentas activas.");
+            request.setAttribute("tipoMensaje", "error");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/AdministrarAltaCuentas.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+    	
+    	
         int idCuenta = 0;
         String idCuentaParam = request.getParameter("idCuenta");
 
@@ -92,7 +114,7 @@ public class ServletListadoCuentasEliminadas extends HttpServlet {
   
         System.out.println("[DEBUG] id cuenta: " + idCuenta);
 
-        CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
+        
         boolean resultado = cuentaNegocio.ActivarCuenta(idCuenta);
 
         if(resultado) {

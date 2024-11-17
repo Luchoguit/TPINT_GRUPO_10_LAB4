@@ -94,7 +94,10 @@ public class ServletListadoCuentas extends HttpServlet {
 
         CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
         boolean resultado = cuentaNegocio.eliminarCuenta(idCuenta);
-
+        if (resultado) {
+        request.setAttribute("mensaje", "Cuenta deshabilitada exitosamente.");
+        request.setAttribute("tipoMensaje", "success");
+        }
         System.out.println("[DEBUG] resultado: " + resultado);
 
         doGet(request, response);
