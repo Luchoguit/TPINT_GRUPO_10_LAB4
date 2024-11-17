@@ -3,6 +3,7 @@ package negocio;
 import java.util.List;
 
 import entidad.Cuenta;
+import entidad.Movimiento;
 import entidad.Usuario;
 
 public interface CuentaNegocio {
@@ -21,5 +22,7 @@ public interface CuentaNegocio {
 	int contarCuentasActivasPorUsuario(int id);
 	public boolean ActivarCuenta(int id);
 	boolean existeCuentaConCbu(String cbu);
+	boolean realizarTransferencia(Movimiento movimiento);
+	boolean actualizarSaldo(Movimiento movimiento, boolean salida);
 	
 }

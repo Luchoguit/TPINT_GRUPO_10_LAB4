@@ -121,9 +121,11 @@
 <body>
 
 <%Cuenta cuenta = null;
+	Cuenta cuentaDestino = null;
 	Usuario user = null;
 	if (request.getAttribute("Cuenta") != null){
 		cuenta = (Cuenta) request.getSession().getAttribute("cuenta");
+		cuentaDestino = (Cuenta) request.getSession().getAttribute("cuentaDestino");
 	}
 %>
 
@@ -192,22 +194,22 @@
 
 					
                 	<tr>
-					    <td><%= cuenta != null && cuenta.getUsuario() != null && cuenta.getUsuario().getNombreUsuario() != null && mismaCuenta == false
-					             ? cuenta.getUsuario().getNombreUsuario() 
+					    <td><%= cuenta != null && cuentaDestino.getUsuario() != null && cuentaDestino.getUsuario().getNombreUsuario() != null && mismaCuenta == false
+					             ? cuentaDestino.getUsuario().getNombreUsuario() 
 					             : "--" %></td>
-					    <td><%= cuenta != null && cuenta.getUsuario() != null && mismaCuenta == false
-					             ? cuenta.getUsuario().getIdCliente() 
+					    <td><%= cuenta != null && cuentaDestino.getUsuario() != null && mismaCuenta == false
+					             ? cuentaDestino.getUsuario().getIdCliente() 
 					             : "--" %></td>
 					    <td><%= cuenta != null && mismaCuenta == false
-					             ? cuenta.getId() 
+					             ? cuentaDestino.getId() 
 					             : "--" %></td>
-					    <td><%= cuenta != null && cuenta.getCbu() != null && mismaCuenta == false
-					             ? cuenta.getCbu() 
+					    <td><%= cuentaDestino != null && cuentaDestino.getCbu() != null && mismaCuenta == false
+					             ? cuentaDestino.getCbu() 
 					             : "--" %></td>
 					      	<td><form onsubmit="mostrarFormulario(event)">
-			                    <input type="hidden" name="CBU" value="<%= cuenta != null  ? cuenta.getCbu() : 0%>">
-			                    <% if (cuenta != null && cuenta.getCbu() != null && mismaCuenta == false) { %>
-        							<button type="button" onclick="realizarTransferencia()">Transferencia</button>
+			                    <input type="hidden" name="CBU" value="<%= cuentaDestino != null  ? cuentaDestino.getCbu() : 0%>">
+			                    <% if (cuentaDestino != null && cuentaDestino.getCbu() != null && mismaCuenta == false) { %>
+        							<button type="button" onclick="mostrarFormularioTransferencia()">Transferencia</button>
     							<% } %>
 		                		</form>
 		                	</td>
@@ -216,15 +218,18 @@
             </tbody>
         </table>
  
-   <div id="formularioMonto" style="display: none; margin-top: 15px; margin-left: 100px">
-	    <label for="monto">Monto $</label>
-	    <input type="number" id="monto" name="monto" placeholder="Ingrese el monto">
-	    <label>Concepto </label>
-	    <input type="text" id="concepto" name="concepto" placeholder="Opcional">
-	    <br>
-	    <br>
-	    <button type="button" onclick="aceptarTransferencia()">Aceptar</button>
-	</div>
+  <form  method="post" action="/TPINT_GRUPO_10_LAB4/servletTransferencia" style="display: flex; align-items: center; gap: 10px;">
+	   <div id="formularioMonto" style="display: none; margin-top: 15px; margin-left: 100px">
+		    <label for="monto">Monto $</label>
+		    <input type="number" id="monto" name="monto" placeholder="Ingrese el monto">
+		    <label>Concepto </label>
+		    <input type="text" id="concepto" name="concepto" placeholder="Opcional">
+		    <input type="hidden" name="CBUDestino" value="<%= cuenta != null  ? cuentaDestino.getCbu() : 0%>">
+		    <br>
+		    <br>
+		    <input type="submit" name="btnTransferir" value="Aceptar">
+		</div>
+	</form>
 	
 	 <div class="volver-menu">
     	 <!-- Enlace para volver al menu -->
@@ -236,7 +241,7 @@
 	
 </div>
 <script>
-    function mostrarFormulario(event) {
+    function mostrarFormularioTransferencia() {
         event.preventDefault(); // Evita el envío del formulario
         document.getElementById("formularioMonto").style.display = "block"; // Muestra el formulario de monto
     }
@@ -247,11 +252,6 @@
         
     }
     
-    
-    function realizarTransferencia(){
-   	 event.preventDefault(); // Evita el envío del formulario
-        document.getElementById("formularioMonto").style.display = "block"; // Muestra el formulario de monto
-   }
     
 	function soloNumeros(event) {
 	    var key = event.keyCode || event.which;

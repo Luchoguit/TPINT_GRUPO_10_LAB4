@@ -1,8 +1,10 @@
 package dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import entidad.Cuenta;
+import entidad.Movimiento;
 import entidad.Usuario;
 
 public interface CuentaDao {
@@ -19,5 +21,7 @@ public interface CuentaDao {
 	int contarCuentasActivasPorUsuario(int id);
 	boolean ActivarCuenta(int id);
 	boolean existeCuentaConCbu(String cbu);
+	boolean realizarTransferencia(Movimiento movimiento);
+	boolean actualizarSaldo(Movimiento movimiento, boolean salida);
 	
 }

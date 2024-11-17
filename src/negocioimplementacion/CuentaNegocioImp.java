@@ -5,6 +5,7 @@ import java.util.List;
 import dao.CuentaDao;
 import daoImplementacion.CuentaDaoImp;
 import entidad.Cuenta;
+import entidad.Movimiento;
 import entidad.Usuario;
 import negocio.CuentaNegocio;
 
@@ -66,6 +67,16 @@ public class CuentaNegocioImp implements CuentaNegocio{
 	@Override
 	public boolean existeCuentaConCbu(String cbu) {
 		return cuentaDao.existeCuentaConCbu(cbu);
+	}
+
+	@Override
+	public boolean realizarTransferencia(Movimiento movimiento) {
+		return cuentaDao.realizarTransferencia(movimiento);
+	}
+
+	@Override
+	public boolean actualizarSaldo(Movimiento movimiento, boolean salida) {
+		return cuentaDao.actualizarSaldo(movimiento, salida);
 	};
 	
 	

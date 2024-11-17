@@ -15,6 +15,7 @@ import dao.CuentaDao;
 import entidad.Cliente;
 import entidad.Cuenta;
 import entidad.Localidad;
+import entidad.Movimiento;
 import entidad.Provincia;
 import entidad.TipoCuenta;
 import entidad.Usuario;
@@ -462,5 +463,106 @@ public class CuentaDaoImp implements CuentaDao {
 	    }
 		
 		return resultado;
+	}
+
+	
+	private static final String qryInsertMovimiento = "INSERT INTO movimientos (id_cuenta, id_tipoMovimiento, detalle, fechaHora, importe, id_cuentaDestino, Saldo_disponible) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+	
+	@Override
+	public boolean realizarTransferencia(Movimiento movimiento) {
+		
+		PreparedStatement statement;
+        Connection conexion = Conexion.getConexion().getSQLConexion();
+        boolean isInsertExitoso = false;
+
+        try {
+            
+
+            BigDecimal saldoActualizado = movimiento.getCuentaDestino().getSaldo().subtract(movimiento.getImporte());
+            //BigDecimal saldoActualizado = new BigDecimal(movimiento.getCuentaDestino().getSaldo().doubleValue() - movimiento.getImporte().doubleValue());
+        	
+            if(saldoActualizado.floatValue() >= 0.00)
+            {
+                statement = conexion.prepareStatement(qryInsertMovimiento);
+                
+                // Seteando los parámetros de la consulta
+                statement.setInt(1,  movimiento.getCuentaOrigen().getId());
+                statement.setInt(2, movimiento.getTipoMovimiento().getId());
+                statement.setString(3, movimiento.getDetalle());
+                statement.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+                statement.setBigDecimal(5, movimiento.getImporte());
+                statement.setInt(6,  movimiento.getCuentaDestino().getId());
+                statement.setBigDecimal(7, saldoActualizado);
+              
+
+                // Ejecución de la consulta
+                if (statement.executeUpdate() > 0) {
+                    conexion.commit(); // Confirmar la transacción si todo va bien
+                    isInsertExitoso = true;
+                }
+            }
+            
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                conexion.rollback(); // Revertir la transacción en caso de error
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        } finally {
+            Conexion.getConexion().cerrarConexion(); // Cerrar la conexión
+        }
+        
+        return isInsertExitoso;
+	}
+
+	
+	private static final String qryActualizarSaldo = "UPDATE cuentas SET saldo = ? WHERE id = ?";
+	
+	@Override
+	public boolean actualizarSaldo(Movimiento movimiento, boolean salida) {
+		try (Connection con = Conexion.getConexion().getSQLConexion();
+		          PreparedStatement statement = con.prepareStatement(qryActualizarSaldo)) {
+
+		
+		         if (!con.getAutoCommit()) {
+		             con.setAutoCommit(true); 
+		             System.out.println("[DEBUG] Autocommit habilitado");
+		         }
+		         
+		         
+		         
+		         if(salida == true)
+		         {
+		        	 BigDecimal saldoActualizado = movimiento.getCuentaOrigen().getSaldo().subtract(movimiento.getImporte());
+		        	 statement.setBigDecimal(1, saldoActualizado);
+		        	 statement.setInt(2, movimiento.getCuentaOrigen().getId());
+		         }
+		         else {
+		        	 BigDecimal saldoActualizado = movimiento.getCuentaOrigen().getSaldo().add(movimiento.getImporte());
+		        	 statement.setBigDecimal(1, saldoActualizado);
+		        	 statement.setInt(2, movimiento.getCuentaDestino().getId());
+		         }
+		         
+
+		         int rowsAffected = statement.executeUpdate();
+		         System.out.println("[DEBUG] filas afectadas: " + rowsAffected);
+
+		         if (rowsAffected > 0 && !con.getAutoCommit()) {
+		             con.commit();  
+		             System.out.println("[DEBUG] Commit realizado");
+		         }
+
+		         return rowsAffected > 0;
+
+		     } catch (SQLException e) {
+		         e.printStackTrace();
+			    } finally {
+			        Conexion.getConexion().cerrarConexion();
+			    }
+		     
+		     return false;
 	}
 }

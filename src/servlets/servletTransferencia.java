@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import entidad.Cuenta;
+import entidad.Movimiento;
+import entidad.TipoMovimiento;
 import negocio.CuentaNegocio;
 import negocioimplementacion.CuentaNegocioImp;
 
@@ -32,8 +36,8 @@ public class servletTransferencia extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+
+
 	}
 
 	/**
@@ -83,31 +87,77 @@ public class servletTransferencia extends HttpServlet {
 				System.out.println("Son distintos CBU");
 				System.out.println(cuentaCliente.getCbu());
 				System.out.println(cbu);
+				
 			}
 
-
-			
 			cuenta = cuentaNegocio.obtenerCuentaPorCBU(cbu);
+			Cuenta cuentaDestino = cuentaNegocio.obtenerCuentaPorCBU(cbu);
+			request.getSession().setAttribute("cuentaDestino", cuentaDestino);
+			
+			request.getSession().setAttribute("cbuDestino", cbu);
 			
 			if (cuenta != null) {
 				request.setAttribute("Cuenta", cuenta);
 			}
-			
-			RequestDispatcher rd = request.getRequestDispatcher("VentanasUser/Transferencias.jsp");
-			rd.forward(request, response);
 
 		}
 		
-		else {
-			request.setAttribute("mensaje", "Debe seleccionar un cbu Valido");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/servletTransferencia");
-            request.setAttribute("tipoMensaje", "error");
-            dispatcher.forward(request, response);
+		
+		if(request.getParameter("btnTransferir") != null)
+		{
 			
+			CuentaNegocioImp negocioImp = new CuentaNegocioImp();
 			
+			Cuenta cuentaOrigen = (Cuenta) request.getSession().getAttribute("cuenta");
+			
+			TipoMovimiento tipoMovimiento = new TipoMovimiento(4, "Transferencia");
+			
+			String detalle = request.getParameter("concepto");
+			LocalDateTime fechaHora = LocalDateTime.now();
+			BigDecimal importe = new BigDecimal(request.getParameter("monto"));
+			String cbuDestino = (String) request.getSession().getAttribute("cbuDestino");
+			Cuenta cuentaDestino = negocioImp.obtenerCuentaPorCBU(cbuDestino);
+			
+			System.out.println("CBU capturado: " + cbuDestino);
+			System.out.println("Datos de la cuenta destino");
+			System.out.println(cuentaDestino.getCbu());
+			System.out.println(cuentaDestino.getNumeroCuenta());
+			System.out.println(cuentaDestino.getSaldo());
+			
+			Movimiento movimiento = new Movimiento(1, cuentaOrigen, tipoMovimiento, detalle, fechaHora, importe, cuentaDestino);
+			
+			BigDecimal saldoActualizado = movimiento.getCuentaDestino().getSaldo().subtract(movimiento.getImporte());
+			
+			if(saldoActualizado.floatValue() >= 0.00)
+			{
+				if(negocioImp.realizarTransferencia(movimiento))
+				{	
+					//Actualizamos saldo cuenta origen
+					negocioImp.actualizarSaldo(movimiento, true);
+					
+					//Actualzamos saldo cuenta destino
+					Movimiento movimientoDestino = new Movimiento(1, cuentaDestino, tipoMovimiento, detalle, fechaHora, importe, cuentaOrigen);
+					negocioImp.actualizarSaldo(movimientoDestino, false);
+					
+					request.setAttribute("mensaje", "Transferencia realizada exitosamente");
+		            request.setAttribute("tipoMensaje", "success");
+				}
+				else
+				{
+					request.setAttribute("mensaje", "Ha ocurrido un error al transferir");
+		            request.setAttribute("tipoMensaje", "error");
+				}
+			}
+			else 
+			{
+				request.setAttribute("mensaje", "Saldo insuficiente");
+	            request.setAttribute("tipoMensaje", "error");
+			}
 			
 		}
 		
+		RequestDispatcher rd = request.getRequestDispatcher("VentanasUser/Transferencias.jsp");
+		rd.forward(request, response);
 	}
 
 }
