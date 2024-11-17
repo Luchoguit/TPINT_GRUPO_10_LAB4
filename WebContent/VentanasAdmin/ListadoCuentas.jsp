@@ -156,7 +156,7 @@
             <% } %>
         </td>
         <td>
-            <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoCuentas">
+            <form onsubmit="return confirmarEliminacion()" method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoCuentas">
                 <input type="hidden" name="idCuenta" value="<%= cuenta.getId() %>">
                 <input type="submit" name="btnEliminar" value="Deshabilitar">
             </form>
@@ -178,4 +178,13 @@
      </div>
 
 </body>
+<script type="text/javascript">
+        function confirmarEliminacion() {
+            
+            var respuesta = confirm("Estas seguro de que deseas eliminar esta cuenta?");
+            return respuesta;  
+        }
+    </script>
+
+
 </html>
