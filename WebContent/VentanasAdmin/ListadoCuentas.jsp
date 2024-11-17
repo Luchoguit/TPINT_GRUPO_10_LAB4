@@ -100,7 +100,7 @@
 
 <div class="filter-container">
     <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoCuentas">
-        <input type="text" name="filtroCliente" placeholder="Ingrese DNI del titular o numero de cuenta">
+        <input type="text" name="filtroCliente" placeholder="Ingrese DNI del titular , nombre o apellido">
         <input type="submit" name="btnFiltrar" value="Filtrar">
     </form>
 </div>
