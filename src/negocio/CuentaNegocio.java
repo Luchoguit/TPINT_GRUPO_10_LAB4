@@ -20,4 +20,6 @@ public interface CuentaNegocio {
 	Cuenta obtenerCuentaPorCBU(String cbu);
 	int contarCuentasActivasPorUsuario(int id);
 	public boolean ActivarCuenta(int id);
+	boolean existeCuentaConCbu(String cbu);
+	
 }

@@ -433,7 +433,34 @@ public class CuentaDaoImp implements CuentaDao {
 	    // Devolvemos solo la lista de cuentas
 	    return listaCuentas;
 	}
+	
+	
+	private static final String qryExisteCbu = "select id FROM cuentas where cbu = ? and estado = true";
+	
+	public boolean existeCuentaConCbu(String cbu)
+	{
+		boolean resultado = false;
+		int id = 0;
 		
-		
-}
+		try 
+		{
+			Connection con = Conexion.getConexion().getSQLConexion();
+			PreparedStatement statement = con.prepareStatement(qryObtenerCuentaPorCBU);
+			statement.setString(1, cbu);
+			
+			ResultSet resultSet = statement.executeQuery();
 
+	        if (resultSet.next()) {
+	            id = resultSet.getInt(1); 
+	            resultado = true;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    finally {
+	    	Conexion.getConexion().cerrarConexion();
+	    }
+		
+		return resultado;
+	}
+}

@@ -96,6 +96,25 @@
 		    background-color: #0056b3;   
 		 }
         
+        /* Estilos para el contenedor de mensajes */
+        .message-container {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
         
     </style>
 </head>
@@ -104,14 +123,11 @@
 <%Cuenta cuenta = null;
 	Usuario user = null;
 	if (request.getAttribute("Cuenta") != null){
-		cuenta = (Cuenta)request.getAttribute("Cuenta");
+		cuenta = (Cuenta) request.getSession().getAttribute("cuenta");
 	}
 %>
 
 <h2 style="text-align: center;">Transferir</h2>
-
-<div>
-<div class="container" style="margin-left: 100px">
 
 		<% 
 		    String mensaje = (String) request.getAttribute("mensaje");
@@ -123,6 +139,11 @@
 		    </div>
 		<% } %>
 
+<div>
+<div class="container" style="margin-left: 100px">
+
+	
+
 
     <form  method="post" action="/TPINT_GRUPO_10_LAB4/servletTransferencia" style="display: flex; align-items: center; gap: 10px;">
         <h2 style="text-align: center; margin: 10;">CBU </h2>
@@ -130,7 +151,28 @@
         <input type="submit" name="btnCBU" value="Buscar" style="margin-left: 5px">
     </form>
 </div>
+		
+		<% 
+		
+		boolean mismaCuenta = false;
+		if(request.getParameter("inputCBU") != null)
+		{
+			String cbuIngresado = request.getParameter("inputCBU");
+			System.out.println("CBU Ingresado: " + cbuIngresado);
+			System.out.println("CBU de cuenta actual: " + cuenta.getCbu());
+			
+			if(cbuIngresado.equals(cuenta.getCbu()))
+			{
+				System.out.println("Si vez este mensaje son la misma cuenta");
+				mismaCuenta = true;
+			}
 
+			else{
+				System.out.println("Si vez este mensaje no deberian ser la misma cuenta");
+			}
+		}
+
+		%>
 
         
         <!-- Tabla de datos del CBU -->
@@ -145,23 +187,26 @@
                 </tr>
             </thead>
             <tbody>
+					
+	
 
+					
                 	<tr>
-					    <td><%= cuenta != null && cuenta.getUsuario() != null && cuenta.getUsuario().getNombreUsuario() != null 
+					    <td><%= cuenta != null && cuenta.getUsuario() != null && cuenta.getUsuario().getNombreUsuario() != null && mismaCuenta == false
 					             ? cuenta.getUsuario().getNombreUsuario() 
 					             : "--" %></td>
-					    <td><%= cuenta != null && cuenta.getUsuario() != null 
+					    <td><%= cuenta != null && cuenta.getUsuario() != null && mismaCuenta == false
 					             ? cuenta.getUsuario().getIdCliente() 
 					             : "--" %></td>
-					    <td><%= cuenta != null 
+					    <td><%= cuenta != null && mismaCuenta == false
 					             ? cuenta.getId() 
 					             : "--" %></td>
-					    <td><%= cuenta != null && cuenta.getCbu() != null 
+					    <td><%= cuenta != null && cuenta.getCbu() != null && mismaCuenta == false
 					             ? cuenta.getCbu() 
 					             : "--" %></td>
 					      	<td><form onsubmit="mostrarFormulario(event)">
-			                    <input type="hidden" name="CBU" value="<%= cuenta != null ? cuenta.getCbu() : 0%>">
-			                    <% if (cuenta != null) { %>
+			                    <input type="hidden" name="CBU" value="<%= cuenta != null  ? cuenta.getCbu() : 0%>">
+			                    <% if (cuenta != null && cuenta.getCbu() != null && mismaCuenta == false) { %>
         							<button type="button" onclick="realizarTransferencia()">Transferencia</button>
     							<% } %>
 		                		</form>
@@ -201,6 +246,12 @@
         alert("Transferencia aceptada por $" + monto);
         
     }
+    
+    
+    function realizarTransferencia(){
+   	 event.preventDefault(); // Evita el envío del formulario
+        document.getElementById("formularioMonto").style.display = "block"; // Muestra el formulario de monto
+   }
 </script>
 
 </body>

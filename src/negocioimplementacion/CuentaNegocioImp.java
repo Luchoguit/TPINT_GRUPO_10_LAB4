@@ -61,6 +61,13 @@ public class CuentaNegocioImp implements CuentaNegocio{
 	@Override
 	public List<Cuenta> listarTodasLasCuentasEliminadas(){
 		return cuentaDao.listarTodasLasCuentasEliminadas();
+	}
+
+	@Override
+	public boolean existeCuentaConCbu(String cbu) {
+		return cuentaDao.existeCuentaConCbu(cbu);
 	};
+	
+	
 
 }

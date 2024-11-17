@@ -18,4 +18,6 @@ public interface CuentaDao {
 	Cuenta obtenerCuentaPorCBU(String cbu);
 	int contarCuentasActivasPorUsuario(int id);
 	boolean ActivarCuenta(int id);
+	boolean existeCuentaConCbu(String cbu);
+	
 }

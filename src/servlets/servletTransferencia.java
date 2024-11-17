@@ -42,9 +42,50 @@ public class servletTransferencia extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		if(request.getParameter("btnCBU") != null) {
+			
 			String cbu = request.getParameter("inputCBU");
 			CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
 			Cuenta cuenta = new Cuenta();
+			
+			boolean existeCuentaConCbu = cuentaNegocio.existeCuentaConCbu(cbu); 
+			
+			if(request.getSession().getAttribute("cuenta") != null)
+			{
+				System.out.println("Llego una cuenta");
+				Cuenta cuentaCliente = (Cuenta) request.getSession().getAttribute("cuenta");
+				System.out.println(cuentaCliente.getCbu());
+			}
+			
+			Cuenta cuentaCliente = (Cuenta) request.getSession().getAttribute("cuenta");
+			
+			
+			if(existeCuentaConCbu == false)
+			{
+				System.out.println("CBU Invalido");
+				request.setAttribute("mensaje", "Debe seleccionar un cbu Valido");
+	            request.setAttribute("tipoMensaje", "error");
+			}
+			else {
+				System.out.println("CBU valido");
+			}
+			
+			if(cuentaCliente.getCbu().equals(cbu))
+			{
+				System.out.println("Son el mismo CBU");
+				request.setAttribute("mensaje", "No puede transferir a la misma cuenta en uso");
+	            request.setAttribute("tipoMensaje", "error");
+				System.out.println(cuentaCliente.getCbu());
+				System.out.println(cbu);
+				request.setAttribute("mismaCuenta", "error");
+				
+			}
+			else {
+				System.out.println("Son distintos CBU");
+				System.out.println(cuentaCliente.getCbu());
+				System.out.println(cbu);
+			}
+
+
 			
 			cuenta = cuentaNegocio.obtenerCuentaPorCBU(cbu);
 			
