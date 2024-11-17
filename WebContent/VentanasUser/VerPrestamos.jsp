@@ -36,6 +36,28 @@
             background-color: #f4f4f4;
             cursor: pointer;
         }
+        
+        
+      .volver-menu {
+		    display: flex;               
+		    justify-content: center;     
+		    align-items: center;                     
+		}
+        
+     .btn-volver {
+		    background-color: #007bff;   
+		    color: white;                
+		    padding: 10px 20px;          
+		    border: none;                
+		    border-radius: 5px;          
+		    font-size: 16px;             
+		    cursor: pointer;            
+		    transition: background-color 0.3s ease;  
+		}
+		
+		.btn-volver:hover {
+		    background-color: #0056b3;   
+		 }
     </style>
 </head>
 <body>
@@ -75,6 +97,13 @@
     <div class="action-buttons">
         <a href="/TPINT_GRUPO_10_LAB4/ServletPedirPrestamo">Solicitar nuevo Préstamo</a>
     </div>
+    
+   	<div class="volver-menu">
+    	 <!-- Enlace para volver al menu -->
+		<a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexCuenta.jsp" class="volver-menu">
+			<input type="button" value="Volver a cuenta" class="btn-volver">
+		</a>
+     </div>
 
 </body>
 </html>
