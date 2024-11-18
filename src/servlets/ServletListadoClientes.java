@@ -59,8 +59,29 @@ public class ServletListadoClientes extends HttpServlet {
            }
        }
         
-        request.setAttribute("listaClientes", listaClientes);
+       // Manejo de paginación
+       int registrosPorPagina = 5;
+       int paginaActual = 1;
 
+       // Obtener el número de pagina actual desde la request
+       String pageParam = request.getParameter("page");
+       if (pageParam != null && !pageParam.isEmpty()) {
+    	   paginaActual = Integer.parseInt(pageParam);
+       }
+
+       // Calcular los indices para la sublista de Clientes
+       int totalRecords = listaClientes.size();
+       int totalPaginas = (int) Math.ceil((double) totalRecords / registrosPorPagina);
+       int startIndex = (paginaActual - 1) * registrosPorPagina;
+       int endIndex = Math.min(startIndex + registrosPorPagina, totalRecords);
+
+       // Sublista de clientes para la pagina actual
+       List<Cliente> clientesPagina = listaClientes.subList(startIndex, endIndex);
+
+       // Pasar atributos a la vista
+       request.setAttribute("listaClientes", clientesPagina);
+       request.setAttribute("totalPaginas", totalPaginas);
+       request.setAttribute("paginaActual", paginaActual);
        
         RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/ListadoClientes.jsp");
         dispatcher.forward(request, response);

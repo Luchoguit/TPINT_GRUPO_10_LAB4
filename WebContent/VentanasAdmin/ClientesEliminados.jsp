@@ -73,6 +73,40 @@
             border: 1px solid #f5c6cb;
         }
         
+          		/* Estilos para los controles para la paginacion */
+        
+        .pagination {
+		    text-align: center;
+		    margin: 20px 0;
+		}
+		
+		.pagination-link {
+		    display: inline-block;
+		    margin: 0 5px;
+		    padding: 10px 15px;
+		    text-decoration: none;
+		    color: #007bff;
+		    border: 1px solid #ddd;
+		    border-radius: 5px;
+		    transition: background-color 0.3s, color 0.3s;
+		}
+		
+		.pagination-link:hover {
+		    background-color: #007bff;
+		    color: #fff;
+		}
+		
+		.pagination-current {
+		    display: inline-block;
+		    margin: 0 5px;
+		    padding: 10px 15px;
+		    font-weight: bold;
+		    color: #fff;
+		    background-color: #007bff;
+		    border: 1px solid #007bff;
+		    border-radius: 5px;
+		}
+        
     </style>
 </head>
 <body>
@@ -96,6 +130,11 @@
         <input type="submit" name="btnFiltrar" value="Filtrar">
     </form>
 </div>
+
+		<% // Datos para paginacion
+	    int paginaActual = (int) request.getAttribute("paginaActual");
+	    int totalPaginas = (int) request.getAttribute("totalPaginas");
+		%>
 
 <table>
     <tr>
@@ -135,6 +174,23 @@
     </tr>
     <% } %>
 </table>
+
+<!-- Controles de paginación -->
+<div class="pagination">
+    <% if (paginaActual > 1) { %>
+        <a href="?page=<%= paginaActual - 1 %>" class="pagination-link">&laquo; Anterior</a>
+    <% }
+     for (int i = 1; i <= totalPaginas; i++) { %>
+        <% if (i == paginaActual) { %>
+            <span class="pagination-current"><%= i %></span>
+        <% } else { %>
+            <a href="?page=<%= i %>" class="pagination-link"><%= i %></a>
+        <% } 
+     } %>
+    <% if (paginaActual < totalPaginas) { %>
+        <a href="?page=<%= paginaActual + 1 %>" class="pagination-link">Siguiente &raquo;</a>
+    <% } %>
+</div>
 
 	<!-- Enlace para volver al menu -->
     <a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp" class="volver-menu">
