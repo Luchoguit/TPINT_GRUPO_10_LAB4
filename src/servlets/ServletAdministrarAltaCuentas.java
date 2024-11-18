@@ -62,8 +62,31 @@ public class ServletAdministrarAltaCuentas extends HttpServlet {
             }
         }
     }
+    
+    // Manejo de paginación
+    int registrosPorPagina = 5;
+    int paginaActual = 1;
+
+    // Obtener el número de pagina actual desde la request
+    String pageParam = request.getParameter("page");
+    if (pageParam != null && !pageParam.isEmpty()) {
+ 	   paginaActual = Integer.parseInt(pageParam);
+    }
+
+    // Calcular los indices para la sublista de Clientes
+    int totalRecords = listaSolicitudes.size();
+    int totalPaginas = (int) Math.ceil((double) totalRecords / registrosPorPagina);
+    int startIndex = (paginaActual - 1) * registrosPorPagina;
+    int endIndex = Math.min(startIndex + registrosPorPagina, totalRecords);
+
+    // Sublista de clientes para la pagina actual
+    List<SolicitudAltaCuenta> solicitudesPagina = listaSolicitudes.subList(startIndex, endIndex);
+
+    // Pasar atributos a la vista
+    request.setAttribute("listaSolicitudes", solicitudesPagina);
+    request.setAttribute("totalPaginas", totalPaginas);
+    request.setAttribute("paginaActual", paginaActual);
 	
-	request.setAttribute("listaSolicitudes", listaSolicitudes);
 	
     RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasAdmin/AdministrarAltaCuentas.jsp");
     dispatcher.forward(request, response);

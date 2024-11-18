@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import entidad.Cliente;
 import entidad.Cuenta;
 import entidad.Prestamo;
 import entidad.SolicitudAltaCuenta;
@@ -36,7 +37,31 @@ public class ServletSolicitudesPrestamos extends HttpServlet {
 		PrestamoNegocio prestamoNegocio = new PrestamoNegocioImp();
 		List<Prestamo> listaPrestamos = prestamoNegocio.listarPrestamos();
 		
-		request.setAttribute("listaPrestamos", listaPrestamos);
+		
+	       // Manejo de paginación
+	       int registrosPorPagina = 5;
+	       int paginaActual = 1;
+
+	       // Obtener el número de pagina actual desde la request
+	       String pageParam = request.getParameter("page");
+	       if (pageParam != null && !pageParam.isEmpty()) {
+	    	   paginaActual = Integer.parseInt(pageParam);
+	       }
+
+	       // Calcular los indices para la sublista de Clientes
+	       int totalRecords = listaPrestamos.size();
+	       int totalPaginas = (int) Math.ceil((double) totalRecords / registrosPorPagina);
+	       int startIndex = (paginaActual - 1) * registrosPorPagina;
+	       int endIndex = Math.min(startIndex + registrosPorPagina, totalRecords);
+
+	       // Sublista de clientes para la pagina actual
+	       List<Prestamo> prestamosPagina = listaPrestamos.subList(startIndex, endIndex);
+
+	       // Pasar atributos a la vista
+	       request.setAttribute("listaPrestamos", prestamosPagina);
+	       request.setAttribute("totalPaginas", totalPaginas);
+	       request.setAttribute("paginaActual", paginaActual);
+		
 		
         RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/AdministrarPrestamos.jsp");
         dispatcher.forward(request, response);

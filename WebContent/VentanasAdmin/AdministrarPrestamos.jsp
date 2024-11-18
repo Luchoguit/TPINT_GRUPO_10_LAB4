@@ -4,9 +4,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html lang="es">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta charset="ISO-8859-1">
 <title>AdministrarPrestamos</title>
 <style>
 		table {
@@ -91,6 +91,42 @@
 		.btn-volver:hover {
 		    background-color: #0056b3;   
 		}
+		
+		
+          		/* Estilos para los controles para la paginacion */
+        
+        .pagination {
+		    text-align: center;
+		    margin: 20px 0;
+		}
+		
+		.pagination-link {
+		    display: inline-block;
+		    margin: 0 5px;
+		    padding: 10px 15px;
+		    text-decoration: none;
+		    color: #007bff;
+		    border: 1px solid #ddd;
+		    border-radius: 5px;
+		    transition: background-color 0.3s, color 0.3s;
+		}
+		
+		.pagination-link:hover {
+		    background-color: #007bff;
+		    color: #fff;
+		}
+		
+		.pagination-current {
+		    display: inline-block;
+		    margin: 0 5px;
+		    padding: 10px 15px;
+		    font-weight: bold;
+		    color: #fff;
+		    background-color: #007bff;
+		    border: 1px solid #007bff;
+		    border-radius: 5px;
+		}
+		
     
 </style>
 </head>
@@ -101,6 +137,10 @@
 
 <h2 style="text-align: center;">Administrar Préstamos</h2>
 
+		<% // Datos para paginacion
+	    int paginaActual = (int) request.getAttribute("paginaActual");
+	    int totalPaginas = (int) request.getAttribute("totalPaginas");
+		%>
 
 <table>
     <thead>
@@ -149,6 +189,24 @@
      <% } } %>
     </tbody>
 </table>
+
+
+<!-- Controles de paginación -->
+<div class="pagination">
+    <% if (paginaActual > 1) { %>
+        <a href="?page=<%= paginaActual - 1 %>" class="pagination-link">&laquo; Anterior</a>
+    <% }
+     for (int i = 1; i <= totalPaginas; i++) { %>
+        <% if (i == paginaActual) { %>
+            <span class="pagination-current"><%= i %></span>
+        <% } else { %>
+            <a href="?page=<%= i %>" class="pagination-link"><%= i %></a>
+        <% } 
+     } %>
+    <% if (paginaActual < totalPaginas) { %>
+        <a href="?page=<%= paginaActual + 1 %>" class="pagination-link">Siguiente &raquo;</a>
+    <% } %>
+</div>
 
         <!-- Enlace para volver al menu -->
     <a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp" class="volver-menu">

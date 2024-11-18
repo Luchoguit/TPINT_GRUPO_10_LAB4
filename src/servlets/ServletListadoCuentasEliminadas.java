@@ -24,47 +24,50 @@ public class ServletListadoCuentasEliminadas extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
-    	
-    	CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
-        ClienteNegocio clienteNegocio = new ClienteNegocioImp();
+        CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
         String filtroCliente = request.getParameter("filtroCliente");
-    
-        List<Cuenta> cuentas = cuentaNegocio.listarTodasLasCuentasEliminadas(); 
-        List<Cliente> clientes = clienteNegocio.listarClientes(); 
-        
-        
-        List<Cliente> clientesFiltrados = new ArrayList<>();
-        List<Cuenta> cuentasFiltradas = new ArrayList<>();
-        
-        if (filtroCliente != null && !filtroCliente.trim().isEmpty()) {
 
-            for (Cliente cliente : clientes) {
+        List<Cuenta> cuentas = cuentaNegocio.listarTodasLasCuentasEliminadas();
+
+        List<Cuenta> cuentasFiltradas = new ArrayList<>();
+
+        if (filtroCliente != null && !filtroCliente.trim().isEmpty()) {
+            for (Cuenta cuenta : cuentas) {
+                Cliente cliente = cuenta.getUsuario().getCliente(); 
                 if (cliente.getDni().contains(filtroCliente) ||
                     cliente.getNombre().toLowerCase().contains(filtroCliente.toLowerCase()) ||
                     cliente.getApellido().toLowerCase().contains(filtroCliente.toLowerCase())) {
-                    
-                   
-                    clientesFiltrados.add(cliente);
-
-                    
-                    for (Cuenta cuenta : cuentas) {
-                        if (cuenta.getUsuario().getCliente().getId() == cliente.getId()) {
-                           
-                            cuentasFiltradas.add(cuenta);
-                        }
-                    }
+                    cuentasFiltradas.add(cuenta);
                 }
             }
         } else {
-          
-            clientesFiltrados = clientes;
             cuentasFiltradas = cuentas;
         }
+        
+     // Manejo de paginación
+        int registrosPorPagina = 5;
+        int paginaActual = 1;
 
-        
-        request.setAttribute("clientesFiltrados", clientesFiltrados);
-        request.setAttribute("cuentasFiltradas", cuentasFiltradas);
-        
+        // Obtener el número de pagina actual desde la request
+        String pageParam = request.getParameter("page");
+        if (pageParam != null && !pageParam.isEmpty()) {
+     	   paginaActual = Integer.parseInt(pageParam);
+        }
+
+        // Calcular los indices para la sublista de Clientes
+        int totalRecords = cuentasFiltradas.size();
+        int totalPaginas = (int) Math.ceil((double) totalRecords / registrosPorPagina);
+        int startIndex = (paginaActual - 1) * registrosPorPagina;
+        int endIndex = Math.min(startIndex + registrosPorPagina, totalRecords);
+
+        // Sublista de clientes para la pagina actual
+        List<Cuenta> cuentasPagina = cuentasFiltradas.subList(startIndex, endIndex);
+
+        // Pasar atributos a la vista
+        request.setAttribute("listaCuentas", cuentasPagina);
+        request.setAttribute("totalPaginas", totalPaginas);
+        request.setAttribute("paginaActual", paginaActual);
+
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/ListadoCuentasEliminadas.jsp");
         dispatcher.forward(request, response);
