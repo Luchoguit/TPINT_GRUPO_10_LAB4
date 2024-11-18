@@ -103,12 +103,47 @@
 	.btn-volver:hover {
 		    background-color: #0056b3;   
 		}
+		
+		
+  		/* Estilos para los controles para la paginacion */
+        
+        .pagination {
+		    text-align: center;
+		    margin: 20px 0;
+		}
+		
+		.pagination-link {
+		    display: inline-block;
+		    margin: 0 5px;
+		    padding: 10px 15px;
+		    text-decoration: none;
+		    color: #007bff;
+		    border: 1px solid #ddd;
+		    border-radius: 5px;
+		    transition: background-color 0.3s, color 0.3s;
+		}
+		
+		.pagination-link:hover {
+		    background-color: #007bff;
+		    color: #fff;
+		}
+		
+		.pagination-current {
+		    display: inline-block;
+		    margin: 0 5px;
+		    padding: 10px 15px;
+		    font-weight: bold;
+		    color: #fff;
+		    background-color: #007bff;
+		    border: 1px solid #007bff;
+		    border-radius: 5px;
+		}
     
 </style>
 </head>
 <body>
 
-<h2 style="text-align: center;">Cuentas de clientes</h2>
+<h2 style="text-align: center;">Lista de cuentas</h2>
 
 <% 
 		    String mensaje = (String) request.getAttribute("mensaje");
@@ -127,11 +162,16 @@
 </div>
 
 <div class="filter-container">
-    <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoCuentas">
+    <form method="get" action="/TPINT_GRUPO_10_LAB4/ServletListadoCuentas">
         <input type="text" name="filtroCliente" placeholder="Ingrese DNI del titular , nombre o apellido">
         <input type="submit" name="btnFiltrar" value="Filtrar">
     </form>
 </div>
+
+		<% // Datos para paginacion
+	    int paginaActual = (int) request.getAttribute("paginaActual");
+	    int totalPaginas = (int) request.getAttribute("totalPaginas");
+		%>
 
 <table>
     <tr>
@@ -147,29 +187,17 @@
 
 
   <%
-        List<Cuenta> listaCuentas = (List<Cuenta>) request.getAttribute("cuentasFiltradas");
-        List<Cliente> listaClientes = (List<Cliente>) request.getAttribute("clientesFiltrados");  
+        List<Cuenta> listaCuentas = (List<Cuenta>) request.getAttribute("listaCuentas"); 
 
-        if (listaCuentas != null && listaClientes != null) {
-           System.out.println("entramos al for");
-            for (Cuenta cuenta : listaCuentas) {
-                Cliente cliente = null;
-
-                
-                for (Cliente c : listaClientes) {
-                    if (c.getId() == cuenta.getUsuario().getIdCliente()) {
-                        cliente = c;
-                        
-                        break;
-                    }
-                }
+  if (listaCuentas != null) {
+      for (Cuenta cuenta : listaCuentas) {
     %>
     <tr>
         <td><%= cuenta.getTipoCuenta().getDescripcion() %></td>
         <td><%= cuenta.getNumeroCuenta() %></td>
-        <td><%= cliente != null ? cliente.getDni() : "No encontrado" %></td>
-        <td><%= cliente != null ? cliente.getNombre() : "No encontrado" %></td> <!-- Mostrar nombre -->
-        <td><%= cliente != null ? cliente.getApellido() : "No encontrado" %></td> <!-- Mostrar apellido -->
+        <td><%= cuenta.getUsuario().getCliente().getDni() %></td>
+        <td><%= cuenta.getUsuario().getCliente().getNombre() %></td>
+        <td><%= cuenta.getUsuario().getCliente().getApellido() %></td>
         <td>
             <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletMovimientos">
                 <input type="hidden" name="idCuenta" value="<%= cuenta.getId() %>">
@@ -197,6 +225,23 @@
 
 
 </table>
+
+<!-- Controles de paginación -->
+<div class="pagination">
+    <% if (paginaActual > 1) { %>
+        <a href="?page=<%= paginaActual - 1 %>" class="pagination-link">&laquo; Anterior</a>
+    <% }
+     for (int i = 1; i <= totalPaginas; i++) { %>
+        <% if (i == paginaActual) { %>
+            <span class="pagination-current"><%= i %></span>
+        <% } else { %>
+            <a href="?page=<%= i %>" class="pagination-link"><%= i %></a>
+        <% } 
+     } %>
+    <% if (paginaActual < totalPaginas) { %>
+        <a href="?page=<%= paginaActual + 1 %>" class="pagination-link">Siguiente &raquo;</a>
+    <% } %>
+</div>
 
 	<div class="volver-menu">
      <!-- Enlace para volver al menu -->

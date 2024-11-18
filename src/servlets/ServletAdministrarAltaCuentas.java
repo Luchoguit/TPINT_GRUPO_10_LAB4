@@ -93,7 +93,7 @@ public class ServletAdministrarAltaCuentas extends HttpServlet {
 
 	            // Validar cuántas cuentas activas tiene el usuario
 	            CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
-	            int cuentasActivas = cuentaNegocio.contarCuentasActivasPorUsuario(user.getIdCliente());
+	            int cuentasActivas = cuentaNegocio.contarCuentasActivasPorUsuario(user.getCliente().getId());
 
 	            if (cuentasActivas >= 3) {
 	            

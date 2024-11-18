@@ -43,7 +43,9 @@ public class ServletLAltaUsuario extends HttpServlet {
         if (contrasena.equals(contrasena2)) {
             try {
                 int idCliente = Integer.parseInt(idClienteStr);
-                Usuario usuario = new Usuario(idCliente , usuarioNombre, contrasena, tipoUsuario, true, LocalDateTime.now());
+                Cliente cliente = new Cliente();
+                cliente.setId(idCliente);
+                Usuario usuario = new Usuario(cliente , usuarioNombre, contrasena, tipoUsuario, true, LocalDateTime.now());
 
                 UsuarioNegocio usuarioNegocio = new UsuarioNegocioImp();
                 boolean usuarioCreado = usuarioNegocio.altaUsuario(usuario);

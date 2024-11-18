@@ -85,7 +85,7 @@ public class SolicitudPrestamoDaoImp implements SolicitudPrestamoDao {
 			        	cuenta.setSaldo(resultSet.getBigDecimal("Cu.saldo"));
 			        	
 			        	Usuario usuario = new Usuario();
-			        	usuario.setIdCliente(resultSet.getInt("Cu.id_usuario"));
+			        	usuario.setCliente(cliente);
 			        	cuenta.setUsuario(usuario);
 			        	
 			        	TipoCuenta tipoCuenta = new TipoCuenta();

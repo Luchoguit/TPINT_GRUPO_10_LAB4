@@ -191,7 +191,7 @@
 
                 
                 for (Cliente c : listaClientes) {
-                    if (c.getId() == cuenta.getUsuario().getIdCliente()) {
+                    if (c.getId() == cuenta.getUsuario().getCliente().getId()) {
                         cliente = c;
                         
                         break;

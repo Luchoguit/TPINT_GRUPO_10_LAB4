@@ -4,15 +4,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Usuario {
-    private int idCliente;
+    private Cliente cliente;
     private String nombreUsuario;
     private String contraseña;
     private String tipoUsuario; 
     private boolean estado; 
     private LocalDateTime fechaCreacion;
 
-    public Usuario(int id, String nombreUsuario, String contraseña, String tipoUsuario, boolean estado, LocalDateTime fechaCreacion) {
-        this.setIdCliente(id);
+    public Usuario(Cliente cliente, String nombreUsuario, String contraseña, String tipoUsuario, boolean estado, LocalDateTime fechaCreacion) {
+        this.cliente = cliente;
         this.nombreUsuario = nombreUsuario;
         this.contraseña = contraseña;
         this.tipoUsuario = tipoUsuario;
@@ -67,11 +67,11 @@ public class Usuario {
         return "admin".equals(tipoUsuario);
     }
 
-	public int getIdCliente() {
-		return idCliente;
+	public Cliente getCliente() {
+		return cliente;
 	}
 
-	public void setIdCliente(int idCliente) {
-		this.idCliente = idCliente;
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 }

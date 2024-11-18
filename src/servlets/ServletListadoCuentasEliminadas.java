@@ -48,7 +48,7 @@ public class ServletListadoCuentasEliminadas extends HttpServlet {
 
                     
                     for (Cuenta cuenta : cuentas) {
-                        if (cuenta.getUsuario().getIdCliente() == cliente.getId()) {
+                        if (cuenta.getUsuario().getCliente().getId() == cliente.getId()) {
                            
                             cuentasFiltradas.add(cuenta);
                         }

@@ -30,7 +30,7 @@ public class UsuarioDaoImp implements UsuarioDao {
         try {
             statement = conexion.prepareStatement(qryInsert);
        
-            statement.setInt(1, usuario.getIdCliente()); 
+            statement.setInt(1, usuario.getCliente().getId()); 
             statement.setString(2, usuario.getNombreUsuario());
             statement.setString(3, usuario.getContraseña());
             statement.setString(4, usuario.getTipoUsuario()); //
@@ -64,7 +64,10 @@ public class UsuarioDaoImp implements UsuarioDao {
         return isInsertExitoso;
     }
 
-    private static final String qryGetUsuario = "SELECT id, nombre_usuario, contrasenia, tipo, estado, fecha_creacion FROM Usuarios WHERE nombre_usuario = ? AND contrasenia = ?";
+    private static final String qryGetUsuario = "SELECT U.*, C.* "
+    		+ "FROM usuarios U "
+    		+ "JOIN clientes C ON C.id = U.id "
+    		+ "WHERE U.nombre_usuario = ? AND U.contrasenia = ?";
     
 	@Override
 	public Usuario getUsuario(String nombre, String contrasenia) {
@@ -83,7 +86,34 @@ public class UsuarioDaoImp implements UsuarioDao {
 	        ResultSet resultSet = statement.executeQuery();
 
 	        if (resultSet.next()) {
-	            int id = resultSet.getInt("id");
+
+	        	// CLIENTE
+	        	Cliente cliente = new Cliente();
+	        	cliente.setId(resultSet.getInt("C.id"));
+	        	cliente.setDni(resultSet.getString("C.dni"));
+	        	cliente.setCuil(resultSet.getString("C.cuil"));
+	        	cliente.setNombre(resultSet.getString("C.nombre"));
+	        	cliente.setApellido(resultSet.getString("C.apellido"));
+	        	cliente.setSexo(resultSet.getString("C.sexo"));
+	        	cliente.setNacionalidad(resultSet.getString("C.nacionalidad"));
+	        	
+	        	java.sql.Date sqlDate = resultSet.getDate("C.fecha_nacimiento");
+	            LocalDate fechaNacimiento = sqlDate != null ? sqlDate.toLocalDate() : null;
+	            cliente.setFechaNacimiento(fechaNacimiento);
+	            
+	            Localidad localidadCliente = new Localidad();
+	            localidadCliente.setId(resultSet.getInt("C.id_localidad"));
+	        	cliente.setLocalidadCliente(localidadCliente);
+	        	
+	        	Provincia provinciaCliente = new Provincia();
+	            provinciaCliente.setId(resultSet.getInt("C.id_provincia"));
+	        	cliente.setProvinciaCliente(provinciaCliente);
+	        	
+	        	cliente.setCorreo(resultSet.getString("C.correo"));
+	        	cliente.setTelefono(resultSet.getString("C.telefono"));
+	        	cliente.setDireccion(resultSet.getString("C.direccion"));
+	        	cliente.setEstado(resultSet.getBoolean("C.estado"));
+
 	            String nombreUsuario = resultSet.getString("nombre_usuario");
 	            String contraseña = resultSet.getString("contrasenia");
 	            String tipoUsuario = resultSet.getString("tipo");
@@ -91,7 +121,7 @@ public class UsuarioDaoImp implements UsuarioDao {
 	            Timestamp sqlTimestamp = resultSet.getTimestamp("fecha_creacion");
 	            LocalDateTime fechaCreacion = sqlTimestamp != null ? sqlTimestamp.toLocalDateTime() : null;
 
-	            user = new Usuario(id, nombreUsuario, contraseña, tipoUsuario, estado, fechaCreacion);
+	            user = new Usuario(cliente, nombreUsuario, contraseña, tipoUsuario, estado, fechaCreacion);
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -103,7 +133,10 @@ public class UsuarioDaoImp implements UsuarioDao {
 	}
 
 	
-    private static final String qryObtenerUsuarioPorId = "SELECT id, nombre_usuario, contrasenia, tipo, estado, fecha_creacion FROM Usuarios WHERE id = ?";
+    private static final String qryObtenerUsuarioPorId = "SELECT U.*, C.* "
+    		+ "FROM usuarios U "
+    		+ "JOIN clientes C ON C.id = U.id "
+    		+ "WHERE U.id = ?";
 
     
 	@Override
@@ -120,6 +153,35 @@ public class UsuarioDaoImp implements UsuarioDao {
 	        ResultSet resultSet = statement.executeQuery();
 
 	        if (resultSet.next()) {
+	        	    	
+	        	// CLIENTE
+	        	Cliente cliente = new Cliente();
+	        	cliente.setId(resultSet.getInt("C.id"));
+	        	cliente.setDni(resultSet.getString("C.dni"));
+	        	cliente.setCuil(resultSet.getString("C.cuil"));
+	        	cliente.setNombre(resultSet.getString("C.nombre"));
+	        	cliente.setApellido(resultSet.getString("C.apellido"));
+	        	cliente.setSexo(resultSet.getString("C.sexo"));
+	        	cliente.setNacionalidad(resultSet.getString("C.nacionalidad"));
+	        	
+	        	java.sql.Date sqlDate = resultSet.getDate("C.fecha_nacimiento");
+	            LocalDate fechaNacimiento = sqlDate != null ? sqlDate.toLocalDate() : null;
+	            cliente.setFechaNacimiento(fechaNacimiento);
+	            
+	            Localidad localidadCliente = new Localidad();
+	            localidadCliente.setId(resultSet.getInt("C.id_localidad"));
+	        	cliente.setLocalidadCliente(localidadCliente);
+	        	
+	        	Provincia provinciaCliente = new Provincia();
+	            provinciaCliente.setId(resultSet.getInt("C.id_provincia"));
+	        	cliente.setProvinciaCliente(provinciaCliente);
+	        	
+	        	cliente.setCorreo(resultSet.getString("C.correo"));
+	        	cliente.setTelefono(resultSet.getString("C.telefono"));
+	        	cliente.setDireccion(resultSet.getString("C.direccion"));
+	        	cliente.setEstado(resultSet.getBoolean("C.estado"));
+	        	
+	        	
 	            String nombreUsuario = resultSet.getString("nombre_usuario");
 	            String contraseña = resultSet.getString("contrasenia");
 	            String tipo = resultSet.getString("tipo");
@@ -128,7 +190,7 @@ public class UsuarioDaoImp implements UsuarioDao {
 	            LocalDateTime fechaCreacion = sqlTimestamp != null ? sqlTimestamp.toLocalDateTime() : null;
 
 
-	            user = new Usuario(id, nombreUsuario, contraseña, tipo, estado, fechaCreacion);
+	            user = new Usuario(cliente, nombreUsuario, contraseña, tipo, estado, fechaCreacion);
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();

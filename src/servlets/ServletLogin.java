@@ -33,7 +33,7 @@ public class ServletLogin extends HttpServlet {
             request.getSession().setAttribute("usuario", usuario);
             
             ClienteNegocio clienteNegocio = new ClienteNegocioImp();
-            Cliente cliente = clienteNegocio.obtenerPorId(usuario.getIdCliente());
+            Cliente cliente = clienteNegocio.obtenerPorId(usuario.getCliente().getId());
             
             request.getSession().setAttribute("cliente", cliente);
 

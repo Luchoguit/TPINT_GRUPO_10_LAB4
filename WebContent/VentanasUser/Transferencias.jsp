@@ -198,7 +198,7 @@
 					             ? cuentaDestino.getUsuario().getNombreUsuario() 
 					             : "--" %></td>
 					    <td><%= cuenta != null && cuentaDestino.getUsuario() != null && mismaCuenta == false
-					             ? cuentaDestino.getUsuario().getIdCliente() 
+					             ? cuentaDestino.getUsuario().getCliente().getId() 
 					             : "--" %></td>
 					    <td><%= cuenta != null && mismaCuenta == false
 					             ? cuentaDestino.getId() 
