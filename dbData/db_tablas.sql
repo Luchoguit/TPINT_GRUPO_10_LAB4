@@ -127,24 +127,32 @@ CREATE TABLE Cuotas (
 
 DELIMITER //
 
-CREATE TRIGGER GenerarCbu
+CREATE TRIGGER GenerarCbuYNumeroCuenta
 BEFORE INSERT ON cuentas
 FOR EACH ROW
 BEGIN
     DECLARE nuevoCbu VARCHAR(22);
     DECLARE duplicado BOOLEAN;
+    DECLARE ultimoNumeroCuenta BIGINT;
 
     SET NEW.cbu = NULL;
 
+    -- Generar CBU único
     REPEAT
         SET nuevoCbu = LPAD(FLOOR(RAND() * 10000000000000000000000), 22, '0');
-
         SELECT EXISTS(SELECT 1 FROM cuentas WHERE cbu = nuevoCbu) INTO duplicado;
     UNTIL duplicado = FALSE
     END REPEAT;
 
     SET NEW.cbu = nuevoCbu;
+
+    -- Generar el número de cuenta consecutivo
+    SELECT IFNULL(MAX(numero_cuenta), 999999999) + 1 INTO ultimoNumeroCuenta
+    FROM cuentas;
+
+    SET NEW.numero_cuenta = ultimoNumeroCuenta;
 END //
+
 
 DELIMITER ;
 
