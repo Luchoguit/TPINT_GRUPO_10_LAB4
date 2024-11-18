@@ -138,18 +138,9 @@
     <ul class="navigation">
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletVerCuentas">Seleccionar cuentas <i class="fa fa-list-alt"></i></a></li>
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletSolicitarAltaCuenta">Crear nueva cuenta <i class="fa fa-plus-circle"></i></a></li>
-       	<li>
-        <form action="/TPINT_GRUPO_10_LAB4/ServletVerDatos" method="get" style="display: inline;">
-            <input type="hidden" name="idCliente" value="${usuario.idCliente}" />
-            <button type="submit" style="background: none; border: none; color: inherit; cursor: pointer; font: inherit;">
-                Ver Datos <i class="fa fa-user"></i>
-            </button>
-        </form>
-    </li>
+       	<li><a href="/TPINT_GRUPO_10_LAB4/ServletVerDatos">Ver datos personales <i class="fa fa-user"></i></a></li>
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletCerrarSesion">Cerrar sesión <i class="fa fa-sign-out-alt"></i></a></li>
     </ul>
-
-		<
     <div class="message">
         <p class="message-success">
             <% if (request.getAttribute("mensajeExito") != null) { %>

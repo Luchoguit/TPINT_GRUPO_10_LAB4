@@ -7,28 +7,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #e9ecef;
-            text-align: center; 
-        }
+		    font-family: 'Arial', sans-serif;
+		    margin: 0;
+		    padding: 0;
+		    display: flex;
+		    justify-content: center;
+		    align-items: center;
+		    min-height: 100vh;
+		    background-color: #e9ecef;
+		    text-align: center; 
+		}
+
 
         .main-container {
-            width: 500px;
-            padding: 20px;
-            background: #fff;
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+		    max-width: 90%;
+		    width: 500px;
+		    padding: 20px;
+		    background: #fff;
+		    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+		    border-radius: 10px;
+		    text-align: center;
+		    display: flex;
+		    flex-direction: column;
+		    align-items: center;
+		}
+
 
         h1 {
             margin-bottom: 30px;
@@ -134,7 +137,7 @@
 
     <ul class="navigation">
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletAltaCliente">Agregar nuevo cliente <i class="fa fa-user-plus"></i></a></li>
-        <li><a href=/TPINT_GRUPO_10_LAB4/ServletLAltaUsuario>Crear nuevo usuario <i class="fa fa-plus-circle"></i></a></li>      
+        <li><a href="/TPINT_GRUPO_10_LAB4/ServletLAltaUsuario">Crear nuevo usuario <i class="fa fa-plus-circle"></i></a></li>      
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletListadoClientes">Ver listado de Clientes <i class="fa fa-list-alt"></i></a></li>
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletListadoClientesEliminados">Ver clientes Deshabilitados <i class="fa fa-trash-alt"></i></a></li>
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletListadoCuentas">Ver listado de Cuentas <i class="fa fa-list-alt"></i></a></li>
