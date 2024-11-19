@@ -61,41 +61,11 @@
     .back-button:hover {
         background-color: #218838;
     }
-    
-    /* Estilos para los controles para la paginacion */
-        
-        .pagination {
-		    text-align: center;
-		    margin: 20px 0;
-		}
-		
-		.pagination-link {
-		    display: inline-block;
-		    margin: 0 5px;
-		    padding: 10px 15px;
-		    text-decoration: none;
-		    color: #007bff;
-		    border: 1px solid #ddd;
-		    border-radius: 5px;
-		    transition: background-color 0.3s, color 0.3s;
-		}
-		
-		.pagination-link:hover {
-		    background-color: #007bff;
-		    color: #fff;
-		}
-		
-		.pagination-current {
-		    display: inline-block;
-		    margin: 0 5px;
-		    padding: 10px 15px;
-		    font-weight: bold;
-		    color: #fff;
-		    background-color: #007bff;
-		    border: 1px solid #007bff;
-		    border-radius: 5px;
-		}
 </style>
+
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloMensajes.css">
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloPaginacion.css">
+
 </head>
 <body>
 

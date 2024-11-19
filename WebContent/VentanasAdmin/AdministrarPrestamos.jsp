@@ -8,127 +8,13 @@
 <head>
     <meta charset="ISO-8859-1">
 <title>AdministrarPrestamos</title>
-<style>
-		table {
-            width: 80%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
-            white-space: nowrap; 
-            overflow-x: auto; 
-            max-width: 200px;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        
-        .action-buttons {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .action-buttons input[type="submit"] {
-            padding: 10px 15px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .action-buttons input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-        
-        #rechazar {
-        background-color: #e74c3c;
-        color: #fff;
-        padding: 5px 10px;
-        font-size: 9px; 
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    #rechazar:hover {
-        background-color: #c0392b;
-    }
-    
-    #aceptar {
-        background-color: #2ecc71;
-        color: #fff;
-        padding: 5px 10px;
-        font-size: 9px; 
-        border-radius: 5px; 
-        cursor: pointer; 
-        transition: background-color 0.3s ease;
-    }
-
-    #aceptar:hover {
-        background-color: #27ae60;
-    }
-    
-    		.volver-menu {
-		    display: flex;               
-		    justify-content: center;     
-		    align-items: center;                     
-		}
-		
-		
-		.btn-volver {
-		    background-color: #007bff;   
-		    color: white;                
-		    padding: 10px 20px;          
-		    border: none;                
-		    border-radius: 5px;          
-		    font-size: 16px;             
-		    cursor: pointer;            
-		    transition: background-color 0.3s ease;  
-		}
-		
-		.btn-volver:hover {
-		    background-color: #0056b3;   
-		}
-		
-		
-          		/* Estilos para los controles para la paginacion */
-        
-        .pagination {
-		    text-align: center;
-		    margin: 20px 0;
-		}
-		
-		.pagination-link {
-		    display: inline-block;
-		    margin: 0 5px;
-		    padding: 10px 15px;
-		    text-decoration: none;
-		    color: #007bff;
-		    border: 1px solid #ddd;
-		    border-radius: 5px;
-		    transition: background-color 0.3s, color 0.3s;
-		}
-		
-		.pagination-link:hover {
-		    background-color: #007bff;
-		    color: #fff;
-		}
-		
-		.pagination-current {
-		    display: inline-block;
-		    margin: 0 5px;
-		    padding: 10px 15px;
-		    font-weight: bold;
-		    color: #fff;
-		    background-color: #007bff;
-		    border: 1px solid #007bff;
-		    border-radius: 5px;
-		}
-		
-    
+<style>    
 </style>
+
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloMensajes.css">
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloTabla.css">
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloPaginacion.css">
+
 </head>
 <body>
 

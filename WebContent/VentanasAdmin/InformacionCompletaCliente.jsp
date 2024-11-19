@@ -9,74 +9,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Ver Cliente</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f4f4f4;
-            overflow: auto;
-        }
-        
-        .form-container {
-            width: 400px;
-            padding: 20px;
-            background: #fff;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .form-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input[type="text"],
-        input[type="email"],
-        input[type="number"],
-        input[type="date"],
-        select {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-            background-color: #f1f1f1;
-            border: 1px solid #ccc;
-        }
-        input[readonly], select[readonly] {
-            pointer-events: none;
-        }
-        .button-container {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .button-container input[type="button"] {
-            margin: 5px;
-            padding: 8px 16px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .error-message {
-            color: red;
-            padding: 10px;
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
     </style>
+            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloMensajes.css">
+            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloFormulario.css">
+    
 </head>
 <body>
 

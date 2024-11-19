@@ -10,34 +10,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Datos de la cuenta</title>
     <style>
-        table {
-            width: 80%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
-            white-space: nowrap; 
-            overflow-x: auto; 
-            max-width: 200px; 
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        .filter-container {
-            text-align: center;
-            margin: 20px;
-        }
-        .filter-container input[type="text"] {
-            padding: 8px;
-            width: 300px;
-        }
-        .filter-container input[type="submit"] {
-            padding: 8px 12px;
-        }
     </style>
+    
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloMensajes.css">
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloTabla.css">
 
 </head>
 <body>

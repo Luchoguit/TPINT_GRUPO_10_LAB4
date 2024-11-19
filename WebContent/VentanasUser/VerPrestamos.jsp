@@ -9,56 +9,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Gestionar Préstamos</title>
     <style>
-        table {
-            width: 80%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        .action-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px;
-        }
-        .action-buttons a, .action-buttons input[type="submit"] {
-            padding: 8px 12px;
-            text-decoration: none;
-            color: #000;
-            border: 1px solid #ddd;
-            background-color: #f4f4f4;
-            cursor: pointer;
-        }
-        
-        
-      .volver-menu {
-		    display: flex;               
-		    justify-content: center;     
-		    align-items: center;                     
-		}
-        
-     .btn-volver {
-		    background-color: #007bff;   
-		    color: white;                
-		    padding: 10px 20px;          
-		    border: none;                
-		    border-radius: 5px;          
-		    font-size: 16px;             
-		    cursor: pointer;            
-		    transition: background-color 0.3s ease;  
-		}
-		
-		.btn-volver:hover {
-		    background-color: #0056b3;   
-		 }
     </style>
+    
+            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloMensajes.css">
+            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloTabla.css">
+    
 </head>
 <body>
 
@@ -88,7 +43,7 @@
             <td>$<%= prestamo.getImportePedido() %></td>
             <td><%= prestamo.getFechaAlta() %></td>
             <td>$<%= prestamo.getImportePedido() %></td>
-            <td><a href="PagarPrestamo.jsp">Pagar cuota</a></td>
+            <td><a href="/TPINT_GRUPO_10_LAB4/ServletPagarPrestamo">Pagar cuota</a></td>
         </tr>
         
          		<% } ;} %>
