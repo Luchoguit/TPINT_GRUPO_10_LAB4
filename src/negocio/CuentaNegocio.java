@@ -24,5 +24,6 @@ public interface CuentaNegocio {
 	boolean existeCuentaConCbu(String cbu);
 	boolean realizarTransferencia(Movimiento movimiento);
 	boolean actualizarSaldo(Movimiento movimiento, boolean salida);
+	List<Movimiento> listarMovimientosCuenta(Cuenta cuenta);
 	
 }

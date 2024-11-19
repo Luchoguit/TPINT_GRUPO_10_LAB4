@@ -1,3 +1,11 @@
+<%@page import="entidad.Movimiento" %>
+<%@page import="entidad.Cuenta" %>
+<%@page import="entidad.Cliente" %>
+<%@page import="java.util.List" %>
+<%@page import="java.math.BigDecimal" %>
+<%@page import="java.time.LocalDate" %>
+
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -71,85 +79,109 @@
 
 <div class="table-container">
     <h1 class="table-title">Extracto de Cuenta</h1>
+    <%
+    	Cuenta cuentaSeleccionada = (Cuenta) request.getSession().getAttribute("cuenta");
+    	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
+    	 LocalDate fechaHoy = LocalDate.now(); 
+    %>
+    
     
     <div class="table-header">
-        <div><strong>Fecha: 02-11-2024 </strong> </div>
-        <div><strong>Titular:</strong> Malvina Ibarra </div>
-        <div><strong>Número de Cuenta:</strong> 0000-0000-00-0000000000</div>
+        <div><strong>Fecha: <%=fechaHoy %> </strong> </div>
+        <div><strong>Titular:</strong> <%=cliente.getNombre() + " " + cliente.getApellido() %> </div>
+        <div><strong>Número de Cuenta:</strong> <%=cuentaSeleccionada.getNumeroCuenta() %></div>
     </div>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Concepto</th>
-                <th>Importe</th>
-                <th>Saldo</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>15/08/2020</td>
-                <td>Saldo Anterior</td>
-                <td></td>
-                <td>8,074.56 </td>
-            </tr>
-            <tr>
-                <td>20/08/2020</td>
-                <td>Cargo Traspaso Saldo</td>
-                <td>-657.32 </td>
-                <td>7,417.24 </td>
-            </tr>
-            <tr>
-                <td>21/08/2020</td>
-                <td>Pago Cheque Compensado</td>
-                <td>-5,171.81 </td>
-                <td>2,245.43 </td>
-            </tr>
-            <tr>
-                <td>21/08/2020</td>
-                <td>Cargo Compra</td>
-                <td>-195.01 </td>
-                <td>2,050.42 </td>
-            </tr>
-            <tr>
-                <td>26/08/2020</td>
-                <td>Intereses</td>
-                <td>0.50 </td>
-                <td>1,993.93 </td>
-            </tr>
-            <tr>
-                <td>27/08/2020</td>
-                <td>Pago Gimnasio</td>
-                <td>-37.46 </td>
-                <td>1,956.47 </td>
-            </tr>
-            <tr>
-                <td>27/08/2020</td>
-                <td>Pago Recibo Teléfono</td>
-                <td>-48.19 </td>
-                <td>1,908.74 </td>
-            </tr>
-            <tr>
-                <td>28/08/2020</td>
-                <td>Cargo Compra</td>
-                <td>-13.15 </td>
-                <td>1,895.74 </td>
-            </tr>
-            <tr>
-                <td>28/08/2020</td>
-                <td>Pago Recibo Luz</td>
-                <td>-48.19 </td>
-                <td>1,847.55 </td>
-            </tr>
-            <tr>
-                <td>29/08/2020</td>
-                <td>Nómina</td>
-                <td>4,000.00 </td>
-                <td>5,732.57 </td>
-            </tr>
-        </tbody>
-    </table>
+	
+	<%if(request.getAttribute("movimientos") != null)
+		{
+			List<Movimiento> movimientos = (List<Movimiento>)request.getAttribute("movimientos");
+			
+			
+			LocalDate fechaCreacion = cuentaSeleccionada.getFechaCreacion().toLocalDate();
+		
+			
+			if(movimientos.size() > 0)
+			{
+				%>
+				    <table>
+				        <thead>
+				            <tr>
+				                <th>Fecha</th>
+				                <th>Concepto</th>
+				                <th>Importe</th>
+				                <th>Saldo</th>
+				            </tr>
+				        </thead>
+						<tbody>
+							<tr>
+				                <td> <%= fechaCreacion %></td>
+				                <td>Saldo Anterior</td>
+				                <td></td>
+				                <td>10000.00 </td>
+				            </tr>
+				<% 
+				
+				BigDecimal acumulador = new BigDecimal("10000");
+				
+				
+				for(Movimiento movimiento : movimientos)
+				{
+					boolean salida = false;
+					if(movimiento.getCuentaDestino().getId()== cuentaSeleccionada.getId())
+					{
+						acumulador = acumulador.add(movimiento.getImporte());
+					}
+					else
+					{
+						acumulador = acumulador.subtract(movimiento.getImporte());
+						salida = true;
+					}
+					
+					System.out.println("Importe movimiento: " + movimiento.getImporte());
+					System.out.println("Importe acumulador: " + acumulador);
+					
+				%>
+		
+				
+				            <tr>
+				                <td>
+				                <%
+				                	LocalDate fecha = movimiento.getFechaHora().toLocalDate();
+				                
+				                %>
+				                
+				                <%=fecha %>
+				                </td>
+				                <td><%=movimiento.getDetalle() %></td>
+				                <td> 
+				                	<%if(salida == true)
+				                	{ %>
+				                		<%=movimiento.getImporte().negate() %>
+				                	<%
+				                	}
+				                	else
+				                	{%>
+				                		<%=movimiento.getImporte()%>
+				                	<%}
+				                	%>
+				                	 
+				                </td>
+				                <td><%=acumulador %></td>
+				            </tr>
+			<%} %>
+        				</tbody>
+    			</table>
+    
+    <%
+			}
+	
+		}
+		else
+		{
+		%>
+			<h3>Aquí aparecerán sus movimientos cuando utilice la cuenta</h3>
+		<%} %>
+		
     <div class="button-container">
         <input type="button" value="Volver" class="back-button" onclick="window.history.back()">
     </div>

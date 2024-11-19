@@ -77,6 +77,11 @@ public class CuentaNegocioImp implements CuentaNegocio{
 	@Override
 	public boolean actualizarSaldo(Movimiento movimiento, boolean salida) {
 		return cuentaDao.actualizarSaldo(movimiento, salida);
+	}
+
+	@Override
+	public List<Movimiento> listarMovimientosCuenta(Cuenta cuenta) {
+		return cuentaDao.listarMovimientosCuenta(cuenta);
 	};
 	
 	

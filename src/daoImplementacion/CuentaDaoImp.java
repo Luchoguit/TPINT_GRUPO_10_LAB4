@@ -6,8 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import entidad.Localidad;
 import entidad.Movimiento;
 import entidad.Provincia;
 import entidad.TipoCuenta;
+import entidad.TipoMovimiento;
 import entidad.Usuario;
 
 public class CuentaDaoImp implements CuentaDao {
@@ -631,5 +634,61 @@ public class CuentaDaoImp implements CuentaDao {
 			    }
 		     
 		     return false;
+	}
+
+	
+	private static final String qryListarMovimientos = "select id, id_cuenta, id_tipoMovimiento, detalle, fechaHora, importe, id_cuentaDestino from movimientos where id_cuenta = ? or id_cuentaDestino = ?";
+	
+	@Override
+	public List<Movimiento> listarMovimientosCuenta(Cuenta cuenta) {
+		
+		List<Movimiento> listaMovimientos = new ArrayList<>();
+
+	    try (Connection con = Conexion.getConexion().getSQLConexion()) {
+	        System.out.println("[DEBUG] Conexion a la base de datos establecida");
+	        
+	        PreparedStatement statementCuentas = con.prepareStatement(qryListarMovimientos);
+	        statementCuentas.setInt(1, cuenta.getId());
+	        statementCuentas.setInt(2, cuenta.getId());
+	        
+	        ResultSet resultSetCuentas = statementCuentas.executeQuery();
+
+	        
+	        while (resultSetCuentas.next()) {
+	        	
+	        	
+	        	int id = resultSetCuentas.getInt("id");
+	        	int id_cuenta = resultSetCuentas.getInt("id_cuenta");
+	        	int id_tipoMovimiento = resultSetCuentas.getInt("id_tipoMovimiento");
+	        	String detalle = resultSetCuentas.getString("detalle");
+	        	Timestamp fechaHora = resultSetCuentas.getTimestamp("fechaHora");
+	        	
+	        	Instant instant = fechaHora.toInstant();
+	        	LocalDateTime localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime();
+	        	
+	        	
+	        	BigDecimal importe = resultSetCuentas.getBigDecimal("importe");
+	        	int id_cuentaDestino = resultSetCuentas.getInt("id_cuentaDestino");
+	        	
+	        	TipoMovimiento tipo = new TipoMovimiento(id_tipoMovimiento, null);
+	        	Cuenta cuentaDestino = new Cuenta();
+	        	cuentaDestino.setId(id_cuentaDestino);
+	        	
+	        	Movimiento movimiento = new Movimiento(id, cuenta, tipo, detalle, localDateTime, importe, cuentaDestino);
+
+	            
+	
+	            listaMovimientos.add(movimiento);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    finally {
+	        Conexion.getConexion().cerrarConexion();
+	    }
+
+	    return listaMovimientos;
+		
 	}
 }
