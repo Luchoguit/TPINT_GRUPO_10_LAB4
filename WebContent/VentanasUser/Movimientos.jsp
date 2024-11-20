@@ -114,31 +114,25 @@
 				        </thead>
 						<tbody>
 							<tr>
-				                <td> <%= fechaCreacion %></td>
-				                <td>Saldo Anterior</td>
-				                <td></td>
-				                <td>10000.00 </td>
-				            </tr>
 				<% 
 				
-				BigDecimal acumulador = new BigDecimal("10000");
+				
+				List<BigDecimal> saldosParciales = (List<BigDecimal>) request.getAttribute("saldos");
 				
 				
+				int iteracion = 0;
 				for(Movimiento movimiento : movimientos)
 				{
 					boolean salida = false;
-					if(movimiento.getCuentaDestino().getId()== cuentaSeleccionada.getId())
+					if(! (movimiento.getCuentaDestino().getId()== cuentaSeleccionada.getId()))
 					{
-						acumulador = acumulador.add(movimiento.getImporte());
-					}
-					else
-					{
-						acumulador = acumulador.subtract(movimiento.getImporte());
 						salida = true;
 					}
 					
-					System.out.println("Importe movimiento: " + movimiento.getImporte());
-					System.out.println("Importe acumulador: " + acumulador);
+					
+					BigDecimal saldoIteracion = saldosParciales.get(iteracion);
+		
+
 					
 				%>
 		
@@ -166,9 +160,20 @@
 				                	%>
 				                	 
 				                </td>
-				                <td><%=acumulador %></td>
+				                <td><%=saldoIteracion %></td>
 				            </tr>
-			<%} %>
+			<%
+			
+				iteracion++;
+				} %>
+							<tr>
+				                <td> <%= fechaCreacion %></td>
+				                <td>Saldo Inicial</td>
+				                <td></td>
+				                <td>10000.00 </td>
+				            </tr>
+			
+			
         				</tbody>
     			</table>
     

@@ -1,6 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -36,7 +39,13 @@ public class ServletMovimientosCuenta extends HttpServlet {
 		CuentaNegocioImp cuentaNegocio = new CuentaNegocioImp();
 		List<Movimiento> movimientos = cuentaNegocio.listarMovimientosCuenta(cuentaSeleccionada);
 		
+		List<BigDecimal> saldosParciales = actualizarSaldosInvertidos(movimientos, cuentaSeleccionada);
+		
+		Collections.reverse(movimientos);
+		
+		
 		request.setAttribute("movimientos", movimientos);	
+		request.setAttribute("saldos", saldosParciales);
 		
 		System.out.println("Cantidad de movimientos en servlet: " + movimientos.size());
 		
@@ -51,5 +60,31 @@ public class ServletMovimientosCuenta extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+	
+	private List<BigDecimal> actualizarSaldosInvertidos(List<Movimiento> movimientos, Cuenta cuentaSeleccionada)
+	{
+		BigDecimal acumulador = new BigDecimal("10000");
+		
+		List<BigDecimal> saldosParciales = new ArrayList<>();
+		
+		for(Movimiento m : movimientos)
+		{
+			if(m.getCuentaDestino().getId()== cuentaSeleccionada.getId())
+			{
+				acumulador = acumulador.add(m.getImporte());
+			}
+			else
+			{
+				acumulador = acumulador.subtract(m.getImporte());
+			}
+			
+			saldosParciales.add(acumulador);
+		}
+		
+		Collections.reverse(saldosParciales);
+		return saldosParciales;
+	}
+	
+	
 
 }

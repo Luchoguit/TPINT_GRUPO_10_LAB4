@@ -100,6 +100,7 @@ public class servletTransferencia extends HttpServlet {
 		
 		if(request.getParameter("btnTransferir") != null)
 		{
+			boolean error = false;
 			
 			CuentaNegocioImp negocioImp = new CuentaNegocioImp();
 			
@@ -110,31 +111,56 @@ public class servletTransferencia extends HttpServlet {
 			String detalle = request.getParameter("concepto");
 			LocalDateTime fechaHora = LocalDateTime.now();
 			BigDecimal importe = new BigDecimal(request.getParameter("monto"));
-			String cbuDestino = (String) request.getSession().getAttribute("cbuDestino");
-			Cuenta cuentaDestino = negocioImp.obtenerCuentaPorCBU(cbuDestino);
 			
-			Movimiento movimiento = new Movimiento(1, cuentaOrigen, tipoMovimiento, detalle, fechaHora, importe, cuentaDestino);
+			//validacion transferencia = 0
+			if (importe.compareTo(BigDecimal.ZERO) == 0 || importe.compareTo(BigDecimal.ZERO) < 0) {
+				System.out.println("[DEBUG] transferencia invalida");
+				request.setAttribute("mensaje", "Valor de transferencia invalido.");
+	            request.setAttribute("tipoMensaje", "error");
+				request.setAttribute("ValorInvalido", "error");
+				error = true;
+			}
 			
-			BigDecimal saldoActualizado = movimiento.getCuentaOrigen().getSaldo().subtract(movimiento.getImporte());
+			//validacion transferencia numero invalido
+			String importeStr = request.getParameter("monto").toString();
+			if (importeStr.startsWith("0")  || importeStr.startsWith("0.") ) {
+				System.out.println("[DEBUG] transferencia invalida");
+				request.setAttribute("mensaje", "Valor de transferencia invalido.");
+	            request.setAttribute("tipoMensaje", "error");
+				request.setAttribute("ValorInvalido", "error");
+				error = true;
+			}
 			
-			if(saldoActualizado.floatValue() >= 0.00)
-			{
-				if(negocioImp.realizarTransferencia(movimiento))
-				{	
-					request.setAttribute("mensaje", "Transferencia realizada exitosamente");
-		            request.setAttribute("tipoMensaje", "success");
-				}
-				else
+			
+			
+			if (error == false) {
+				String cbuDestino = (String) request.getSession().getAttribute("cbuDestino");
+				Cuenta cuentaDestino = negocioImp.obtenerCuentaPorCBU(cbuDestino);
+				
+				Movimiento movimiento = new Movimiento(1, cuentaOrigen, tipoMovimiento, detalle, fechaHora, importe, cuentaDestino);
+				
+				BigDecimal saldoActualizado = movimiento.getCuentaOrigen().getSaldo().subtract(movimiento.getImporte());
+				
+				if(saldoActualizado.floatValue() >= 0.00)
 				{
-					request.setAttribute("mensaje", "Ha ocurrido un error al transferir");
+					if(negocioImp.realizarTransferencia(movimiento))
+					{	
+						request.setAttribute("mensaje", "Transferencia realizada exitosamente");
+			            request.setAttribute("tipoMensaje", "success");
+					}
+					else
+					{
+						request.setAttribute("mensaje", "Ha ocurrido un error al transferir");
+			            request.setAttribute("tipoMensaje", "error");
+					}
+				}
+				else 
+				{
+					request.setAttribute("mensaje", "Saldo insuficiente");
 		            request.setAttribute("tipoMensaje", "error");
 				}
 			}
-			else 
-			{
-				request.setAttribute("mensaje", "Saldo insuficiente");
-	            request.setAttribute("tipoMensaje", "error");
-			}
+			
 			
 		}
 		
