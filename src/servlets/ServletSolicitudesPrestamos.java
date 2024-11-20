@@ -77,20 +77,26 @@ public class ServletSolicitudesPrestamos extends HttpServlet {
         
         System.out.println("[DEBUG] Entra al doPost");
         System.out.println("[DEBUG] accion: " + accion);
-        System.out.println("[DEBUG] id de solicitud: " + idPrestamo);
+        System.out.println("[DEBUG] id de prestamo: " + idPrestamo);
 
 
         try {
 	    if ("aceptar".equals(accion)) {
 	    	
-	    	PrestamoNegocio prestamoNegocio = new PrestamoNegocioImp();
-	    	Prestamo prestamo = prestamoNegocio.obtenerPrestamoPorId(idPrestamo);
 	    	// ACEPTAR PRESTAMO
 	    	SolicitudPrestamoNegocio spNegocio = new SolicitudPrestamoNegocioImp();
 	    	boolean resultadoAceptar = spNegocio.aceptarPrestamo(idPrestamo);
 	    	
 	        System.out.println("[DEBUG] resultado aceptar: " + resultadoAceptar);
 	        if(resultadoAceptar) {
+	        	
+	        	PrestamoNegocio prestamoNegocio = new PrestamoNegocioImp();
+	        	Prestamo prestamo = prestamoNegocio.obtenerPrestamoPorId(idPrestamo);
+	            System.out.println("[DEBUG] Prestamo ID: " + prestamo.getIdPrestamo());
+	            System.out.println("[DEBUG] Fecha de alta: " + prestamo.getFechaAlta());
+	            System.out.println("[DEBUG] Cantidad de cuotas: " + prestamo.getCantidadCuotas());
+	            System.out.println("[DEBUG] Importe pedido: " + prestamo.getImportePedido());
+	            
 	        	CuotaNegocio cuotaNegocio = new CuotaNegocioImp();
 	        	boolean resultadoCuotas = cuotaNegocio.generarCuotas(prestamo);
 	        	System.out.println("[DEBUG] resultado crear cuotas: " + resultadoCuotas);

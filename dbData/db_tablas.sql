@@ -207,7 +207,7 @@ BEGIN
     IF NEW.estado = 1 THEN
         UPDATE cuentas
         SET saldo = saldo + NEW.importe_pedido
-        WHERE id = NEW.id_cuenta;
+        WHERE id_cuenta = NEW.id_cuenta;
     END IF;
 END;
 

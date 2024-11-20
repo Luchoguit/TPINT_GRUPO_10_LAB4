@@ -19,43 +19,54 @@ public class CuotaDaoImp implements CuotaDao {
 	
 	@Override
 	public boolean generarCuotas(Prestamo prestamo) {
-		PreparedStatement statement;
-        Connection conexion = Conexion.getConexion().getSQLConexion();
-        try {
-            statement = conexion.prepareStatement(qryInsertCuota);
+	    PreparedStatement statement;
+	    Connection conexion = Conexion.getConexion().getSQLConexion();
+	    try {
+	        statement = conexion.prepareStatement(qryInsertCuota);
 
-            int numeroCuotas = prestamo.getCantidadCuotas();
-            BigDecimal montoCuota = prestamo.getImportePedido().divide(
-                    BigDecimal.valueOf(numeroCuotas), RoundingMode.HALF_UP
-                );
+	        int numeroCuotas = prestamo.getCantidadCuotas();
+	        BigDecimal montoCuota = prestamo.getImportePedido().divide(
+	                BigDecimal.valueOf(numeroCuotas), RoundingMode.HALF_UP
+	        );
 
-            for (int i = 1; i <= numeroCuotas; i++) {
-            	statement.setInt(1, prestamo.getIdPrestamo());
-            	statement.setInt(2, i); 
-            	statement.setBigDecimal(3, montoCuota);
-            	statement.setTimestamp(4, Timestamp.valueOf(prestamo.getFechaAlta()));
-            	statement.addBatch();
-            }
+	        System.out.println("[DEBUG] Monto de cada cuota: " + montoCuota);
 
-            int[] resultados = statement.executeBatch(); 
+	        for (int i = 1; i <= numeroCuotas; i++) {
+	            statement.setInt(1, prestamo.getIdPrestamo());
+	            statement.setInt(2, i); 
+	            statement.setBigDecimal(3, montoCuota);
+	            statement.setTimestamp(4, Timestamp.valueOf(prestamo.getFechaAlta()));
+	            statement.addBatch();
+	        }
 
-            // Verificar que todas las cuotas se insertaron correctamente
-            for (int resultado : resultados) {
-                if (resultado == PreparedStatement.EXECUTE_FAILED) {
-                    return false;
-                }
-            }
+	        int[] resultados = statement.executeBatch(); 
 
-            return true; 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        
-        } finally {
-            Conexion.getConexion().cerrarConexion();
-        }
+	        // Verificar que todas las cuotas se insertaron correctamente
+	        for (int resultado : resultados) {
+	            if (resultado == PreparedStatement.EXECUTE_FAILED) {
+	                conexion.rollback();
+	                return false;
+	            }
+	        }
 
-        return false;
+	        conexion.commit();
+	        return true; 
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        try {
+	            if (conexion != null) {
+	                conexion.rollback();
+	            }
+	        } catch (SQLException rollbackEx) {
+	            rollbackEx.printStackTrace();
+	        }
+	    } finally {
+	        Conexion.getConexion().cerrarConexion();
+	    }
+
+	    return false;
 	}
+
 
 	@Override
 	public boolean pagarCuota(int idPrestamo) {
