@@ -69,7 +69,7 @@ public class PrestamoDaoImp implements PrestamoDao {
 			+ "FROM prestamos P "
 			+ "JOIN Solicitudes_Prestamos Sp ON Sp.id_prestamo = P.id_prestamo "
 			+ "JOIN clientes Cl ON Cl.id = P.id_cliente "
-			+ "JOIN cuentas Cu ON Cu.id = id_cuenta "
+			+ "JOIN cuentas Cu ON Cu.id = P.id_cuenta "
 			+ "WHERE Sp.estado = 1";
 
 
@@ -158,10 +158,10 @@ public class PrestamoDaoImp implements PrestamoDao {
 	    return listaPrestamos;
 	}
 
-	private static final String qryBuscarPrestamo = "SELECT * FROM prestamos P "
+	private static final String qryBuscarPrestamo = "SELECT P.*, Cl.*, Cu.* FROM prestamos P "
 			+ "JOIN clientes Cl ON Cl.id = P.id_cliente "
-			+ "JOIN cuentas Cu ON Cu.id = id_cuenta "
-			+ "WHERE id = ?";
+			+ "JOIN cuentas Cu ON Cu.id = P.id_cuenta "
+			+ "WHERE P.id_prestamo = ?";
 
 	@Override
 	public Prestamo obtenerPrestamoPorId(int id) {
@@ -254,7 +254,7 @@ public class PrestamoDaoImp implements PrestamoDao {
 	private static final String qrylistarPrestamosCuenta = "SELECT P.*, Cl.*, Cu.* "
 			+ "FROM prestamos P "
 			+ "JOIN clientes Cl ON Cl.id = P.id_cliente "
-			+ "JOIN cuentas Cu ON Cu.id = id_cuenta "
+			+ "JOIN cuentas Cu ON Cu.id = P.id_cuenta "
 			+ "WHERE P.estado = 1 AND Cu.id = ?";
 	
 	@Override

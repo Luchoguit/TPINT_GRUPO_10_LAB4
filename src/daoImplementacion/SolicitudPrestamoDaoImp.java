@@ -26,7 +26,7 @@ public class SolicitudPrestamoDaoImp implements SolicitudPrestamoDao {
 			+ "FROM Solicitudes_Prestamos Sp "
 			+ "JOIN prestamos P ON P.id_prestamo = P.id_prestamo "
 			+ "JOIN clientes Cl ON Cl.id = P.id_cliente "
-			+ "JOIN cuentas Cu ON Cu.id = id_cuenta"
+			+ "JOIN cuentas Cu ON Cu.id = P.id_cuenta"
 			+ "WHERE Sp.estado = 1";
 	@Override
 	public List<SolicitudPrestamo> listarSolicitudes() {
@@ -157,8 +157,8 @@ public class SolicitudPrestamoDaoImp implements SolicitudPrestamoDao {
         return isInsertExitoso;
 	}
 	
-	private static final String qryAceptarPrestamo = "UPDATE prestamos SET estado = 1 WHERE id_prestamo = ?;";
-	private static final String qryAceptarSolicitud = "UPDATE Solicitudes_Prestamos SET aprobado = 1, estado = 0 WHERE id_prestamo = ?;";
+	private static final String qryAceptarPrestamo = "UPDATE prestamos P SET P.estado = 1 WHERE P.id_prestamo = ?;";
+	private static final String qryAceptarSolicitud = "UPDATE Solicitudes_Prestamos SP SET SP.aprobado = 1, SP.estado = 0 WHERE SP.id_prestamo = ?;";
 
 
 @Override
@@ -210,10 +210,10 @@ public boolean aceptarPrestamo(int id) {
 
 
 	private static final String qryRechazarPrestamo = 
-	        "UPDATE prestamos SET estado = 0 WHERE id_prestamo = ?; ";
+	        "UPDATE prestamos P SET P.estado = 0 WHERE P.id_prestamo = ?; ";
 
 	private static final String qryRechazarSolicitud = 
-	        "UPDATE Solicitudes_Prestamos SET aprobado = 0, estado = 0 WHERE id_prestamo = ?; ";
+	        "UPDATE Solicitudes_Prestamos SP SET SP.aprobado = 0, SP.estado = 0 WHERE SP.id_prestamo = ?; ";
 
 	@Override
 	public boolean rechazarPrestamo(int id) {

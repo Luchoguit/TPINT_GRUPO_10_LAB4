@@ -137,7 +137,7 @@ BEGIN
 
     SET NEW.cbu = NULL;
 
-    -- Generar CBU único
+    -- Generar CBU ï¿½nico
     REPEAT
         SET nuevoCbu = LPAD(FLOOR(RAND() * 10000000000000000000000), 22, '0');
         SELECT EXISTS(SELECT 1 FROM cuentas WHERE cbu = nuevoCbu) INTO duplicado;
@@ -146,7 +146,7 @@ BEGIN
 
     SET NEW.cbu = nuevoCbu;
 
-    -- Generar el número de cuenta consecutivo
+    -- Generar el nï¿½mero de cuenta consecutivo
     SELECT IFNULL(MAX(numero_cuenta), 999999999) + 1 INTO ultimoNumeroCuenta
     FROM cuentas;
 
@@ -216,7 +216,7 @@ BEGIN
         VALUES (
             NEW.id_cuenta,  
             2,  
-            'Acreditación préstamo',  
+            'Acreditaciï¿½n prï¿½stamo',  
             NEW.importe_pedido,  
             (SELECT saldo FROM cuentas WHERE cuentas.id = NEW.id_cuenta)  
         );
