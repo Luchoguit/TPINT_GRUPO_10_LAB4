@@ -6,7 +6,6 @@ import entidad.Cliente;;
 
 public interface ClienteDao {
 	
-	
 	Cliente obtenerPorDNI(String id);
 	Cliente obtenerPorId(int id);
 	boolean altaCliente(Cliente cliente);

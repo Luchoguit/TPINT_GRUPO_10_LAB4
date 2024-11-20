@@ -5,7 +5,6 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 public class Cuenta {
-    private static BigInteger numeroCuentaInicial = new BigInteger("1000000000");  
 
     private int id;
     private String numeroCuenta;
@@ -33,7 +32,7 @@ public class Cuenta {
 
 
     public Cuenta(Usuario usuario, TipoCuenta tipoCuenta) {
-        this.numeroCuenta = generarNumeroCuenta();
+        this.numeroCuenta = "1000000000";
         this.fechaCreacion = LocalDateTime.now(); 
         this.cbu = null;
         this.saldo = BigDecimal.valueOf(10000);  
@@ -42,10 +41,6 @@ public class Cuenta {
         this.estado = true;  
     }
 
-    private static synchronized String generarNumeroCuenta() {
-        numeroCuentaInicial = numeroCuentaInicial.add(BigInteger.ONE);  // Incrementa el número de cuenta
-        return String.format("%010d", numeroCuentaInicial);  // Formatea con 10 dígitos, rellena con ceros a la izquierda
-    }
 
     public int getId() {
         return id;

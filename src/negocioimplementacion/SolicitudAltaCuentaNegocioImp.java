@@ -10,7 +10,7 @@ import negocio.SolicitudAltaCuentaNegocio;
 
 public class SolicitudAltaCuentaNegocioImp implements SolicitudAltaCuentaNegocio {
 	
-	SolicitudAltaCuentaDao solicitudDao = new SolicitudAltaCuentaDaoImp();
+	private SolicitudAltaCuentaDao solicitudDao = new SolicitudAltaCuentaDaoImp();
 
 	@Override
 	public boolean registrarSolicitud(SolicitudAltaCuenta solicitud) {

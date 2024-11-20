@@ -9,7 +9,7 @@ import negocio.LocalidadNegocio;
 
 public class LocalidadNegocioImp implements LocalidadNegocio {
 	
-	LocalidadDao localidadDao = new LocalidadDaoImp();
+	private LocalidadDao localidadDao = new LocalidadDaoImp();
 
 	@Override
 	public List<Localidad> listarLocalidades() {

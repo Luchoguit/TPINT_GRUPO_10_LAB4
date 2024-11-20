@@ -7,7 +7,6 @@ import negocio.UsuarioNegocio;
 
 public class UsuarioNegocioImp implements UsuarioNegocio {
 
-  
     private UsuarioDao usuarioDao = new UsuarioDaoImp();
 
     @Override

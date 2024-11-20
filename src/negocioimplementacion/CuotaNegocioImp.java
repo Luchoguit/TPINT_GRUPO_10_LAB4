@@ -6,7 +6,7 @@ import negocio.CuotaNegocio;
 
 public class CuotaNegocioImp implements CuotaNegocio {
 
-	CuotaDao cuotaDao = new CuotaDaoImp();
+	private CuotaDao cuotaDao = new CuotaDaoImp();
 	
 	@Override
 	public boolean pagarCuota(int idPrestamo) {

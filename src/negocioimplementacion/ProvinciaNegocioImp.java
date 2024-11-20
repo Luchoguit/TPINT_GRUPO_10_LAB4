@@ -9,7 +9,7 @@ import negocio.ProvinciaNegocio;
 
 public class ProvinciaNegocioImp implements ProvinciaNegocio {
 	
-	ProvinciaDao provinciaDao = new ProvinciaDaoImp();
+	private ProvinciaDao provinciaDao = new ProvinciaDaoImp();
 
 	@Override
 	public List<Provincia> listarProvincias() {

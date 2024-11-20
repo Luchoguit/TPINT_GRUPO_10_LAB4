@@ -8,7 +8,7 @@ import negocio.ClienteNegocio;
 
 public class ClienteNegocioImp implements ClienteNegocio {
 
-    ClienteDao clienteDao = new ClienteDaoImp();
+	private ClienteDao clienteDao = new ClienteDaoImp();
 
     @Override
     public List<Cliente> listarClientes() {

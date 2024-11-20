@@ -11,7 +11,7 @@ import negocio.CuentaNegocio;
 
 public class CuentaNegocioImp implements CuentaNegocio{
 	
-	CuentaDao cuentaDao = new CuentaDaoImp();
+	private CuentaDao cuentaDao = new CuentaDaoImp();
 
 	@Override
 	public boolean altaCuenta(Cuenta cuenta) {

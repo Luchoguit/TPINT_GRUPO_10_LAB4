@@ -9,7 +9,7 @@ import negocio.PrestamoNegocio;
 
 public class PrestamoNegocioImp implements PrestamoNegocio{
 	
-	PrestamoDao prestamoDao = new PrestamoDaoImp();
+	private PrestamoDao prestamoDao = new PrestamoDaoImp();
 	
 	@Override
 	public boolean altaPrestamo(Prestamo prestamo) {

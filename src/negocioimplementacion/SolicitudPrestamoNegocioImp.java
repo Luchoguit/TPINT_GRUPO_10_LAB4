@@ -10,7 +10,7 @@ import negocio.SolicitudPrestamoNegocio;
 
 public class SolicitudPrestamoNegocioImp implements SolicitudPrestamoNegocio {
 
-	SolicitudPrestamoDao solicitudDao = new SolicitudPrestamoDaoImp();
+	private SolicitudPrestamoDao solicitudDao = new SolicitudPrestamoDaoImp();
 	
 	@Override
 	public List<SolicitudPrestamo> listarSolicitudes() {
