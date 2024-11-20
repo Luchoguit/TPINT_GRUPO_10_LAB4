@@ -201,17 +201,27 @@ DELIMITER ;
 DELIMITER //
 
 CREATE TRIGGER depositarMontoPrestamo
-AFTER UPDATE ON prestamos
+AFTER UPDATE ON Prestamos
 FOR EACH ROW
 BEGIN
+   
     IF NEW.estado = 1 THEN
+        -- Acreditacion del prestamo en el saldo de la cuenta
         UPDATE cuentas
         SET saldo = saldo + NEW.importe_pedido
-        WHERE id = NEW.id_cuenta;
+        WHERE cuentas.id = NEW.id_cuenta;  
+        
+        -- Insert del alta de prestamo en la tabla de Movimientos
+        INSERT INTO movimientos (id_cuenta, id_tipoMovimiento, detalle, importe, Saldo_disponible)
+        VALUES (
+            NEW.id_cuenta,  
+            2,  
+            'Acreditación préstamo',  
+            NEW.importe_pedido,  
+            (SELECT saldo FROM cuentas WHERE cuentas.id = NEW.id_cuenta)  
+        );
     END IF;
-END;
-
-//
+END //
 
 DELIMITER ;
 

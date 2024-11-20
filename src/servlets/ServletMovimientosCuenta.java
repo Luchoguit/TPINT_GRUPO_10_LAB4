@@ -64,12 +64,14 @@ public class ServletMovimientosCuenta extends HttpServlet {
 	private List<BigDecimal> actualizarSaldosInvertidos(List<Movimiento> movimientos, Cuenta cuentaSeleccionada)
 	{
 		BigDecimal acumulador = new BigDecimal("10000");
+		int tipo_movimiento_alta_prestamo = 2;
+
 		
 		List<BigDecimal> saldosParciales = new ArrayList<>();
 		
 		for(Movimiento m : movimientos)
 		{
-			if(m.getCuentaDestino().getId()== cuentaSeleccionada.getId())
+			if(m.getCuentaDestino().getId()== cuentaSeleccionada.getId() || m.getTipoMovimiento().getId() == tipo_movimiento_alta_prestamo)
 			{
 				acumulador = acumulador.add(m.getImporte());
 			}

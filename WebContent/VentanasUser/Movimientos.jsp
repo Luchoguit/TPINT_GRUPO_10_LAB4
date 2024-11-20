@@ -121,10 +121,12 @@
 				
 				
 				int iteracion = 0;
+				int tipo_movimiento_alta_prestamo = 2;
+
 				for(Movimiento movimiento : movimientos)
 				{
 					boolean salida = false;
-					if(! (movimiento.getCuentaDestino().getId()== cuentaSeleccionada.getId()))
+					if(!(movimiento.getCuentaDestino().getId()== cuentaSeleccionada.getId() || movimiento.getTipoMovimiento().getId() == tipo_movimiento_alta_prestamo))
 					{
 						salida = true;
 					}
