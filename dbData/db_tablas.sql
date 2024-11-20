@@ -216,7 +216,7 @@ BEGIN
         VALUES (
             NEW.id_cuenta,  
             2,  
-            'Acreditaci�n pr�stamo',  
+            'Acreditacion prestamo',  
             NEW.importe_pedido,  
             (SELECT saldo FROM cuentas WHERE cuentas.id = NEW.id_cuenta)  
         );

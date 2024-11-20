@@ -127,7 +127,10 @@
                 <td><%= prestamo.getFechaAlta() %></td>
                 <td>$<%= prestamo.getImportePedido() %></td>
                 <td>
-                    <a href="/TPINT_GRUPO_10_LAB4/ServletPagarPrestamo">PAGAR CUOTA</a>
+                <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletPagarPrestamo">
+                <input type="hidden" name="idPrestamo" value="<%= prestamo.getIdPrestamo() %>">
+                 <button type="submit" >PAGAR CUOTA</button>
+                </form>
                 </td>
             </tr>
             <% } } %>
