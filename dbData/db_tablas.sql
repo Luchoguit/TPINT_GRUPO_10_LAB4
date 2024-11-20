@@ -198,7 +198,22 @@ END $$
 
 DELIMITER ;
 
+DELIMITER //
 
+CREATE TRIGGER depositarMontoPrestamo
+AFTER UPDATE ON prestamos
+FOR EACH ROW
+BEGIN
+    IF NEW.estado = 1 THEN
+        UPDATE cuentas
+        SET saldo = saldo + NEW.importe_pedido
+        WHERE id = NEW.id_cuenta;
+    END IF;
+END;
+
+//
+
+DELIMITER ;
 
 -- Insercion TiposDeMovimiento
 INSERT INTO tipos_de_movimientos (id, descripcion) VALUES

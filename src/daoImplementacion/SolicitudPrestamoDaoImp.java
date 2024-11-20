@@ -157,8 +157,8 @@ public class SolicitudPrestamoDaoImp implements SolicitudPrestamoDao {
         return isInsertExitoso;
 	}
 	
-	private static final String qryActualizarPrestamo = "UPDATE prestamos SET estado = 1 WHERE id_prestamo = ?;";
-	private static final String qryActualizarSolicitud = "UPDATE Solicitudes_Prestamos SET aprobado = 1, estado = 0 WHERE id_prestamo = ?;";
+	private static final String qryAceptarPrestamo = "UPDATE prestamos SET estado = 1 WHERE id_prestamo = ?;";
+	private static final String qryAceptarSolicitud = "UPDATE Solicitudes_Prestamos SET aprobado = 1, estado = 0 WHERE id_prestamo = ?;";
 
 
 @Override
@@ -169,8 +169,8 @@ public boolean aceptarPrestamo(int id) {
 
         con.setAutoCommit(false);
 
-        try (PreparedStatement statementPrestamo = con.prepareStatement(qryActualizarPrestamo);
-             PreparedStatement statementSolicitud = con.prepareStatement(qryActualizarSolicitud)) {
+        try (PreparedStatement statementPrestamo = con.prepareStatement(qryAceptarPrestamo);
+             PreparedStatement statementSolicitud = con.prepareStatement(qryAceptarSolicitud)) {
 
             statementPrestamo.setInt(1, id);
             statementSolicitud.setInt(1, id);

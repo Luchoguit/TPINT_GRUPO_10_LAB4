@@ -17,11 +17,13 @@ import entidad.SolicitudAltaCuenta;
 import entidad.TipoCuenta;
 import entidad.Usuario;
 import negocio.CuentaNegocio;
+import negocio.CuotaNegocio;
 import negocio.PrestamoNegocio;
 import negocio.SolicitudAltaCuentaNegocio;
 import negocio.SolicitudPrestamoNegocio;
 import negocio.UsuarioNegocio;
 import negocioimplementacion.CuentaNegocioImp;
+import negocioimplementacion.CuotaNegocioImp;
 import negocioimplementacion.PrestamoNegocioImp;
 import negocioimplementacion.SolicitudAltaCuentaNegocioImp;
 import negocioimplementacion.SolicitudPrestamoNegocioImp;
@@ -81,12 +83,18 @@ public class ServletSolicitudesPrestamos extends HttpServlet {
         try {
 	    if ("aceptar".equals(accion)) {
 	    	
-
+	    	PrestamoNegocio prestamoNegocio = new PrestamoNegocioImp();
+	    	Prestamo prestamo = prestamoNegocio.obtenerPrestamoPorId(idPrestamo);
 	    	// ACEPTAR PRESTAMO
 	    	SolicitudPrestamoNegocio spNegocio = new SolicitudPrestamoNegocioImp();
 	    	boolean resultadoAceptar = spNegocio.aceptarPrestamo(idPrestamo);
 	    	
 	        System.out.println("[DEBUG] resultado aceptar: " + resultadoAceptar);
+	        if(resultadoAceptar) {
+	        	CuotaNegocio cuotaNegocio = new CuotaNegocioImp();
+	        	boolean resultadoCuotas = cuotaNegocio.generarCuotas(prestamo);
+	        	System.out.println("[DEBUG] resultado crear cuotas: " + resultadoCuotas);
+	        }
 
 	    } else {
 
