@@ -39,6 +39,8 @@
 
 	<input id="dniOriginal" name="dniOriginal" type="hidden" value="<%= ((Cliente) request.getAttribute("cliente")).getDni() %>">
 	<input id="cuilOriginal" name="cuilOriginal" type="hidden" value="<%= ((Cliente) request.getAttribute("cliente")).getCuil() %>">
+	<input id="telOriginal" name="telOriginal" type="hidden" value="<%= ((Cliente) request.getAttribute("cliente")).getTelefono() %>">
+	<input id="emailOriginal" name="emailOriginal" type="hidden" value="<%= ((Cliente) request.getAttribute("cliente")).getCorreo() %>">
 
     <div class="form-group">
         <label for="dni">DNI</label>

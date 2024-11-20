@@ -549,7 +549,7 @@ public class CuentaDaoImp implements CuentaDao {
         try {
             
 
-            BigDecimal saldoActualizado = movimiento.getCuentaDestino().getSaldo().subtract(movimiento.getImporte());
+            BigDecimal saldoActualizado = movimiento.getCuentaDestino().getSaldo().add(movimiento.getImporte());
             //BigDecimal saldoActualizado = new BigDecimal(movimiento.getCuentaDestino().getSaldo().doubleValue() - movimiento.getImporte().doubleValue());
         	
             if(saldoActualizado.floatValue() >= 0.00)

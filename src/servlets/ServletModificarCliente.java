@@ -61,11 +61,12 @@ public class ServletModificarCliente extends HttpServlet {
 	    
 	    int idCliente = Integer.parseInt(idClienteStr);
 		
-	    //variables para verificar si se modifica cuil y dni
+	    //variables para verificar si se modifica cuil, dni, emial, telefono.
 	    String dniOriginal = request.getParameter("dniOriginal");
 	    String cuilOriginal = request.getParameter("cuilOriginal");
+	    String correoOriginal = request.getParameter("emailOriginal");
+	    String telOriginal = request.getParameter("telOriginal");
 	    
-		
         String dni = request.getParameter("dni");
         String cuil = request.getParameter("cuil");
         String nombre = request.getParameter("nombre");
@@ -99,32 +100,17 @@ public class ServletModificarCliente extends HttpServlet {
         Cliente cliente = clienteNegocio.obtenerPorId(idCliente); // Obtener el cliente existente
 
         if (cliente != null) {
-            // Actualizar los datos del cliente
-        	cliente.setDni(dni);
-            cliente.setCuil(cuil);
-            cliente.setNombre(nombre);
-            cliente.setApellido(apellido);
-            cliente.setSexo(sexo);
-            cliente.setNacionalidad(nacionalidad);
-            cliente.setFechaNacimiento(fechaNacimiento);
-            cliente.setDireccion(direccion);
-            cliente.setProvinciaCliente(provincia);
-            cliente.setLocalidadCliente(localidad);
-            cliente.setCorreo(correo);
-            cliente.setTelefono(telefono);
-
-            
+            // verificamos datos irrepetibles            
             boolean actualizado = false;
             boolean dni_repetido = false;
             boolean cuil_repetido = false;
+            boolean tel_repetido = false;
+            boolean emailRepetido = false;
             
-            
-            //verificamos si el DNI y CUIL fueron modificados
             if (!dni.equals(dniOriginal)) {
             	//si son distintas, se quiere modificar dni, entonces
             	//verifico que el nuevo dni no exista en BD            
-                if(clienteNegocio.verificarDniIngresado(dni) == true) 
-                {
+                if(clienteNegocio.verificarDniIngresado(dni)){
                 	//el dni ingresado ya existe en BD.
                 	dni_repetido = true;
                 }
@@ -133,15 +119,40 @@ public class ServletModificarCliente extends HttpServlet {
             if (!cuil.equals(cuilOriginal)) {
             	//si son distintas, se quiere modificar cuil, entonces
             	//verifico que el nuevo cuil no exista en BD    
-            	if(clienteNegocio.verificarCuilIngresado(cuil) == true) {
+            	if(clienteNegocio.verificarCuilIngresado(cuil)) {
                 	//el cuil ingresado ya existe en BD.
                 	cuil_repetido = true;
                 }
             }
             
+            if(!telefono.equals(telOriginal)) {
+            	if (clienteNegocio.verificarTelefonoIngresado(telefono)) {
+	                tel_repetido = true;
+	            }
+            }
+	            
+            if(!correo.equals(correoOriginal)) {
+            	if (clienteNegocio.verificarEmailIngresado(correo)) {
+            		emailRepetido = true;
+	            }
+            }
             
-            if(dni_repetido == false && cuil_repetido == false) {
-            	//actualizamos el cliente.
+            
+            if(dni_repetido == false && cuil_repetido == false && tel_repetido == false && emailRepetido == false) {
+            	//no hay datos repetidos, actualizamos el cliente.
+                cliente.setNombre(nombre);
+                cliente.setApellido(apellido);
+                cliente.setSexo(sexo);
+                cliente.setNacionalidad(nacionalidad);
+                cliente.setFechaNacimiento(fechaNacimiento);
+                cliente.setDireccion(direccion);
+                cliente.setProvinciaCliente(provincia);
+                cliente.setLocalidadCliente(localidad);
+                cliente.setCorreo(correo);
+                cliente.setTelefono(telefono);
+            	cliente.setDni(dni);
+                cliente.setCuil(cuil);
+            	
             	actualizado = clienteNegocio.actualizarCliente(cliente);
             }
             	
@@ -161,10 +172,25 @@ public class ServletModificarCliente extends HttpServlet {
             	}
             	if (cuil_repetido) {
             	    if (dni_repetido) {
-            	        mensajeError += " y ";
+            	        mensajeError += " , ";
             	    }
             	    mensajeError += "CUIL";
             	}
+            	if (tel_repetido) {
+            	    if (dni_repetido || cuil_repetido) {
+            	        mensajeError += " , ";
+            	    }
+            	    mensajeError += "Telefono";
+            	}
+            	
+            	if (emailRepetido) {
+            	    if (dni_repetido || cuil_repetido || tel_repetido) {
+            	        mensajeError += " , ";
+            	    }
+            	    mensajeError += "Email";
+            	}
+            	
+            	
             	//envio mensaje de error a la vista
             	request.setAttribute("mensaje", mensajeError);
             	request.setAttribute("tipoMensaje", "error");

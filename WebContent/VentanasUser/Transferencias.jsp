@@ -201,17 +201,16 @@
             </tbody>
         </table>
  
-  <form  method="post" action="/TPINT_GRUPO_10_LAB4/servletTransferencia" style="display: flex; align-items: center; gap: 10px;">
+  <form  method="post" action="/TPINT_GRUPO_10_LAB4/servletTransferencia" style="display: flex; align-items: center; gap: 10px; ">
 	   <div id="formularioMonto" style="display: none; margin-top: 15px; margin-left: 100px">
-		    <label for="monto">Monto $</label>
-		    <input type="number" id="monto" name="monto" placeholder="Ingrese el monto">
-		    <label>Concepto </label>
-		    <input type="text" id="concepto" name="concepto" placeholder="Opcional">
-		    <input type="hidden" name="CBUDestino" value="<%= cuenta != null  ? cuentaDestino.getCbu() : 0%>">
-		    <br>
-		    <br>
-		    <input type="submit" name="btnTransferir" value="Aceptar">
-		</div>
+        <label for="monto">Monto $</label>
+        <input type="number" id="monto" name="monto" placeholder="Ingrese el monto" required>
+        <label>Concepto </label>
+        <input type="text" id="concepto" name="concepto" placeholder="Opcional">
+        <input type="hidden" name="CBUDestino" value="<%= cuenta != null ? cuentaDestino.getCbu() : 0 %>">
+        <br><br>
+        <input type="submit" name="btnTransferir" value="Aceptar" onclick="confirmarTransferencia()">
+    </div>
 	</form>
 	
 	 <div class="volver-menu">
@@ -245,6 +244,16 @@
 	    }
 	}
     
+	 function confirmarTransferencia() {
+	        const monto = document.getElementById('monto').value;
+	        if (!monto || parseFloat(monto) <= 0) {
+	            alert('Por favor, ingrese un monto válido.');
+	            return false; // Evita el envío si el monto no es válido
+	        }
+	        return confirm('¿Está seguro de que desea realizar esta transferencia?');
+	    }
+	
+	
 </script>
 
 </body>
