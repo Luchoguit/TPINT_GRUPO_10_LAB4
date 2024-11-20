@@ -6,9 +6,9 @@
     <title>Login</title>
     <style>        
     </style>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloBotones.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloMensajes.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloFormulario.css">
+    <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloBotones.css">
+    <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloMensajes.css">
+    <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloFormulario.css">
     
 </head>
 <body>
@@ -37,13 +37,13 @@
         <div class="form-group">
             <label for="password">Contraseña</label>
             <input id="password" type="password" name="password" required class="contra">
-        </div>
-
-		<div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
-		    <input type="submit" value="Aceptar">
 		    <a href="#" id="mostrar-contra" onclick="mostrarContra()">
 		        Mostrar contraseña
 		    </a>
+        </div>
+
+		<div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
+		    <input type="submit" value="Aceptar" class="button button-green">
 		</div>
     </form>
 </div>

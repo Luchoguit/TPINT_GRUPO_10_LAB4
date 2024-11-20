@@ -104,7 +104,7 @@
     <table>
         <thead>
             <tr>
-                <th>Número de Préstamo</th>
+                <th>Codigo de Préstamo</th>
                 <th>Cuotas Pagas</th>
                 <th>Valor de la Cuota</th>
                 <th>Monto Total</th>
