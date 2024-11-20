@@ -40,19 +40,7 @@
             margin-left: 10px;
         }
 
-        table {
-            width: 80%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
+       
         .action-buttons {
             text-align: center;
             margin-top: 20px;
@@ -97,6 +85,9 @@
 		 }
     </style>
     
+    
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloBotones.css">
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloTabla.css">
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloMensajes.css">
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloPaginacion.css">
 

@@ -52,6 +52,7 @@ public class ServletLAltaUsuario extends HttpServlet {
 
                 if (usuarioCreado) {                   
                     request.setAttribute("mensaje", "Usuario creado exitosamente.");
+                    request.setAttribute("tipoMensaje", "success");
                 } else {
                     request.setAttribute("mensaje", "Error al crear el usuario.");
                 }
