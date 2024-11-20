@@ -179,14 +179,14 @@
     
     <%
 			}
+			else
+			{
+			%>
+				<h3>Aquí aparecerán sus movimientos cuando utilice la cuenta</h3>
+			<%} 
 	
 		}
-		else
-		{
-		%>
-			<h3>Aquí aparecerán sus movimientos cuando utilice la cuenta</h3>
-		<%} %>
-		
+	%>
     <div class="button-container">
         <input type="button" value="Volver" class="back-button" onclick="window.history.back()">
     </div>
