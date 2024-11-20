@@ -1,64 +1,152 @@
 <%@page import="entidad.Prestamo" %>
 <%@page import="java.util.List" %>
 
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Gestionar Préstamos</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Gestionar Préstamos</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloBotones.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloMensajes.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloTabla.css">
+
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f8f8;
+        }
+
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+
+        .action-btn-submit {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .action-btn-submit:hover {
+            background-color: #218838;
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .volver-menu {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .volver-btn-back {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .volver-btn-back:hover {
+            background-color: #0056b3;
+        }
+
     </style>
-    
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloMensajes.css">
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloTabla.css">
-    
 </head>
 <body>
 
-    <h2 style="text-align: center;">Préstamos Activos</h2>
+    <!-- Título de la Página -->
+    <h2>Préstamos Activos</h2>
 
+    <!-- Tabla de Préstamos -->
     <table>
-        <tr>
-            <th>Número de Préstamo</th>
-            <th>Cuotas Pagas</th>
-            <th>Valor de la Cuota</th>
-            <th>Monto Total</th>
-            <th>Fecha del Préstamo</th>
-            <th>Saldo Restante</th>
-            <th>Acciones</th>
-        </tr>
-        	     	
-        	     	
-        	   	<% 
-			    	List<Prestamo> listaPrestamos = (List<Prestamo>)request.getAttribute("listaPrestamos");
-            		if (listaPrestamos != null) {
-			        for (Prestamo prestamo : listaPrestamos) {
-			    %>
-        <tr>
-            <td><%= prestamo.getIdPrestamo() %></td>
-            <td>0 / <%= prestamo.getCantidadCuotas() %></td>
-            <td>$<%= prestamo.getImporteMensual() %></td>
-            <td>$<%= prestamo.getImportePedido() %></td>
-            <td><%= prestamo.getFechaAlta() %></td>
-            <td>$<%= prestamo.getImportePedido() %></td>
-            <td><a href="/TPINT_GRUPO_10_LAB4/ServletPagarPrestamo">Pagar cuota</a></td>
-        </tr>
-        
-         		<% } ;} %>
+        <thead>
+            <tr>
+                <th>Número de Préstamo</th>
+                <th>Cuotas Pagas</th>
+                <th>Valor de la Cuota</th>
+                <th>Monto Total</th>
+                <th>Fecha del Préstamo</th>
+                <th>Saldo Restante</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% 
+                List<Prestamo> listaPrestamos = (List<Prestamo>)request.getAttribute("listaPrestamos");
+                if (listaPrestamos != null) {
+                    for (Prestamo prestamo : listaPrestamos) {
+            %>
+            <tr>
+                <td><%= prestamo.getIdPrestamo() %></td>
+                <td>0 / <%= prestamo.getCantidadCuotas() %></td>
+                <td>$<%= prestamo.getImporteMensual() %></td>
+                <td>$<%= prestamo.getImportePedido() %></td>
+                <td><%= prestamo.getFechaAlta() %></td>
+                <td>$<%= prestamo.getImportePedido() %></td>
+                <td>
+                    <a href="/TPINT_GRUPO_10_LAB4/ServletPagarPrestamo">PAGAR CUOTA</a>
+                </td>
+            </tr>
+            <% } } %>
+        </tbody>
     </table>
 
+    <!-- Botón para Solicitar un Nuevo Préstamo -->
     <div class="action-buttons">
-        <a href="/TPINT_GRUPO_10_LAB4/ServletPedirPrestamo">Solicitar nuevo Préstamo</a>
+        <form action="/TPINT_GRUPO_10_LAB4/ServletPedirPrestamo" method="get">
+            <input type="submit" value="Solicitar nuevo Préstamo" class="action-btn-submit">
+        </form>
     </div>
-    
-   	<div class="volver-menu">
-    	 <!-- Enlace para volver al menu -->
-		<a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexCuenta.jsp" class="volver-menu">
-			<input type="button" value="Volver a cuenta" class="btn-volver">
-		</a>
-     </div>
+
+    <!-- Botón para Volver al Menú -->
+    <div class="volver-menu">
+        <form method="post" action="/TPINT_GRUPO_10_LAB4/MENUS/IndexCuenta.jsp">
+            <button type="submit" class="volver-btn-back">Volver a cuenta</button>
+        </form>
+    </div>
 
 </body>
 </html>

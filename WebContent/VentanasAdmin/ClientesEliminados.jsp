@@ -7,41 +7,67 @@
 <html lang="es">
 <head>
     <meta charset="ISO-8859-1">
-    <title>Lista de Clientes</title>
+    <title>Lista de Clientes Eliminados</title>
+
+    <!-- Enlaces a los estilos CSS comunes -->
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloMensajes.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloTabla.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloPaginacion.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloBotones.css">
+    
+    <!-- Estilo específico para esta página -->
     <style>
+        form input[type="submit"], .volver-menu input[type="button"] {
+            width: auto; 
+            margin: 10px;
+            padding: 10px 20px;
+        }
+        .filter-container form {
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
+
+        .filter-container input[type="text"] {
+            width: 200px; 
+            padding: 8px; 
+            margin-right: 10px; 
+        }
+
+        .filter-container input[type="submit"] {
+            padding: 8px 15px; 
+            font-size: 14px; 
+        }
     </style>
-    
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloMensajes.css">
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloTabla.css">
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloPaginacion.css">
-    
 </head>
 <body>
 
 <h2 style="text-align: center;">Lista de Clientes Eliminados</h2>
 
-			<!-- Contenedor de mensajes -->
-		<% 
-		    String mensaje = (String) request.getAttribute("mensaje");
-		    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
-		    if (mensaje != null && tipoMensaje != null) {
-		%>
-		    <div class="message-container <%= tipoMensaje %>">
-		        <%= mensaje %>
-		    </div>
-		<% } %>	
+<!-- Contenedor de mensajes -->
+<% 
+    String mensaje = (String) request.getAttribute("mensaje");
+    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
+    if (mensaje != null && tipoMensaje != null) {
+%>
+    <div class="message-container <%= tipoMensaje %>">
+        <%= mensaje %>
+    </div>
+<% } %>
 
+<!-- Filtro de búsqueda -->
 <div class="filter-container">
     <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoClientesEliminados">
         <input type="text" name="filtroCliente" placeholder="Ingrese DNI, nombre o apellido">
-        <input type="submit" name="btnFiltrar" value="Filtrar">
+        <input type="submit" name="btnFiltrar" value="Filtrar" class="button button-blue">
     </form>
 </div>
 
-		<% // Datos para paginacion
-	    int paginaActual = (int) request.getAttribute("paginaActual");
-	    int totalPaginas = (int) request.getAttribute("totalPaginas");
-		%>
+<% 
+    // Datos para paginación
+    int paginaActual = (int) request.getAttribute("paginaActual");
+    int totalPaginas = (int) request.getAttribute("totalPaginas");
+%>
 
 <table>
     <tr>
@@ -54,12 +80,12 @@
         <th>Activar</th>
     </tr>
     
-       <% 
-		    List<Cliente> listaClientes = (List<Cliente>)request.getAttribute("listaClientes");
-		    if (listaClientes != null) {
-		        for (Cliente cliente : listaClientes) {
-    	%>
-    	
+    <% 
+    List<Cliente> listaClientes = (List<Cliente>)request.getAttribute("listaClientes");
+    if (listaClientes != null) {
+        for (Cliente cliente : listaClientes) {
+    %>
+    
     <tr>
         <td><%= cliente.getDni() %></td>
         <td><%= cliente.getNombre() %></td>
@@ -68,12 +94,11 @@
         <td><%= cliente.getCorreo() %></td>
         <td><%= cliente.getTelefono() %></td>
         <td>    
-        	<form method="post" action="/TPINT_GRUPO_10_LAB4/ServletActivarCliente">
+            <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletActivarCliente">
                 <input type="hidden" name="dniCliente" value="<%= cliente.getDni() %>">
-                <input type="submit" name="btnActivar" value="Activar">
+                <input type="submit" name="btnActivar" value="Activar" class="button button-green">
             </form>
        </td>
-       
     </tr>
     <% } } else { %>
     <tr>
@@ -99,11 +124,10 @@
     <% } %>
 </div>
 
-	<!-- Enlace para volver al menu -->
-    <a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp" class="volver-menu">
-        <input type="button" value="Volver al Menu" class="btn-volver">
-    </a>
-
+<!-- Enlace para volver al menu -->
+<a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp" class="volver-menu">
+    <input type="button" value="Volver al Menu" class="button button-blue">
+</a>
 
 </body>
 </html>

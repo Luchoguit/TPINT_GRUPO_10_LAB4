@@ -1,0 +1,67 @@
+@charset "UTF-8";
+
+/* Estilos generales para todos los botones */
+.button {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    padding: 10px 20px; /* Altura y espacio interno consistente */
+    border: none;
+    border-radius: 5px; /* Bordes redondeados */
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 5px; /* Espaciado entre botones */
+    text-align: center;
+    display: inline-block; /* Para botones en línea */
+}
+
+/* Colores y hover para botones de acción */
+.button-green {
+    background-color: #28a745; /* Verde */
+    color: white;
+}
+
+.button-green:hover {
+    background-color: #218838; /* Verde más oscuro */
+}
+
+/* Colores y hover para botones de navegación */
+.button-blue {
+    background-color: #007bff; /* Azul */
+    color: white;
+}
+
+.button-blue:hover {
+    background-color: #0056b3; /* Azul más oscuro */
+}
+
+/* Botón amarillo (Modificar) */
+.button-yellow {
+    background-color: #ffc107; /* Amarillo */
+    color: black;
+}
+
+.button-yellow:hover {
+    background-color: #e0a800; /* Amarillo más oscuro */
+}
+
+/* Botón rojo (Eliminar / Deshabilitar) */
+.button-red {
+    background-color: #f44336; /* Rojo */
+    color: white;
+}
+
+.button-red:hover {
+    background-color: #d32f2f; /* Rojo más oscuro */
+}
+
+/* Estilo para alinear botones en tablas */
+.action-buttons {
+    display: flex; /* Botones en fila */
+    justify-content: center; /* Centrar botones */
+    gap: 10px; /* Espaciado entre botones */
+}
+
+/* Asegurar que los botones en tablas y formularios sean del mismo tamaño */
+.table-buttons .button,
+.form-buttons .button {
+    width: 100%; /* Uniformar el ancho en ambos contextos */
+}

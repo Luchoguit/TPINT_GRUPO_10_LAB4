@@ -8,43 +8,66 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Lista de Clientes</title>
-    <style>	        
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloPaginacion.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloMensajes.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloTabla.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloBotones.css">
+   
+    <style>
+        form input[type="submit"], .volver-menu input[type="button"] {
+            width: auto; 
+            margin: 10px;
+            padding: 10px 20px;
+        }
+        .filter-container form {
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
+
+        .filter-container input[type="text"] {
+            width: 200px; 
+            padding: 8px; 
+            margin-right: 10px; 
+        }
+
+        .filter-container input[type="submit"] {
+            padding: 8px 15px; 
+            font-size: 14px; 
+        }
     </style>
-    
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloPaginacion.css">
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloMensajes.css">
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloTabla.css">
-    
+
 </head>
 <body>
 
 <h2 style="text-align: center;">Lista de Clientes</h2>
 
-			<!-- Contenedor de mensajes -->
-		<% 
-		    String mensaje = (String) request.getAttribute("mensaje");
-		    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
-		    if (mensaje != null && tipoMensaje != null) {
-		%>
-		    <div class="message-container <%= tipoMensaje %>">
-		        <%= mensaje %>
-		    </div>
-		<% } %>
-		
+<!-- Contenedor de mensajes -->
+<% 
+    String mensaje = (String) request.getAttribute("mensaje");
+    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
+    if (mensaje != null && tipoMensaje != null) {
+%>
+    <div class="message-container <%= tipoMensaje %>">
+        <%= mensaje %>
+    </div>
+<% } %>
 
-
+<!-- Filtro de búsqueda -->
 <div class="filter-container">
     <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoClientes">
         <input type="text" name="filtroCliente" placeholder="Ingrese DNI, nombre o apellido">
-        <input type="submit" name="btnFiltrar" value="Filtrar">
+        <input type="submit" name="btnFiltrar" value="Filtrar" class="button button-blue">
     </form>
 </div>
 
-	
-		<% // Datos para paginacion
-	    int paginaActual = (int) request.getAttribute("paginaActual");
-	    int totalPaginas = (int) request.getAttribute("totalPaginas");
-		%>
+<% 
+    // Datos para paginación
+    int paginaActual = (int) request.getAttribute("paginaActual");
+    int totalPaginas = (int) request.getAttribute("totalPaginas");
+%>
 
 <table>
     <tr>
@@ -60,7 +83,7 @@
     </tr>
     
     <% 
-    List<Cliente> listaClientes = (List<Cliente>)request.getAttribute("listaClientes");
+    List<Cliente> listaClientes = (List<Cliente>) request.getAttribute("listaClientes");
     if (listaClientes != null) {
         for (Cliente cliente : listaClientes) {
     %>
@@ -72,27 +95,27 @@
         <td><%= cliente.getCorreo() %></td>
         <td><%= cliente.getTelefono() %></td>
         
-        <!-- Boton para ver mas detalles -->
+        <!-- Botón para ver más detalles -->
         <td>
             <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletsInfoCompletaCliente">
                 <input type="hidden" name="dniCliente" value="<%= cliente.getDni() %>">
-                <input type="submit" name="verMas" value=" + ">
+                <input type="submit" name="verMas" value=" + " class="button button-green">
             </form>
         </td>
 
-        <!-- Boton para modificar -->
+        <!-- Botón para modificar -->
         <td>
             <form method="get" action="/TPINT_GRUPO_10_LAB4/ServletModificarCliente">
                 <input type="hidden" name="idcliente" value="<%= cliente.getId() %>">
-                <input type="submit" name="btnModificar" value="Modificar">
+                <input type="submit" name="btnModificar" value="Modificar" class="button button-yellow"> 
             </form>
         </td>
 
-        <!-- Boton para eliminar -->
+        <!-- Botón para eliminar -->
         <td>
             <form id="formEliminar_<%= cliente.getDni() %>" onsubmit="return confirmarEliminacion()" method="post" action="/TPINT_GRUPO_10_LAB4/ServletEliminarCliente">
                 <input type="hidden" name="dniCliente" value="<%= cliente.getDni() %>">
-                <input type="submit" name="btnEliminar" value="Eliminar">
+                <input type="submit" name="btnEliminar" value="Eliminar" class="button button-red">
             </form>
         </td>
     </tr>
@@ -121,20 +144,18 @@
     <% } %>
 </div>
 
+<!-- Enlace para volver al menu -->
+<a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp" class="volver-menu">
+    <input type="button" value="Volver al Menu" class="button button-blue">
+</a>
 
-    <!-- Enlace para volver al menu -->
-    <a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp" class="volver-menu">
-        <input type="button" value="Volver al Menu" class="btn-volver">
-    </a>
-
-    <!-- JavaScript para la confirmacion de eliminacion -->
-    <script type="text/javascript">
-        function confirmarEliminacion() {
-            
-            var respuesta = confirm("Estas seguro de que deseas eliminar este cliente?");
-            return respuesta;  
-        }
-    </script>
+<!-- JavaScript para la confirmación de eliminación -->
+<script type="text/javascript">
+    function confirmarEliminacion() {
+        var respuesta = confirm("¿Estás seguro de que deseas eliminar este cliente?");
+        return respuesta;  
+    }
+</script>
 
 </body>
 </html>

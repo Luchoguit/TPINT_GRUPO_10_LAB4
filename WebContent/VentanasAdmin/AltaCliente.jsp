@@ -2,39 +2,36 @@
 <%@page import="entidad.Localidad" %>
 <%@page import="java.util.List" %>
 
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Alta de Cliente</title>
-    <style>                
-    </style>   
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloMensajes.css">
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloFormulario.css">
-     
+
+    <!-- Importar Estilos Externos -->
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloMensajes.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloFormulario.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloBotones.css"> <!-- Aquí importamos el estilo de botones -->
+
 </head>
 
 <body>
 
 <div class="form-container">
     <h1>Alta Cliente</h1>
-    
-    
-		<!-- Contenedor de mensajes -->
-		<% 
-		    String mensaje = (String) request.getAttribute("mensaje");
-		    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
-		    if (mensaje != null && tipoMensaje != null) {
-		%>
-		    <div class="message-container <%= tipoMensaje %>">
-		        <%= mensaje %>
-		    </div>
-		<% } %>
 
-    
-    
+    <!-- Contenedor de mensajes -->
+    <% 
+        String mensaje = (String) request.getAttribute("mensaje");
+        String tipoMensaje = (String) request.getAttribute("tipoMensaje");
+        if (mensaje != null && tipoMensaje != null) {
+    %>
+        <div class="message-container <%= tipoMensaje %>">
+            <%= mensaje %>
+        </div>
+    <% } %>
+
     <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletAltaCliente">
         <!-- DNI -->
         <div class="form-group">
@@ -78,8 +75,8 @@
 
         <!-- Fecha de Nacimiento -->
         <div class="form-group">
-		<label for="fecha_nacimiento">Fecha de Nacimiento</label>
-		<input type="text" id="fecha_nacimiento" name="fecha_nacimiento" maxlength="10" placeholder="dd/mm/yyyy" required>
+            <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+            <input type="text" id="fecha_nacimiento" name="fecha_nacimiento" maxlength="10" placeholder="dd/mm/yyyy" required>
         </div>
 
         <!-- Dirección -->
@@ -91,28 +88,25 @@
         <!-- Provincia -->
         <div class="form-group">
             <label for="provincia">Provincia</label>
-			<select id="provincia" name="provincia">
-			    <option value="">Seleccione una provincia</option>
-			    <% 
-			        List<Provincia> listaProvincias = (List<Provincia>)request.getAttribute("provincias");
-            		if (listaProvincias != null) {
-			        for (Provincia provincia : listaProvincias) {
-			    %>
-			        <option value="<%= provincia.getId() %>"><%= provincia.getNombre() %></option>
-			    <% } } else {System.out.println("Las provincias no llegaron correctamente.");}
-			    %>
-			</select>
-
+            <select id="provincia" name="provincia">
+                <option value="">Seleccione una provincia</option>
+                <% 
+                    List<Provincia> listaProvincias = (List<Provincia>)request.getAttribute("provincias");
+                    if (listaProvincias != null) {
+                        for (Provincia provincia : listaProvincias) {
+                %>
+                    <option value="<%= provincia.getId() %>"><%= provincia.getNombre() %></option>
+                <% } } else {System.out.println("Las provincias no llegaron correctamente.");}
+                %>
+            </select>
         </div>
-        
-                <!-- Localidad -->
-                
+
+        <!-- Localidad -->
         <div class="form-group">
             <label for="localidad">Localidad</label>
-			<select id="localidad" name="localidad">
-			    <option value="">Seleccione una localidad</option>
-			</select>
-
+            <select id="localidad" name="localidad">
+                <option value="">Seleccione una localidad</option>
+            </select>
         </div>
 
         <!-- Correo Electrónico -->
@@ -126,117 +120,75 @@
             <label for="telefono">Teléfono</label>
             <input id="telefono" type="number" onkeypress="soloNumeros(event)" name="telefono" value="<%= request.getAttribute("precargaTelefono") != null ? request.getAttribute("precargaTelefono") : "" %>" required maxlength="20">
         </div>
-       
+        
+        <!-- Botón de Enviar -->
         <div class="form-group">
-            <input type="submit" value="Guardar Cliente">
+            <input type="submit" value="Guardar Cliente" class="button button-green"> <!-- Aplicamos el estilo de botón -->
         </div>
     </form>
-    
-        <!-- Enlace para volver al menu -->
+
+    <!-- Enlace para volver al menu -->
     <a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp" class="volver-menu">
-        <input type="button" value="Volver al Menu" class="btn-volver">
+        <input type="button" value="Volver al Menu" class="button button-blue"> <!-- Aplicamos el estilo de botón -->
     </a>
-    
+
 </div>
 
-
-
-
-
-        <!-- Script para formato de fecha -->
+<!-- Scripts -->
 <script>
     document.getElementById("fecha_nacimiento").addEventListener("input", function (e) {
         let input = e.target.value;
-        // Elimina todos los caracteres que no sean dígitos
         input = input.replace(/\D/g, "");
-        
-        // Agrega las barras
         if (input.length >= 3) {
             input = input.substring(0, 2) + "/" + input.substring(2);
         }
         if (input.length >= 6) {
             input = input.substring(0, 5) + "/" + input.substring(5, 9);
         }
-
-        // Actualiza el valor del campo con el formato aplicado
         e.target.value = input;
     });
 </script>
 
-
-
-<!-- Script para cargar las localidades-->
 <script>
-
-	document.getElementById('provincia').addEventListener('change', function() {
-	    var provinciaId = this.value;
-	    
-	    if (!provinciaId || isNaN(provinciaId)) {
-	        console.error('ID de provincia no válido:', provinciaId);
-	        return;
-	    }
-	    
-	    
-	    // Propuesta implementando una solicitud AJAX
-	    // Tecnica utilizada para realizar solicitudes asincronicas
-	    // a un servidor web sin necesidad de recargar toda la pagina
-	    
-	    // Cuando el administrador selecciona una provincia del desplegable,
-	    // se dispara un evento change en Javascript
-	    // Dentro de este evento, se envía una solicitud AJAX al servidor
-	    // para obtener las localidades de esa provincia
-	    
-	    if (provinciaId) {
-	        var xhr = new XMLHttpRequest();
-	        xhr.open('GET', '/TPINT_GRUPO_10_LAB4/ServletAltaCliente?provinciaId=' + provinciaId, true);
-	        xhr.onreadystatechange = function() {
-	            if (xhr.readyState == 4 && xhr.status == 200) {
-
-					// Aqui entramos si la solicitud fue exitosa
-					// Procedemos a limpiar la lista de localidades
-	            	
-	                var localidadSelect = document.getElementById('localidad');
-	                localidadSelect.innerHTML = '<option value="">Seleccione una localidad</option>';
-	                
-	                // Convertimos la respuesta obtenida en formato JSON en un
-	                // objeto de Javascript. Mediante un parseo
-	                var localidades = JSON.parse(xhr.responseText);
-	                
-	                // Aqui teniendo el array de localidades, 
-	                // usamos su contenido para rellenar el select
-	                localidades.forEach(function(localidad) {
-	                    var option = document.createElement('option');
-	                    option.value = localidad.id;
-	                    option.text = localidad.nombre;
-	                    localidadSelect.appendChild(option);
-	                });
-	            }
-	        };
-	        xhr.send();
-	    } else {
-	        // Si no hay provincia seleccionada, limpia el desplegable de localidades
-	        document.getElementById('localidad').innerHTML = '<option value="">Seleccione una localidad</option>';
-	    }
-	});
-
+    document.getElementById('provincia').addEventListener('change', function() {
+        var provinciaId = this.value;
+        if (!provinciaId || isNaN(provinciaId)) {
+            console.error('ID de provincia no válido:', provinciaId);
+            return;
+        }
+        if (provinciaId) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/TPINT_GRUPO_10_LAB4/ServletAltaCliente?provinciaId=' + provinciaId, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var localidadSelect = document.getElementById('localidad');
+                    localidadSelect.innerHTML = '<option value="">Seleccione una localidad</option>';
+                    var localidades = JSON.parse(xhr.responseText);
+                    localidades.forEach(function(localidad) {
+                        var option = document.createElement('option');
+                        option.value = localidad.id;
+                        option.text = localidad.nombre;
+                        localidadSelect.appendChild(option);
+                    });
+                }
+            };
+            xhr.send();
+        } else {
+            document.getElementById('localidad').innerHTML = '<option value="">Seleccione una localidad</option>';
+        }
+    });
 </script>
 
-
-<!-- Script para impedir ingreso de caracteres que no sean numeros -->
 <script>
-	
-	function soloNumeros(event) {
-	    var key = event.keyCode || event.which;
-	    var tecla = String.fromCharCode(key);
-	    var regex = /^[0-9]$/;  
-	    if (!regex.test(tecla)) {
-	        event.preventDefault(); 
-	    }
-	}
-
+    function soloNumeros(event) {
+        var key = event.keyCode || event.which;
+        var tecla = String.fromCharCode(key);
+        var regex = /^[0-9]$/;
+        if (!regex.test(tecla)) {
+            event.preventDefault();
+        }
+    }
 </script>
-
-
 
 </body>
 </html>

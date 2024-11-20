@@ -10,7 +10,9 @@
     <title>Ver Cliente</title>
     <style>
     </style>
+     	   <!-- Estilos -->
     
+            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloBotones.css">
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloMensajes.css">
             <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloFormulario.css">
     
@@ -99,12 +101,13 @@
             <input id="telefono" type="text" readonly value="<%= request.getAttribute("cliente") != null ? ((Cliente) request.getAttribute("cliente")).getTelefono() : "" %>">
         </div>
     </form>
-    <div class="button-container">
-    <!-- Enlace para ir a la Pagina Principal -->
-    <a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexUser.jsp">
-    <input type="button" value="Ir a la Pagina Principal">
-    </a>
-</div>
+    
+    <!-- Botón para regresar al menú -->
+    <div class="volver-menu">
+        <form method="get" action="/TPINT_GRUPO_10_LAB4/MENUS/IndexUser.jsp">
+            <button type="submit" class="button button-blue">Ir a la Página Principal</button>
+        </form>
+    </div>
 </div>
 
 </body>

@@ -7,12 +7,11 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Alta de Usuario</title>
-    <style>        
-    </style>
     
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloMensajes.css">
-            <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloFormulario.css">
-    
+    <!-- Importar los estilos de botones -->
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloMensajes.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloFormulario.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloBotones.css"> <!-- Importar el archivo de botones -->
 </head>
 <body>
 
@@ -35,6 +34,7 @@
 
     <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletLAltaUsuario">
         
+        <!-- Cliente -->
         <div class="form-group">
             <label for="Cliente">Cliente</label>
             <select id="Cliente" name="Cliente" required>
@@ -63,13 +63,12 @@
         </div>
         
         <!-- Tipo de Usuario -->
-        
         <div class="form-group">
             <label for="tipoUsuario">Seleccione el tipo de Usuario</label>
-			<select id="tipoUsuario" name="tipoUsuario">
-			    <option value="cliente">Cliente</option>
-			    <option value="admin">Administrador</option>
-			</select>
+            <select id="tipoUsuario" name="tipoUsuario">
+                <option value="cliente">Cliente</option>
+                <option value="admin">Administrador</option>
+            </select>
         </div>
 
         <!-- Contraseña -->
@@ -84,18 +83,18 @@
             <input id="contrasena2" type="password" name="contrasena2" maxlength="50" required>
         </div>
 
+        <!-- Botón de Guardar -->
         <div class="form-group">
-            <input type="submit" value="Guardar Usuario">
+            <input type="submit" value="Guardar Usuario" class="button button-green"> <!-- Estilo de botón aplicado -->
         </div>
     </form>
     
     <!-- Enlace para volver al menu -->
     <a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp" class="volver-menu">
-        <input type="button" value="Volver al Menu" class="btn-volver">
+        <input type="button" value="Volver al Menu" class="button button-blue"> <!-- Estilo de botón aplicado -->
     </a>
     
 </div>
 
 </body>
 </html>
-
