@@ -11,8 +11,12 @@ public class Movimiento {
     private LocalDateTime fechaHora;
     private BigDecimal importe;
     private Cuenta cuentaDestino; 
+    
+    
+    public Movimiento() {
+	}
 
-    public Movimiento(int id, Cuenta cuentaOrigen, TipoMovimiento tipoMovimiento, String detalle, 
+	public Movimiento(int id, Cuenta cuentaOrigen, TipoMovimiento tipoMovimiento, String detalle, 
                       LocalDateTime fechaHora, BigDecimal importe, Cuenta cuentaDestino) {
         this.id = id;
         this.cuentaOrigen = cuentaOrigen;

@@ -4,7 +4,10 @@ public class TipoMovimiento {
     private int id;
     private String descripcion;
 
-    public TipoMovimiento(int id, String descripcion) {
+    public TipoMovimiento() {
+	}
+
+	public TipoMovimiento(int id, String descripcion) {
         this.id = id;
         this.descripcion = descripcion;
     }
