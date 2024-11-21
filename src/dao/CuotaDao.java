@@ -7,5 +7,6 @@ public interface CuotaDao {
 	boolean generarCuotas(Prestamo prestamo);
 	boolean pagarCuotas(int idPrestamo, int cantidadCuotas);
 	int cantidadCuotasPagas(int idPrestamo );
+	boolean esUltimaCuotaPagada(int idPrestamo);
 
 }

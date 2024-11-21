@@ -101,6 +101,7 @@ public class CuotaDaoImp implements CuotaDao {
 		        } else {
 		            conexion.rollback(); // Revertir cambios si hubo un problema
 		        }
+		        
 
 		    } catch (SQLException e) {
 		        e.printStackTrace();
@@ -157,4 +158,46 @@ public class CuotaDaoImp implements CuotaDao {
 		
 		return cantidadCuotas;
 	}
+
+
+	private static final String countTotalCuotasSql = "SELECT cantidad_cuotas FROM Prestamos WHERE id_prestamo = ?";
+	private static final String countCuotasPagadasSql = "SELECT COUNT(*) FROM Cuotas WHERE id_prestamo = ? AND pagada = TRUE";
+	
+	@Override
+	public boolean esUltimaCuotaPagada(int idPrestamo) 
+	{
+	    int totalCuotas = 0;
+	    int cuotasPagadas = 0;
+
+	    // Establecer la conexión y preparar la consulta
+	    try (Connection con = Conexion.getConexion().getSQLConexion();
+	         PreparedStatement stmtTotal = con.prepareStatement(countTotalCuotasSql);
+	         PreparedStatement stmtPagadas = con.prepareStatement(countCuotasPagadasSql)) {
+
+	        // Contar el total de cuotas del préstamo
+	        stmtTotal.setInt(1, idPrestamo);
+	        try (ResultSet rsTotal = stmtTotal.executeQuery()) {
+	            if (rsTotal.next()) {
+	                totalCuotas = rsTotal.getInt("cantidad_cuotas");
+	            }
+	        }
+
+	        // Contar cuántas cuotas han sido pagadas
+	        stmtPagadas.setInt(1, idPrestamo);
+	        try (ResultSet rsPagadas = stmtPagadas.executeQuery()) {
+	            if (rsPagadas.next()) {
+	                cuotasPagadas = rsPagadas.getInt(1);
+	            }
+	        }
+	    } catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	    // Si el número de cuotas pagadas es igual al total de cuotas, significa que es la última cuota pagada
+	    return cuotasPagadas == totalCuotas;
+	}
+	
+	
+	
 }

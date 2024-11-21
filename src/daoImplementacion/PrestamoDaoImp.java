@@ -342,4 +342,52 @@ public class PrestamoDaoImp implements PrestamoDao {
 	    return listaPrestamos;
 	}
 
+	
+	private static final String qryCancelarPrestamo = 
+		    "UPDATE Prestamos " +
+		    "SET estado = false " +  
+		    "WHERE id_prestamo = ?";
+	
+	@Override
+	public boolean cancelarPrestamo(int idPrestamo) 
+	{
+		
+		   boolean resultado = false;
+
+		    
+		    try (Connection conexion = Conexion.getConexion().getSQLConexion();
+		         PreparedStatement statement = conexion.prepareStatement(qryCancelarPrestamo)) {
+		        
+		        
+		        conexion.setAutoCommit(false);
+
+		        
+		        statement.setInt(1, idPrestamo);
+
+		        
+		        int filasAfectadas = statement.executeUpdate();
+
+		        if (filasAfectadas > 0) {
+		            conexion.commit();  
+		            resultado = true;
+		        } else {
+		            conexion.rollback();  
+		        }
+
+		    } catch (SQLException e) {
+		        
+		        e.printStackTrace();
+		        
+		        try (Connection conexion = Conexion.getConexion().getSQLConexion()) {
+		            if (conexion != null) {
+		                conexion.rollback();  
+		            }
+		        } catch (SQLException rollbackEx) {
+		            rollbackEx.printStackTrace();
+		        }
+		    }
+
+		    return resultado;
+	}
+
 }

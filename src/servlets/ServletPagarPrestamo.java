@@ -78,11 +78,26 @@ public class ServletPagarPrestamo extends HttpServlet {
 		CuotaNegocio cuotaNegocio = new CuotaNegocioImp();
 		boolean resultado = cuotaNegocio.pagarCuotas(prestamo.getIdPrestamo(), cantCuotas);	
 
-		/// ACTUALIZAR EL SALDO DE LA CUENTA
+		/// EL UPDATE AL SALDO DE LA CUENTA Y 
+		//  EL INSERT DEL MOVIMIENTO SE REALIZAN MEDIANTE TRIGGER
 		
-		/// EN EL CASO DE QUE SEA LA ULTIMA CUOTA, CAMBIAR EL ESTADO DEL PRESTAMO
 		
-		doGet(request, response);
+		int cantCuotasAbonadas = cuotaNegocio.cantidadCuotasPagas(prestamo.getIdPrestamo());
+		
+		System.out.println("[DEBUG] cantidad de cuotas abonadas: " + cantCuotasAbonadas);
+		System.out.println("[DEBUG] cantidad de cuotas totales prestamo: " + prestamo.getCantidadCuotas());
+		
+		//ACTUALIZAMOS A FALSE EL ESTADO DEL PRESTAMO SI ES LA ULTIMA CUOTA
+		if(cantCuotasAbonadas == prestamo.getCantidadCuotas())
+		{
+			PrestamoNegocioImp prestamoNegocio = new PrestamoNegocioImp();
+			prestamoNegocio.cancelarPrestamo(prestamo.getIdPrestamo());
+			System.out.println("[DEBUG] Prestamo cancelado ");
+		}
+		
+		
+        RequestDispatcher dispatcher = request.getRequestDispatcher("MENUS/IndexCuenta.jsp");
+        dispatcher.forward(request, response);
 	}
 
 }

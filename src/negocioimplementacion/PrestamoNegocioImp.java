@@ -31,5 +31,10 @@ public class PrestamoNegocioImp implements PrestamoNegocio{
 		return prestamoDao.listarPrestamosCuenta(idCuenta);
 	}
 
+	@Override
+	public boolean cancelarPrestamo(int idPrestamo) {
+		return prestamoDao.cancelarPrestamo(idPrestamo);
+	}
+
 
 }
