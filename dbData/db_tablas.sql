@@ -122,6 +122,7 @@ CREATE TABLE Cuotas (
     numero_cuota INT NOT NULL,
     monto DECIMAL(15, 2) NOT NULL,
     fecha_pago DATE NOT NULL,
+    pagada BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (id_prestamo) REFERENCES Prestamos(id_prestamo)
 );
 
@@ -224,6 +225,39 @@ BEGIN
 END //
 
 DELIMITER ;
+
+
+
+DELIMITER $$
+
+CREATE TRIGGER actualizarSaldoPagoCuota
+AFTER UPDATE ON Cuotas
+FOR EACH ROW
+BEGIN
+   
+    IF OLD.pagada = FALSE AND NEW.pagada = TRUE THEN
+    
+        -- Se descuenta la cuota del saldo de la cuenta
+        UPDATE cuentas
+        SET saldo = saldo - NEW.monto
+        WHERE id = (SELECT id_cuenta FROM Prestamos WHERE id_prestamo = NEW.id_prestamo);
+        
+        -- Insert del pago de cuota en la tabla de Movimientos
+        INSERT INTO movimientos (id_cuenta, id_tipoMovimiento, detalle, importe, Saldo_disponible)
+        VALUES (
+            (SELECT id_cuenta FROM Prestamos WHERE id_prestamo = NEW.id_prestamo),  
+            3,  
+            CONCAT('Pago de cuota ', NEW.numero_cuota, ' del prestamo ', NEW.id_prestamo),  
+            NEW.monto, 
+            (SELECT saldo FROM cuentas WHERE id = (SELECT id_cuenta FROM Prestamos WHERE id_prestamo = NEW.id_prestamo))  
+        );
+    END IF;
+END $$
+
+DELIMITER ;
+
+
+
 
 -- Insercion TiposDeMovimiento
 INSERT INTO tipos_de_movimientos (id, descripcion) VALUES
