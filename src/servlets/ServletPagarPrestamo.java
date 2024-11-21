@@ -93,11 +93,13 @@ public class ServletPagarPrestamo extends HttpServlet {
 			PrestamoNegocioImp prestamoNegocio = new PrestamoNegocioImp();
 			prestamoNegocio.cancelarPrestamo(prestamo.getIdPrestamo());
 			System.out.println("[DEBUG] Prestamo cancelado ");
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("MENUS/IndexCuenta.jsp");
+			dispatcher.forward(request, response);
 		}
-		
-		
-        RequestDispatcher dispatcher = request.getRequestDispatcher("MENUS/IndexCuenta.jsp");
-        dispatcher.forward(request, response);
+		request.setAttribute("mensaje", "Cuota/s pagada/s exitosamente.");
+        request.setAttribute("tipoMensaje", "success");
+		doGet(request, response);
 	}
 
 }

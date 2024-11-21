@@ -53,6 +53,17 @@
 <body>
 
     <h2 style="text-align: center;">Pagar Préstamo</h2>
+    
+    <%
+    String mensaje = (String) request.getAttribute("mensaje");
+    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
+    if (mensaje != null && tipoMensaje != null) {
+	%>
+    <div class="message-container <%= tipoMensaje %>">
+    <%= mensaje %>
+    </div>
+    
+<% } %>
 
 <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletPagarPrestamo">
     <table>
@@ -115,7 +126,7 @@
 
     <!-- Botón para Regresar -->
     <div class="action-buttons">
-        <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletVerPrestamos">
+        <form method="get" action="/TPINT_GRUPO_10_LAB4/ServletVerPrestamos">
             <input type="submit" name="btnRegresar" value="Regresar" class="button button-blue">
         </form>
     </div>
