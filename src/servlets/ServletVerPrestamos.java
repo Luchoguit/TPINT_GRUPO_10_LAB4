@@ -34,8 +34,18 @@ public class ServletVerPrestamos extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+
+		System.out.println("[DEBUG] entra al doPost de ServletVerPrestamos para redireccionar");
+
+		int idPrestamo = Integer.parseInt(request.getParameter("idPrestamo")); 
+		System.out.println("[DEBUG] idPrestamo: " + idPrestamo);
+		PrestamoNegocio prestamoNegocio = new PrestamoNegocioImp();
+		Prestamo prestamo = prestamoNegocio.obtenerPrestamoPorId(idPrestamo);
+		
+		request.getSession().setAttribute("prestamo", prestamo);
+		
+		response.sendRedirect("ServletPagarPrestamo");
+
 	}
 
 }
