@@ -74,6 +74,7 @@
                 <th>Monto Total</th>
                 <th>Fecha Préstamo</th>
                 <th>Cuenta</th>
+                <th>Saldo Disponible</th> 
                 <th>Cantidad de cuotas a pagar:</th>
                 <th>Acción</th>
             </tr>
@@ -91,23 +92,28 @@
                 <td>$<%= prestamo.getImportePedido() %></td>
                 <td><%= prestamo.getFechaAlta() %></td>
                 <td>
-                    <select name="cuenta" required>
+                    <select name="cuenta" required onchange="updateSaldoDisponible(this)">
                         <%
                             List<Cuenta> listaCuentas = (List<Cuenta>) request.getAttribute("listaCuentas");
                             if (listaCuentas != null) {
+                            	boolean primeraCuenta = true;
                                 for (Cuenta cuenta : listaCuentas) {
                                     String descripcion = cuenta.getTipoCuenta().getDescripcion();
                                     String numeroCuenta = cuenta.getNumeroCuenta();
                         %>
-                        <option value="<%= cuenta.getId() %>">
+                        <option value="<%= cuenta.getId() %>" 
+                data-saldo="<%= cuenta.getSaldo() %>"
+                <%= primeraCuenta ? "selected" : "" %> >
                             <%= descripcion %> - <%= numeroCuenta %>
                         </option>
                         <% 
+                        primeraCuenta = false;
                                 }
                             }
                         %>
                     </select>
                 </td>
+                 <td id="saldoDisponible">$0.00</td> 
                 <td>
                     <div class="quantity-selector">
                         <button type="button" onclick="adjustQuantity(-1)">-</button>
@@ -139,7 +145,25 @@
 	            input.value = newValue;  // Actualiza directamente el input
 	        }
 	    }
+		
+	    
+	    function updateSaldoDisponible(selectElement) {
 
+			//obtenemos el saldo de la cuenta seleccionada
+	        var saldo = selectElement.options[selectElement.selectedIndex].getAttribute('data-saldo');
+	        
+	        // Actualizamos la tabla con el valor obtenido
+	        document.getElementById('saldoDisponible').textContent = "$" + saldo;
+	    }
+	    
+	    window.onload = function() {
+
+			// Al cargar la pagina, obtiene el valor de la primera cuenta seleccionada
+	        var selectElement = document.querySelector('select[name="cuenta"]');
+	        
+	        // Llamamos a la función para establecer el saldo por defecto
+	        updateSaldoDisponible(selectElement);
+	    }
     </script>
 
 </body>
