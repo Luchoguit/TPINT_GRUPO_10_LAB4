@@ -1,5 +1,7 @@
 <%@page import="entidad.Prestamo" %>
 <%@page import="java.util.List" %>
+<%@page import="negocioimplementacion.CuotaNegocioImp" %>
+
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -118,10 +120,15 @@
                 List<Prestamo> listaPrestamos = (List<Prestamo>)request.getAttribute("listaPrestamos");
                 if (listaPrestamos != null) {
                     for (Prestamo prestamo : listaPrestamos) {
+                    	if(prestamo.isEstado())
+                    	{
+                 			CuotaNegocioImp cuotaNegocio = new CuotaNegocioImp();
+                 			int cantCuotasAbonadas = cuotaNegocio.cantidadCuotasPagas(prestamo.getIdPrestamo());
+
             %>
             <tr>
                 <td><%= prestamo.getIdPrestamo() %></td>
-                <td>0 / <%= prestamo.getCantidadCuotas() %></td>
+                <td><%=cantCuotasAbonadas %> / <%= prestamo.getCantidadCuotas() %></td>
                 <td>$<%= prestamo.getImporteMensual() %></td>
                 <td>$<%= prestamo.getImportePedido() %></td>
                 <td><%= prestamo.getFechaAlta() %></td>
@@ -133,7 +140,7 @@
                 </form>
                 </td>
             </tr>
-            <% } } %>
+            <% } }} %>
         </tbody>
     </table>
 
