@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import entidad.Cliente;
 import entidad.Cuenta;
@@ -31,6 +32,10 @@ public class ServletPedirPrestamo extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		if (!verificarSesionActiva(request, response)) {
+            return; 
+        }
+		
 		Usuario user = (Usuario) request.getSession().getAttribute("usuario");
 		CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
 		List<Cuenta> listaCuentas = cuentaNegocio.listarCuentas(user);
@@ -71,6 +76,16 @@ public class ServletPedirPrestamo extends HttpServlet {
 
 	    doGet(request, response);
 	}
+	
+	private boolean verificarSesionActiva(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession(false); // false evita crear nueva sesión
+        if (session == null || session.getAttribute("usuario") == null) {
+            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no hay usuario en sesión
+            return false;
+        }
+              
+        return true; 
+    }
 
 
 }
