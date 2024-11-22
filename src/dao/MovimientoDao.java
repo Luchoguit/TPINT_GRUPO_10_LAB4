@@ -6,7 +6,6 @@ import entidad.Movimiento;
 
 public interface MovimientoDao {
 	
-	List<Movimiento> obtenerIngresosPorFechas(int idCuenta, String fechaInicio, String fechaFin);
-	List<Movimiento> obtenerEgresosPorFechas(int idCuenta, String fechaInicio, String fechaFin);
+	List<Movimiento> obtenerMovimientosPorFechas(int idCuenta, String fechaInicio, String fechaFin);
 
 }

@@ -2,6 +2,8 @@ package servlets;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -34,9 +36,8 @@ public class ServletVerInformes extends HttpServlet {
 		System.out.println("[DEBUG] entra al doPost VerInformes");
 		
 		
-	    // Obtener la cuenta de la sesión
 	    Cuenta cuenta = (Cuenta) request.getSession().getAttribute("cuenta");
-	    int idCuenta = cuenta.getId(); // Obtener el ID de la cuenta asociada
+	    int idCuenta = cuenta.getId();
 
 	    String fechaInicio = request.getParameter("fechaInicio");
 	    String fechaFin = request.getParameter("fechaFin");
@@ -47,41 +48,52 @@ public class ServletVerInformes extends HttpServlet {
 	    }
 	    
 	    MovimientoNegocio movimientoNegocio = new MovimientoNegocioImp();
-	    List<Movimiento> listaIngresos = movimientoNegocio.obtenerIngresosPorFechas(idCuenta, fechaInicio, fechaFin);
-	    List<Movimiento> listaEgresos = movimientoNegocio.obtenerEgresosPorFechas(idCuenta, fechaInicio, fechaFin);
+	    List<Movimiento> listaMovimientos = movimientoNegocio.obtenerMovimientosPorFechas(idCuenta, fechaInicio, fechaFin);
 
-	 // Calcular el total de ingresos
-	    BigDecimal totalIngresos = listaIngresos.stream()
-	            .map(Movimiento::getImporte) // Obtiene el BigDecimal de cada ingreso
-	            .reduce(BigDecimal.ZERO, BigDecimal::add); // Suma los valores
+	    BigDecimal totalIngresos = BigDecimal.ZERO;
+	    BigDecimal totalEgresos = BigDecimal.ZERO;
 
-	    // Calcular el total de egresos
-	    BigDecimal totalEgresos = listaEgresos.stream()
-	            .map(Movimiento::getImporte) // Obtiene el BigDecimal de cada egreso
-	            .reduce(BigDecimal.ZERO, BigDecimal::add); // Suma los valores
+	    for (Movimiento movimiento : listaMovimientos) {
+	        int tipoMovimientoId = movimiento.getTipoMovimiento().getId();
 
-	    if (totalIngresos == null) {
-	        totalIngresos = BigDecimal.ZERO;
+	        	switch (tipoMovimientoId) {
+	            case 1: // Ingreso
+	            case 2: // Ingreso
+	                totalIngresos = totalIngresos.add(movimiento.getImporte());
+	                break;
+
+	            case 3: // Egreso
+	                totalEgresos = totalEgresos.add(movimiento.getImporte());
+	                break;
+
+	            case 4: 
+	                // Si el idCuentaDestino es igual al idCuenta, es un ingreso; de lo contrario, es un egreso
+	                if (movimiento.getCuentaDestino().getId() == idCuenta) {
+	                    totalIngresos = totalIngresos.add(movimiento.getImporte());
+	                } else {
+	                    totalEgresos = totalEgresos.add(movimiento.getImporte());
+	                }
+	                break;
+
+	            default:
+	                System.out.println("[DEBUG] Tipo de movimiento desconocido: " + tipoMovimientoId);
+	        }
 	    }
 
-	    if (totalEgresos == null) {
-	        totalEgresos = BigDecimal.ZERO;
-	    }
-	    
 	    BigDecimal balance = totalIngresos.subtract(totalEgresos);
-	    
+
+
 	    System.out.println("[DEBUG] totalIngresos: " + totalIngresos);
 	    System.out.println("[DEBUG] totalEgresos: " + totalEgresos);
 	    System.out.println("[DEBUG] balance: " + balance);
-	    
+
+
 	    request.setAttribute("totalIngresos", totalIngresos);
 	    request.setAttribute("totalEgresos", totalEgresos);
 	    request.setAttribute("balance", balance);
-	    
 
 
 	    RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasUser/VerInformes.jsp");
 	    dispatcher.forward(request, response);
 	}
-
 }

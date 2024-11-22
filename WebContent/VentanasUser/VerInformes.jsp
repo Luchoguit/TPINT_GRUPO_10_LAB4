@@ -57,20 +57,40 @@
         </div>
 
         <canvas id="chartMovimientos"></canvas>
-        <script>
+<script>
             const ctx = document.getElementById('chartMovimientos');
             new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Ingresos', 'Egresos'],
+                    labels: ['Ingresos', 'Egresos'],  // Etiquetas de las barras
                     datasets: [{
-                        label: 'Movimientos',
+                        label: 'Ingresos',  // Etiqueta para la barra de ingresos
                         data: [
                             <%= totalIngresos %>, 
+                            0  // Egresos en esta barra, será 0 en la barra de ingresos
+                        ],
+                        backgroundColor: '#28a745',  // Color verde para los ingresos
+                        borderColor: '#218838',  // Color verde para los bordes de los ingresos
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Egresos',  // Etiqueta para la barra de egresos
+                        data: [
+                            0,  // Ingresos en esta barra, será 0 en la barra de egresos
                             <%= totalEgresos %>
                         ],
-                        backgroundColor: ['#28a745', '#dc3545']
+                        backgroundColor: '#dc3545',  // Color rojo para los egresos
+                        borderColor: '#c82333',  // Color rojo para los bordes de los egresos
+                        borderWidth: 1
                     }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,  // Asegura que el eje Y comience desde cero
+                        }
+                    }
                 }
             });
         </script>
