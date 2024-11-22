@@ -91,6 +91,16 @@
         <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloMensajes.css">
         <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloPaginacion.css">
 
+<script>
+    function formatCurrency(input) {
+        // Elimina caracteres que no sean dígitos
+        let value = input.value.replace(/\D/g, '');
+        // Agregar punto cada 3 cifras
+        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        input.value = '$ ' + value;
+    }
+</script>
+
 </head>
 <body>
 
@@ -195,7 +205,7 @@
   <form  method="post" action="/TPINT_GRUPO_10_LAB4/servletTransferencia" style="display: flex; align-items: center; gap: 10px; ">
 	   <div id="formularioMonto" style="display: none; margin-top: 15px; margin-left: 100px">
         <label for="monto">Monto $</label>
-        <input type="number" id="monto" name="monto" placeholder="Ingrese el monto" required>
+        <input type="text" id="monto" name="monto" placeholder="Ingrese el monto" required oninput="formatCurrency(this)">
         <label>Concepto </label>
         <input type="text" id="concepto" name="concepto" placeholder="Opcional">
         <input type="hidden" name="CBUDestino" value="<%= cuenta != null ? cuentaDestino.getCbu() : 0 %>">

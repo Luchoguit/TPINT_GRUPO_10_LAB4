@@ -1,4 +1,5 @@
 <%@page import="entidad.Prestamo" %>
+<%@page import="utilidades.Formato" %>
 <%@page import="java.util.List" %>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -49,11 +50,11 @@
             <td><%= prestamo.getCliente().getNombre() + " " + prestamo.getCliente().getApellido() %></td>
             <td><%= prestamo.getCliente().getDni() %></td>
             <td><%= prestamo.getCuenta().getNumeroCuenta() %></td>
-            <td><%= prestamo.getImportePedido() %>$</td>
+            <td><%= Formato.formatoMonetario(prestamo.getImportePedido()) %></td>
             <td><%= prestamo.getCantidadCuotas() %></td>
-            <td><%= prestamo.getImporteMensual() %></td>
+            <td><%= Formato.formatoMonetario(prestamo.getImporteMensual()) %></td>
             <td><%= prestamo.getPlazoMeses() + " meses" %></td>
-            <td><%= prestamo.getFechaAlta() %></td>
+            <td><%= Formato.formatoFecha(prestamo.getFechaAlta()) %></td>
             <td>
                 <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletSolicitudesPrestamos">
                     <input type="hidden" name="idPrestamo" value="<%= prestamo.getIdPrestamo() %>">

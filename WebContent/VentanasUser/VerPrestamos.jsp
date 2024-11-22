@@ -1,6 +1,6 @@
+<%@page import="java.util.Map" %>
 <%@page import="entidad.Prestamo" %>
-<%@page import="java.util.List" %>
-<%@page import="negocioimplementacion.CuotaNegocioImp" %>
+<%@page import="utilidades.Formato" %>
 
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
@@ -11,9 +11,9 @@
     <title>Gestionar Préstamos</title>
 
     <!-- Estilos -->
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloBotones.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloMensajes.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/EstiloTabla.css">
+    <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloBotones.css">
+    <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloMensajes.css">
+    <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/CSS/EstiloTabla.css">
 
     <style>
         body {
@@ -115,32 +115,32 @@
                 <th>Acciones</th>
             </tr>
         </thead>
-        <tbody>
-            <% 
-                List<Prestamo> listaPrestamos = (List<Prestamo>)request.getAttribute("listaPrestamos");
-                if (listaPrestamos != null) {
-                    for (Prestamo prestamo : listaPrestamos) {
-                    	if(prestamo.isEstado())
-                    	{
-                 			CuotaNegocioImp cuotaNegocio = new CuotaNegocioImp();
-                 			int cantCuotasAbonadas = cuotaNegocio.cantidadCuotasPagas(prestamo.getIdPrestamo());
-
-            %>
-            <tr>
-                <td><%= prestamo.getIdPrestamo() %></td>
-                <td><%=cantCuotasAbonadas %> / <%= prestamo.getCantidadCuotas() %></td>
-                <td>$<%= prestamo.getImporteMensual() %></td>
-                <td>$<%= prestamo.getImportePedido() %></td>
-                <td><%= prestamo.getFechaAlta() %></td>
-                <td>$<%= prestamo.getImportePedido() %></td>
-                <td>
-                <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletVerPrestamos">
-                <input type="hidden" name="idPrestamo" value="<%= prestamo.getIdPrestamo() %>">
-                 <button type="submit" >PAGAR CUOTA</button>
-                </form>
-                </td>
-            </tr>
-            <% } }} %>
+        <tbody>		
+		<% 
+		    Map<Prestamo, Integer> prestamosCuotas = (Map<Prestamo, Integer>) request.getAttribute("prestamosCuotas");
+		    if (prestamosCuotas != null) {
+		        for (Map.Entry<Prestamo, Integer> entry : prestamosCuotas.entrySet()) {
+		            Prestamo prestamo = entry.getKey();
+		            int cuotasPagas = entry.getValue();
+		%>
+		<tr>
+		    <td><%= prestamo.getIdPrestamo() %></td>
+		    <td><%= cuotasPagas %> / <%= prestamo.getCantidadCuotas() %></td>
+		    <td><%= Formato.formatoMonetario(prestamo.getImporteMensual()) %></td>
+		    <td><%= Formato.formatoMonetario(prestamo.getImportePedido()) %></td>
+		    <td><%= Formato.formatoFecha(prestamo.getFechaAlta()) %></td>
+		    <td><%= Formato.formatoMonetario(prestamo.getImportePedido()) %></td>
+		    <td>
+		        <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletVerPrestamos">
+		            <input type="hidden" name="idPrestamo" value="<%= prestamo.getIdPrestamo() %>">
+		            <button type="submit">PAGAR CUOTA</button>
+		        </form>
+		    </td>
+		</tr>
+		<% 
+		        }
+		    }
+		%>
         </tbody>
     </table>
 

@@ -1,7 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,7 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import entidad.Cuenta;
 import entidad.Prestamo;
+import negocio.CuotaNegocio;
 import negocio.PrestamoNegocio;
+import negocioimplementacion.CuotaNegocioImp;
 import negocioimplementacion.PrestamoNegocioImp;
 
 @WebServlet("/ServletVerPrestamos")
@@ -21,16 +25,27 @@ public class ServletVerPrestamos extends HttpServlet {
        
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       
+
 		Cuenta cuenta = (Cuenta) request.getSession().getAttribute("cuenta");
 		PrestamoNegocio prestamoNegocio = new PrestamoNegocioImp();
+		CuotaNegocio cuotaNegocio = new CuotaNegocioImp();
+
 		List<Prestamo> listaPrestamos = prestamoNegocio.listarPrestamosCuenta(cuenta.getId());
-		
-		request.setAttribute("listaPrestamos", listaPrestamos);
-		
-		
+
+		// Mapa para asociar préstamos con sus cuotas pagadas
+		Map<Prestamo, Integer> prestamosCuotas = new HashMap<>();
+
+		for (Prestamo prestamo : listaPrestamos) {
+			if (prestamo.isEstado()) {
+				int cantCuotasAbonadas = cuotaNegocio.cantidadCuotasPagas(prestamo.getIdPrestamo());
+				prestamosCuotas.put(prestamo, cantCuotasAbonadas);
+			}
+		}
+
+		request.setAttribute("prestamosCuotas", prestamosCuotas);
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasUser/VerPrestamos.jsp");
-        dispatcher.forward(request, response);
+		dispatcher.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
