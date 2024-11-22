@@ -1,6 +1,9 @@
 <%@page import="entidad.Cuenta" %>
 <%@page import="entidad.Cliente" %>
 <%@page import="java.util.List" %>
+<%@page import="utilidades.Formato" %>
+
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html lang="es">
@@ -44,7 +47,7 @@
                             <button type="submit" >Ver Cuenta</button>
                         </form>
                     </td>
-                    <td><%= cuenta.getSaldo() %></td>
+					<td><%= Formato.formatoMonetario(cuenta.getSaldo()) %></td>
                     <td><%= cuenta.getTipoCuenta().getDescripcion() %></td>
                     <td><%= cuenta.getNumeroCuenta() %></td>
                     <td><%= cuenta.getCbu() %></td>

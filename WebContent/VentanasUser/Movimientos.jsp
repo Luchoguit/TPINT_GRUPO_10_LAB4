@@ -3,7 +3,7 @@
 <%@page import="entidad.Cliente" %>
 <%@page import="java.util.List" %>
 <%@page import="java.math.BigDecimal" %>
-<%@page import="java.time.LocalDate" %>
+<%@page import="utilidades.Formato" %>
 
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -80,115 +80,73 @@
 <div class="table-container">
     <h1 class="table-title">Extracto de Cuenta</h1>
     <%
-    	Cuenta cuentaSeleccionada = (Cuenta) request.getSession().getAttribute("cuenta");
-    	Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
-    	 LocalDate fechaHoy = LocalDate.now(); 
+        Cuenta cuentaSeleccionada = (Cuenta) request.getSession().getAttribute("cuenta");
+        Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
+        java.time.LocalDateTime fechaHoy = java.time.LocalDateTime.now(); 
     %>
     
-    
     <div class="table-header">
-        <div><strong>Fecha: <%=fechaHoy %> </strong> </div>
-        <div><strong>Titular:</strong> <%=cliente.getNombre() + " " + cliente.getApellido() %> </div>
-        <div><strong>Número de Cuenta:</strong> <%=cuentaSeleccionada.getNumeroCuenta() %></div>
+        <div><strong>Fecha:</strong> <%= Formato.formatoFecha(fechaHoy) %></div>
+        <div><strong>Titular:</strong> <%= cliente.getNombre() + " " + cliente.getApellido() %></div>
+        <div><strong>Número de Cuenta:</strong> <%= cuentaSeleccionada.getNumeroCuenta() %></div>
     </div>
 	
-	<%if(request.getAttribute("movimientos") != null)
-		{
-			List<Movimiento> movimientos = (List<Movimiento>)request.getAttribute("movimientos");
-			
-			
-			LocalDate fechaCreacion = cuentaSeleccionada.getFechaCreacion().toLocalDate();
-		
-			
-			if(movimientos.size() > 0)
-			{
-				%>
-				    <table>
-				        <thead>
-				            <tr>
-				                <th>Fecha</th>
-				                <th>Concepto</th>
-				                <th>Importe</th>
-				                <th>Saldo</th>
-				            </tr>
-				        </thead>
-						<tbody>
-							<tr>
-				<% 
-				
-				
-				List<BigDecimal> saldosParciales = (List<BigDecimal>) request.getAttribute("saldos");
-				
-				
-				int iteracion = 0;
-				int tipo_movimiento_alta_prestamo = 2;
+	<% if (request.getAttribute("movimientos") != null) {
+		List<Movimiento> movimientos = (List<Movimiento>) request.getAttribute("movimientos");
+		java.time.LocalDateTime fechaCreacion = cuentaSeleccionada.getFechaCreacion();
+		if (movimientos.size() > 0) { %>
+		    <table>
+		        <thead>
+		            <tr>
+		                <th>Fecha</th>
+		                <th>Concepto</th>
+		                <th>Importe</th>
+		                <th>Saldo</th>
+		            </tr>
+		        </thead>
+				<tbody>
+					<tr>
+		<%
+			List<BigDecimal> saldosParciales = (List<BigDecimal>) request.getAttribute("saldos");
+			int iteracion = 0;
+			int tipo_movimiento_alta_prestamo = 2;
 
-				for(Movimiento movimiento : movimientos)
-				{
-					boolean salida = false;
-					if(!(movimiento.getCuentaDestino().getId()== cuentaSeleccionada.getId() || movimiento.getTipoMovimiento().getId() == tipo_movimiento_alta_prestamo))
-					{
-						salida = true;
-					}
-					
-					
-					BigDecimal saldoIteracion = saldosParciales.get(iteracion);
-		
-
-					
-				%>
-		
-				
-				            <tr>
-				                <td>
-				                <%
-				                	LocalDate fecha = movimiento.getFechaHora().toLocalDate();
-				                
-				                %>
-				                
-				                <%=fecha %>
-				                </td>
-				                <td><%=movimiento.getDetalle() %></td>
-				                <td> 
-				                	<%if(salida == true)
-				                	{ %>
-				                		<%=movimiento.getImporte().negate() %>
-				                	<%
-				                	}
-				                	else
-				                	{%>
-				                		<%=movimiento.getImporte()%>
-				                	<%}
-				                	%>
-				                	 
-				                </td>
-				                <td><%=saldoIteracion %></td>
-				            </tr>
-			<%
-			
-				iteracion++;
-				} %>
-							<tr>
-				                <td> <%= fechaCreacion %></td>
-				                <td>Saldo Inicial</td>
-				                <td></td>
-				                <td>10000.00 </td>
-				            </tr>
-			
-			
-        				</tbody>
-    			</table>
-    
-    <%
-			}
-			else
-			{
-			%>
-				<h3>Aquí aparecerán sus movimientos cuando utilice la cuenta</h3>
-			<%} 
-	
-		}
-	%>
+			for (Movimiento movimiento : movimientos) {
+				boolean salida = false;
+				if (!(movimiento.getCuentaDestino().getId() == cuentaSeleccionada.getId() || 
+				      movimiento.getTipoMovimiento().getId() == tipo_movimiento_alta_prestamo)) {
+					salida = true;
+				}
+				BigDecimal saldoIteracion = saldosParciales.get(iteracion);
+		%>
+		            <tr>
+		                <td><%= Formato.formatoFechaHora(movimiento.getFechaHora()) %></td>
+		                <td><%= movimiento.getDetalle() %></td>
+		                <td>
+		                    <% if (salida) { %>
+		                        <%= Formato.formatoMonetario(movimiento.getImporte().negate()) %>
+		                    <% } else { %>
+		                        <%= Formato.formatoMonetario(movimiento.getImporte()) %>
+		                    <% } %>
+		                </td>
+		                <td><%= Formato.formatoMonetario(saldoIteracion) %></td>
+		            </tr>
+		<%
+			iteracion++;
+			} %>
+					<tr>
+		                <td><%= Formato.formatoFechaHora(fechaCreacion) %></td>
+		                <td>Saldo Inicial</td>
+		                <td></td>
+		                <td><%= Formato.formatoMonetario(new BigDecimal("10000.00")) %></td>
+		            </tr>
+        		</tbody>
+    		</table>
+    <% 
+		} else { %>
+			<h3>Aquí aparecerán sus movimientos cuando utilice la cuenta</h3>
+		<% }
+	} %>
     <div class="button-container">
         <input type="button" value="Volver" class="back-button" onclick="window.history.back()">
     </div>

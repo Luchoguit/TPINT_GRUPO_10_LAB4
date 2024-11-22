@@ -1,7 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,7 +15,9 @@ import javax.servlet.http.HttpSession;
 
 import entidad.Cuenta;
 import entidad.Prestamo;
+import negocio.CuotaNegocio;
 import negocio.PrestamoNegocio;
+import negocioimplementacion.CuotaNegocioImp;
 import negocioimplementacion.PrestamoNegocioImp;
 
 @WebServlet("/ServletVerPrestamos")
@@ -21,21 +25,33 @@ public class ServletVerPrestamos extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       
-		if (!verificarSesionActiva(request, response)) {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {      
+	
+    if (!verificarSesionActiva(request, response)) {
 	        return; 
 	    }
 		
+
 		Cuenta cuenta = (Cuenta) request.getSession().getAttribute("cuenta");
 		PrestamoNegocio prestamoNegocio = new PrestamoNegocioImp();
+		CuotaNegocio cuotaNegocio = new CuotaNegocioImp();
+
 		List<Prestamo> listaPrestamos = prestamoNegocio.listarPrestamosCuenta(cuenta.getId());
-		
-		request.setAttribute("listaPrestamos", listaPrestamos);
-		
-		
+
+		// Mapa para asociar pr√©stamos con sus cuotas pagadas
+		Map<Prestamo, Integer> prestamosCuotas = new HashMap<>();
+
+		for (Prestamo prestamo : listaPrestamos) {
+			if (prestamo.isEstado()) {
+				int cantCuotasAbonadas = cuotaNegocio.cantidadCuotasPagas(prestamo.getIdPrestamo());
+				prestamosCuotas.put(prestamo, cantCuotasAbonadas);
+			}
+		}
+
+		request.setAttribute("prestamosCuotas", prestamosCuotas);
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasUser/VerPrestamos.jsp");
-        dispatcher.forward(request, response);
+		dispatcher.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -54,9 +70,9 @@ public class ServletVerPrestamos extends HttpServlet {
 	}
 	
 	private boolean verificarSesionActiva(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false); // false evita crear nueva sesiÛn
+        HttpSession session = request.getSession(false); // false evita crear nueva sesi√≥n
         if (session == null || session.getAttribute("usuario") == null) {
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no hay usuario en sesiÛn
+            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no hay usuario en sesi√≥n
             return false;
         }
               

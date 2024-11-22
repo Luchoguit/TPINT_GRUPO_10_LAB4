@@ -1,7 +1,7 @@
 <%@page import="entidad.Movimiento" %>
 <%@page import="java.util.List" %>
 <%@page import="java.math.BigDecimal" %>
-<%@page import="java.text.DecimalFormat" %>
+<%@page import="utilidades.Formato" %>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -47,19 +47,16 @@
             BigDecimal totalEgresos = (BigDecimal) request.getAttribute("totalEgresos");
             BigDecimal balance = (BigDecimal) request.getAttribute("balance");
 
-            // Formatear los valores para mostrar en formato de moneda
-            DecimalFormat df = new DecimalFormat("$###,###.##");
-
             // Asegurarse de que no haya nulls
             if (totalIngresos == null) totalIngresos = BigDecimal.ZERO;
             if (totalEgresos == null) totalEgresos = BigDecimal.ZERO;
             if (balance == null) balance = BigDecimal.ZERO;
         %>
 
-        <div class="message-container success">
-            <p><strong>Total Ingresos:</strong> <%= df.format(totalIngresos) %></p>
-            <p><strong>Total Egresos:</strong> <%= df.format(totalEgresos) %></p>
-            <p><strong>Balance:</strong> <%= df.format(balance) %></p>
+ 		<div class="message-container success">
+            <p><strong>Total Ingresos:</strong> <%= Formato.formatoMonetario(totalIngresos) %></p>
+            <p><strong>Total Egresos:</strong> <%= Formato.formatoMonetario(totalEgresos) %></p>
+            <p><strong>Balance:</strong> <%= Formato.formatoMonetario(balance) %></p>
         </div>
 
         <canvas id="chartMovimientos"></canvas>

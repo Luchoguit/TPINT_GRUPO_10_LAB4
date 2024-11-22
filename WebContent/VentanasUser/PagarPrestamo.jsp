@@ -1,6 +1,8 @@
 <%@page import="entidad.Prestamo" %>
 <%@page import="entidad.Cuenta" %>
 <%@page import="java.util.List" %>
+<%@page import="utilidades.Formato" %>
+
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -86,12 +88,12 @@
                 Prestamo prestamo = (Prestamo)request.getAttribute("prestamo");
                 if (prestamo != null) {
             %>
-            <tr>
-                <td><%= cantidadCuotasPagas %> / <%= prestamo.getCantidadCuotas() %></td>
-                <td>$<%= prestamo.getImporteMensual() %></td>
-                <td>$<%= prestamo.getImportePedido() %></td>
-                <td><%= prestamo.getFechaAlta() %></td>
-                <td>
+					<tr>
+                    <td><%= cantidadCuotasPagas %> / <%= prestamo.getCantidadCuotas() %></td>
+                    <td><%= Formato.formatoMonetario(prestamo.getImporteMensual()) %></td>
+                    <td><%= Formato.formatoMonetario(prestamo.getImportePedido()) %></td>
+                    <td><%= Formato.formatoFecha(prestamo.getFechaAlta()) %></td>
+                    <td>
                     <select name="cuenta" required onchange="updateSaldoDisponible(this)">
                         <%
                             List<Cuenta> listaCuentas = (List<Cuenta>) request.getAttribute("listaCuentas");
@@ -102,9 +104,9 @@
                                     String numeroCuenta = cuenta.getNumeroCuenta();
                         %>
                         <option value="<%= cuenta.getId() %>" 
-                data-saldo="<%= cuenta.getSaldo() %>"
-                <%= primeraCuenta ? "selected" : "" %> >
-                            <%= descripcion %> - <%= numeroCuenta %>
+							data-saldo="<%= Formato.formatoMonetario(cuenta.getSaldo()) %>"
+							<%= primeraCuenta ? "selected" : "" %> >
+							<%= descripcion %> - <%= numeroCuenta %>
                         </option>
                         <% 
                         primeraCuenta = false;
@@ -153,7 +155,7 @@
 	        var saldo = selectElement.options[selectElement.selectedIndex].getAttribute('data-saldo');
 	        
 	        // Actualizamos la tabla con el valor obtenido
-	        document.getElementById('saldoDisponible').textContent = "$" + saldo;
+	        document.getElementById('saldoDisponible').textContent = saldo;
 	    }
 	    
 	    window.onload = function() {

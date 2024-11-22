@@ -115,7 +115,7 @@ public class servletTransferencia extends HttpServlet {
 			
 			String detalle = request.getParameter("concepto");
 			LocalDateTime fechaHora = LocalDateTime.now();
-			BigDecimal importe = new BigDecimal(request.getParameter("monto"));
+			BigDecimal importe = new BigDecimal(request.getParameter("monto").replaceAll("[^0-9]", ""));
 			
 			//validacion transferencia = 0
 			if (importe.compareTo(BigDecimal.ZERO) == 0 || importe.compareTo(BigDecimal.ZERO) < 0) {
