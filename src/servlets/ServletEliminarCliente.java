@@ -13,6 +13,8 @@ import javax.servlet.http.HttpSession;
 import entidad.Cliente;
 import entidad.Usuario;
 import negocioimplementacion.ClienteNegocioImp;
+import utilidades.Mensaje;
+import utilidades.ValidarSesion;
 
 
 @WebServlet("/ServletEliminarCliente")
@@ -21,9 +23,10 @@ public class ServletEliminarCliente extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		if (!verificarSesionActiva(request, response)) {
+        if (!ValidarSesion.validarAdministrador(request, response)) {
             return; 
         }
+		
 		
 		if(request.getParameter("dniCliente") != null)
 		{
@@ -36,8 +39,7 @@ public class ServletEliminarCliente extends HttpServlet {
 			
 			Boolean resultado = clienteNegocio.eliminarCliente(aux.getId());
 			
-        	request.setAttribute("mensaje", "Cliente eliminado exitosamente.");
-            request.setAttribute("tipoMensaje", "success");
+			Mensaje.exito(request, "Ciente eliminado exitosamente.");
 			
             RequestDispatcher dispatcher = request.getRequestDispatcher("/ServletListadoClientes");
             dispatcher.forward(request, response);
@@ -48,21 +50,5 @@ public class ServletEliminarCliente extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
 		doGet(request,response);
 	}
-	
-	private boolean verificarSesionActiva(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false); // false evita crear nueva sesión
-        if (session == null || session.getAttribute("usuario") == null) {
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no hay usuario en sesión
-            return false;
-        }
-        
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (!usuario.esAdministrador()) { // Verificar si el usuario es administrador
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no es administrador
-            return false;
-        }
-        
-        return true; 
-    }
 
 }

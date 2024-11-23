@@ -26,6 +26,8 @@ import negocioimplementacion.CuentaNegocioImp;
 import negocioimplementacion.SolicitudAltaCuentaNegocioImp;
 import negocioimplementacion.TipoCuentaNegocioImp;
 import negocioimplementacion.UsuarioNegocioImp;
+import utilidades.Mensaje;
+import utilidades.ValidarSesion;
 
 
 @WebServlet("/ServletAdministrarAltaCuentas")
@@ -34,11 +36,10 @@ public class ServletAdministrarAltaCuentas extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		if (!verificarSesionActiva(request, response)) {
+        if (!ValidarSesion.validarAdministrador(request, response)) {
             return; 
         }
-
-		
+				
 	SolicitudAltaCuentaNegocio solicitudNegocio = new SolicitudAltaCuentaNegocioImp();
 	List<SolicitudAltaCuenta> listaSolicitudes = solicitudNegocio.listarSolicitudesSinResponder();	
 	
@@ -125,8 +126,7 @@ public class ServletAdministrarAltaCuentas extends HttpServlet {
 
 	            if (cuentasActivas >= 3) {
 	            
-	            	request.setAttribute("mensaje", "El cliente ya tiene 3 cuentas activas.");
-	                request.setAttribute("tipoMensaje", "error");
+	                Mensaje.error(request, "El cliente ya tiene 3 cuentas activas.");
 	                RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/AdministrarAltaCuentas.jsp");
 	                dispatcher.forward(request, response);
 	                return;
@@ -143,10 +143,8 @@ public class ServletAdministrarAltaCuentas extends HttpServlet {
 	            boolean resultadoAlta = cuentaNegocio.altaCuenta(cuenta);
 
 	            if (resultadoAlta) {
-		            
-	            	request.setAttribute("mensaje", "Cuenta dada de alta exitosamente");
-	                request.setAttribute("tipoMensaje", "success");	               
-	               
+	                Mensaje.exito(request, "Cuenta dada de alta exitosamente");
+
 	            }
 	            System.out.println("[DEBUG] resultado alta cuenta: " + resultadoAlta);
 	            }
@@ -162,22 +160,6 @@ public class ServletAdministrarAltaCuentas extends HttpServlet {
 
 	    doGet(request, response);
 	}
-
-	private boolean verificarSesionActiva(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false); // false evita crear nueva sesión
-        if (session == null || session.getAttribute("usuario") == null) {
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no hay usuario en sesión
-            return false;
-        }
-        
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (!usuario.esAdministrador()) { // Verificar si el usuario es administrador
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no es administrador
-            return false;
-        }
-        
-        return true; 
-    }
 	
 	
 }

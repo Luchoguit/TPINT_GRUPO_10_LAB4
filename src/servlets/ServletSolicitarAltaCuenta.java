@@ -27,6 +27,8 @@ import negocioimplementacion.LocalidadNegocioImp;
 import negocioimplementacion.ProvinciaNegocioImp;
 import negocioimplementacion.SolicitudAltaCuentaNegocioImp;
 import negocioimplementacion.TipoCuentaNegocioImp;
+import utilidades.Mensaje;
+import utilidades.ValidarSesion;
 
 
 @WebServlet("/ServletSolicitarAltaCuenta")
@@ -36,7 +38,7 @@ public class ServletSolicitarAltaCuenta extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		if (!verificarSesionActiva(request, response)) {
+        if (!ValidarSesion.validarCliente(request, response)) {
             return; 
         }
 		
@@ -61,8 +63,7 @@ public class ServletSolicitarAltaCuenta extends HttpServlet {
 
         if (cuentasActivas >= 3) {
         
-        	request.setAttribute("mensaje", "No puede tener mas de 3 cuentas Activas");
-            request.setAttribute("tipoMensaje", "error");
+            Mensaje.error(request, "No puede tener mas de 3 cuentas Activas");
             RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasUser/SolicitarAltaCuenta.jsp");
             dispatcher.forward(request, response);
             return;
@@ -85,14 +86,16 @@ public class ServletSolicitarAltaCuenta extends HttpServlet {
 			
 			boolean registroExitoso = solicitudNegocio.registrarSolicitud(solicitudAC);
 			if (registroExitoso) {
-			    request.setAttribute("mensaje", "La solicitud de alta de cuenta se ha registrado exitosamente.");
-			    request.setAttribute("tipoMensaje", "success");
+
+	            Mensaje.exito(request, "La solicitud de alta de cuenta se ha registrado exitosamente.");
+
 			    doGet(request, response);
                 return;
 			
 			} else {
-			    request.setAttribute("mensaje", "Hubo un problema al registrar la solicitud. Intente nuevamente.");
-			    request.setAttribute("tipoMensaje", "error");
+
+	            Mensaje.error(request, "Hubo un problema al registrar la solicitud. Intente nuevamente.");
+
 			    doGet(request, response);
                 return;
 			}
@@ -104,14 +107,5 @@ public class ServletSolicitarAltaCuenta extends HttpServlet {
     }
 	}
 	
-	private boolean verificarSesionActiva(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false); // false evita crear nueva sesión
-        if (session == null || session.getAttribute("usuario") == null) {
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no hay usuario en sesión
-            return false;
-        }
-              
-        return true; 
-    }
 	
 	}

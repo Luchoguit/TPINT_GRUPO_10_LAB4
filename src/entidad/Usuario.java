@@ -66,6 +66,10 @@ public class Usuario {
     public boolean esAdministrador() {
         return "admin".equals(tipoUsuario);
     }
+    
+    public boolean esCliente() {
+        return "cliente".equals(tipoUsuario);
+    }
 
 	public Cliente getCliente() {
 		return cliente;

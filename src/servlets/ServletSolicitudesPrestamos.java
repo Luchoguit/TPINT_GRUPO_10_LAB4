@@ -29,6 +29,7 @@ import negocioimplementacion.PrestamoNegocioImp;
 import negocioimplementacion.SolicitudAltaCuentaNegocioImp;
 import negocioimplementacion.SolicitudPrestamoNegocioImp;
 import negocioimplementacion.UsuarioNegocioImp;
+import utilidades.ValidarSesion;
 
 
 @WebServlet("/ServletSolicitudesPrestamos")
@@ -37,10 +38,10 @@ public class ServletSolicitudesPrestamos extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		 if (!verificarSesionActiva(request, response)) {
-	            return; 
-	        }
-		 
+        if (!ValidarSesion.validarAdministrador(request, response)) {
+            return; 
+        }
+				 
 		PrestamoNegocio prestamoNegocio = new PrestamoNegocioImp();
 		List<Prestamo> listaPrestamos = prestamoNegocio.listarPrestamos();
 		
@@ -122,21 +123,5 @@ public class ServletSolicitudesPrestamos extends HttpServlet {
         
 	    doGet(request, response);
 	}
-	
-	 private boolean verificarSesionActiva(HttpServletRequest request, HttpServletResponse response) throws IOException {
-	        HttpSession session = request.getSession(false); // false evita crear nueva sesión
-	        if (session == null || session.getAttribute("usuario") == null) {
-	            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no hay usuario en sesión
-	            return false;
-	        }
-	        
-	        Usuario usuario = (Usuario) session.getAttribute("usuario");
-	        if (!usuario.esAdministrador()) { // Verificar si el usuario es administrador
-	            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no es administrador
-	            return false;
-	        }
-	        
-	        return true; 
-	    }
 
 }

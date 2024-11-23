@@ -13,6 +13,7 @@ import negocio.ClienteNegocio;
 import negocio.UsuarioNegocio;
 import negocioimplementacion.ClienteNegocioImp;
 import negocioimplementacion.UsuarioNegocioImp;
+import utilidades.Mensaje;
 
 @WebServlet("/ServletLogin")
 public class ServletLogin extends HttpServlet {
@@ -48,8 +49,7 @@ public class ServletLogin extends HttpServlet {
                 response.sendRedirect("MENUS/IndexUser.jsp");
             }
         } else {
-            request.setAttribute("mensaje", "Datos Incorrectos, intente nuevamente.");
-            request.setAttribute("tipoMensaje", "error");
+            Mensaje.error(request, "Datos Incorrectos, intente nuevamente.");
 
             request.getRequestDispatcher("LOGIN/Login.jsp").forward(request, response);
 

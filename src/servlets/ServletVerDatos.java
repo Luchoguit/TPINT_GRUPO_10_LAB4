@@ -17,6 +17,8 @@ import negocio.ProvinciaNegocio;
 import negocioimplementacion.ClienteNegocioImp;
 import negocioimplementacion.LocalidadNegocioImp;
 import negocioimplementacion.ProvinciaNegocioImp;
+import utilidades.Mensaje;
+import utilidades.ValidarSesion;
 
 @WebServlet("/ServletVerDatos")
 public class ServletVerDatos extends HttpServlet {
@@ -25,17 +27,19 @@ public class ServletVerDatos extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		if (!verificarSesionActiva(request, response)) {
-	        return; 
-	    }
+        if (!ValidarSesion.validarCliente(request, response)) {
+            return; 
+        }
+		
 		
         Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 		 
             if (cliente != null) {        
                 request.setAttribute("cliente", cliente);
             } else {
-                // Enviar un mensaje de error si no se encuentra el cliente
-                request.setAttribute("error", "Debe loguearse para ver sus datos.");
+
+                Mensaje.error(request, "Debe loguearse para ver sus datos.");
+
             }
        
 
@@ -48,16 +52,5 @@ public class ServletVerDatos extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-	
-	private boolean verificarSesionActiva(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false); // false evita crear nueva sesión
-        if (session == null || session.getAttribute("usuario") == null) {
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no hay usuario en sesión
-            return false;
-        }
-              
-        return true; 
-    }
-	
 
 }

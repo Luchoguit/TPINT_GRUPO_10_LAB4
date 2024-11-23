@@ -21,6 +21,7 @@ import negocio.TipoCuentaNegocio;
 import negocioimplementacion.ClienteNegocioImp;
 import negocioimplementacion.CuentaNegocioImp;
 import negocioimplementacion.TipoCuentaNegocioImp;
+import utilidades.ValidarSesion;
 
 @WebServlet("/ServletVerCuentas")
 public class ServletVerCuentas extends HttpServlet {
@@ -29,10 +30,9 @@ public class ServletVerCuentas extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		if (!verificarSesionActiva(request, response)) {
-	        return; 
-	    }
-		
+        if (!ValidarSesion.validarCliente(request, response)) {
+            return; 
+        }
 				System.out.println("[DEBUG] Entra al doGet de ServletVerCuentas");
 
 				CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
@@ -87,17 +87,6 @@ public class ServletVerCuentas extends HttpServlet {
 	    dispatcher.forward(request, response);
 		
 	}
-	
-	private boolean verificarSesionActiva(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false); // false evita crear nueva sesión
-        if (session == null || session.getAttribute("usuario") == null) {
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no hay usuario en sesión
-            return false;
-        }
-              
-        return true; 
-    }
-	
 
 }
 

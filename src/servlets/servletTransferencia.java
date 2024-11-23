@@ -17,37 +17,26 @@ import entidad.Movimiento;
 import entidad.TipoMovimiento;
 import negocio.CuentaNegocio;
 import negocioimplementacion.CuentaNegocioImp;
+import utilidades.Mensaje;
+import utilidades.ValidarSesion;
 
-/**
- * Servlet implementation class servletTransferencia
- */
+
 @WebServlet("/servletTransferencia")
 public class servletTransferencia extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public servletTransferencia() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		if (!verificarSesionActiva(request, response)) {
-	        return; 
-	    }
-		
+        if (!ValidarSesion.validarCliente(request, response)) {
+            return; 
+        }
 
+        
+        RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasUser/Transferencias.jsp");
+        dispatcher.forward(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		if(request.getParameter("btnCBU") != null) {
@@ -70,8 +59,7 @@ public class servletTransferencia extends HttpServlet {
 			if(existeCuentaConCbu == false)
 			{
 				System.out.println("[DEBUG] CBU Invalido");
-				request.setAttribute("mensaje", "Debe seleccionar un cbu Valido");
-	            request.setAttribute("tipoMensaje", "error");
+	            Mensaje.error(request, "Debe seleccionar un cbu Valido");
 			}
 			else {
 				System.out.println("[DEBUG] CBU valido");
@@ -80,8 +68,8 @@ public class servletTransferencia extends HttpServlet {
 			if(cuentaCliente.getCbu().equals(cbu))
 			{
 				System.out.println("[DEBUG] Son el mismo CBU");
-				request.setAttribute("mensaje", "No puede transferir a la misma cuenta en uso");
-	            request.setAttribute("tipoMensaje", "error");
+
+	            Mensaje.error(request, "No puede transferir a la misma cuenta en uso");	            
 				request.setAttribute("mismaCuenta", "error");
 				
 			}
@@ -120,8 +108,8 @@ public class servletTransferencia extends HttpServlet {
 			//validacion transferencia = 0
 			if (importe.compareTo(BigDecimal.ZERO) == 0 || importe.compareTo(BigDecimal.ZERO) < 0) {
 				System.out.println("[DEBUG] transferencia invalida");
-				request.setAttribute("mensaje", "Valor de transferencia invalido.");
-	            request.setAttribute("tipoMensaje", "error");
+	            Mensaje.error(request, "Valor de transferencia invalido.");	            
+
 				request.setAttribute("ValorInvalido", "error");
 				error = true;
 			}
@@ -130,8 +118,7 @@ public class servletTransferencia extends HttpServlet {
 			String importeStr = request.getParameter("monto").toString();
 			if (importeStr.startsWith("0")  || importeStr.startsWith("0.") ) {
 				System.out.println("[DEBUG] transferencia invalida");
-				request.setAttribute("mensaje", "Valor de transferencia invalido.");
-	            request.setAttribute("tipoMensaje", "error");
+	            Mensaje.error(request, "Valor de transferencia invalido.");	            
 				request.setAttribute("ValorInvalido", "error");
 				error = true;
 			}
@@ -150,19 +137,18 @@ public class servletTransferencia extends HttpServlet {
 				{
 					if(negocioImp.realizarTransferencia(movimiento))
 					{	
-						request.setAttribute("mensaje", "Transferencia realizada exitosamente");
-			            request.setAttribute("tipoMensaje", "success");
+			            Mensaje.exito(request,  "Transferencia realizada exitosamente");	            
+
 					}
 					else
 					{
-						request.setAttribute("mensaje", "Ha ocurrido un error al transferir");
-			            request.setAttribute("tipoMensaje", "error");
+			            Mensaje.error(request,  "Ha ocurrido un error al transferir");	            
 					}
 				}
 				else 
 				{
-					request.setAttribute("mensaje", "Saldo insuficiente");
-		            request.setAttribute("tipoMensaje", "error");
+		            Mensaje.error(request, "Saldo insuficiente");	            
+
 				}
 			}
 			
@@ -172,16 +158,6 @@ public class servletTransferencia extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher("VentanasUser/Transferencias.jsp");
 		rd.forward(request, response);
 	}
-	
-	private boolean verificarSesionActiva(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false); // false evita crear nueva sesión
-        if (session == null || session.getAttribute("usuario") == null) {
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no hay usuario en sesión
-            return false;
-        }
-              
-        return true; 
-    }
 	
 
 }

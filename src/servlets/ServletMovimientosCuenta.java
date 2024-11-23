@@ -18,28 +18,21 @@ import entidad.Cuenta;
 import entidad.Movimiento;
 import entidad.Usuario;
 import negocioimplementacion.CuentaNegocioImp;
+import utilidades.ValidarSesion;
 
-/**
- * Servlet implementation class ServletMovimientosCuenta
- */
+
 @WebServlet("/ServletMovimientosCuenta")
 public class ServletMovimientosCuenta extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
- 
-    public ServletMovimientosCuenta() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		if (!verificarSesionActiva(request, response)) {
+        if (!ValidarSesion.validarCliente(request, response)) {
             return; 
         }
-		
-		
+				
 		Cuenta cuentaSeleccionada = (Cuenta) request.getSession().getAttribute("cuenta");
 		
 		CuentaNegocioImp cuentaNegocio = new CuentaNegocioImp();
@@ -92,16 +85,6 @@ public class ServletMovimientosCuenta extends HttpServlet {
 		Collections.reverse(saldosParciales);
 		return saldosParciales;
 	}
-	
-	private boolean verificarSesionActiva(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false); // false evita crear nueva sesión
-        if (session == null || session.getAttribute("usuario") == null) {
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no hay usuario en sesión
-            return false;
-        }
-              
-        return true; 
-    }
 	
 	
 

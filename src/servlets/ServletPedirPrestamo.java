@@ -24,6 +24,8 @@ import negocio.SolicitudPrestamoNegocio;
 import negocioimplementacion.CuentaNegocioImp;
 import negocioimplementacion.PrestamoNegocioImp;
 import negocioimplementacion.SolicitudPrestamoNegocioImp;
+import utilidades.Mensaje;
+import utilidades.ValidarSesion;
 
 @WebServlet("/ServletPedirPrestamo")
 public class ServletPedirPrestamo extends HttpServlet {
@@ -32,10 +34,10 @@ public class ServletPedirPrestamo extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		if (!verificarSesionActiva(request, response)) {
+        if (!ValidarSesion.validarCliente(request, response)) {
             return; 
         }
-		
+				
 		Usuario user = (Usuario) request.getSession().getAttribute("usuario");
 		CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
 		List<Cuenta> listaCuentas = cuentaNegocio.listarCuentas(user);
@@ -66,26 +68,16 @@ public class ServletPedirPrestamo extends HttpServlet {
 	    boolean resultadoAltaPrestamo = prestamoNegocio.altaPrestamo(prestamo);
 	    
 	    if (resultadoAltaPrestamo) {
-        	request.setAttribute("mensaje", "Solicitud enviada con exito.");
-            request.setAttribute("tipoMensaje", "success");
+            Mensaje.exito(request, "Solicitud enviada con exito.");
+
             
         } else {
-        	request.setAttribute("mensaje", "No se pudo realizar la solicitud.");
-            request.setAttribute("tipoMensaje", "error");
+            Mensaje.error(request, "No se pudo realizar la solicitud.");
+
         }
 
 	    doGet(request, response);
 	}
 	
-	private boolean verificarSesionActiva(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false); // false evita crear nueva sesión
-        if (session == null || session.getAttribute("usuario") == null) {
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no hay usuario en sesión
-            return false;
-        }
-              
-        return true; 
-    }
-
 
 }

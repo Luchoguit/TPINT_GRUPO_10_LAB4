@@ -18,6 +18,8 @@ import negocio.ClienteNegocio;
 import negocio.CuentaNegocio;
 import negocioimplementacion.ClienteNegocioImp;
 import negocioimplementacion.CuentaNegocioImp;
+import utilidades.Mensaje;
+import utilidades.ValidarSesion;
 
 @WebServlet("/ServletListadoCuentasEliminadas")
 public class ServletListadoCuentasEliminadas extends HttpServlet {
@@ -26,10 +28,10 @@ public class ServletListadoCuentasEliminadas extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
-    	if (!verificarSesionActiva(request, response)) {
+        if (!ValidarSesion.validarAdministrador(request, response)) {
             return; 
         }
-    	   	
+		    	   	
         CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
         String filtroCliente = request.getParameter("filtroCliente");
 
@@ -97,8 +99,7 @@ public class ServletListadoCuentasEliminadas extends HttpServlet {
     	
         if (cuentasActivas >= 3) {
         
-        	request.setAttribute("mensaje", "El cliente ya tiene 3 cuentas activas.");
-            request.setAttribute("tipoMensaje", "error");
+            Mensaje.error(request, "El cliente ya tiene 3 cuentas activas.");
             RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/AdministrarAltaCuentas.jsp");
             dispatcher.forward(request, response);
             return;
@@ -127,28 +128,12 @@ public class ServletListadoCuentasEliminadas extends HttpServlet {
         boolean resultado = cuentaNegocio.ActivarCuenta(idCuenta);
 
         if(resultado) {
-        	request.setAttribute("mensaje", "Cuenta Habilitada exitosamente");
-            request.setAttribute("tipoMensaje", "success");
+            Mensaje.exito(request, "Cuenta Habilitada exitosamente");
+
         }
         System.out.println("[DEBUG] resultado: " + resultado);
 
         doGet(request, response);
-    }
-    
-    private boolean verificarSesionActiva(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false); // false evita crear nueva sesión
-        if (session == null || session.getAttribute("usuario") == null) {
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no hay usuario en sesión
-            return false;
-        }
-        
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (!usuario.esAdministrador()) { // Verificar si el usuario es administrador
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no es administrador
-            return false;
-        }
-        
-        return true; 
     }
     
     

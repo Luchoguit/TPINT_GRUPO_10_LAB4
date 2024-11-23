@@ -18,6 +18,8 @@ import negocio.ClienteNegocio;
 import negocio.CuentaNegocio;
 import negocioimplementacion.ClienteNegocioImp;
 import negocioimplementacion.CuentaNegocioImp;
+import utilidades.Mensaje;
+import utilidades.ValidarSesion;
 
 @WebServlet("/ServletListadoCuentas")
 public class ServletListadoCuentas extends HttpServlet {
@@ -26,10 +28,10 @@ public class ServletListadoCuentas extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
-    	if (!verificarSesionActiva(request, response)) {
+        if (!ValidarSesion.validarAdministrador(request, response)) {
             return; 
         }
-    	
+		    	
         CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
         String filtroCliente = request.getParameter("filtroCliente");
 
@@ -105,34 +107,16 @@ public class ServletListadoCuentas extends HttpServlet {
         CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
         boolean resultado = cuentaNegocio.eliminarCuenta(idCuenta);
         if (resultado) {
-        request.setAttribute("mensaje", "Cuenta deshabilitada exitosamente.");
-        request.setAttribute("tipoMensaje", "success");
+        Mensaje.exito(request, "Cuenta deshabilitada exitosamente.");
+
         } else 
         {
-            request.setAttribute("mensaje", "No se pudo deshabilitar la cuenta.");
-            request.setAttribute("tipoMensaje", "error");
+            Mensaje.error(request, "No se pudo deshabilitar la cuenta.");
         }
         System.out.println("[DEBUG] resultado: " + resultado);
 
         doGet(request, response);
     }
-    
-    private boolean verificarSesionActiva(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false); // false evita crear nueva sesión
-        if (session == null || session.getAttribute("usuario") == null) {
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no hay usuario en sesión
-            return false;
-        }
-        
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (!usuario.esAdministrador()) { // Verificar si el usuario es administrador
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no es administrador
-            return false;
-        }
-        
-        return true; 
-    }
-
-    
+      
     
 }

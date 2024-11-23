@@ -21,6 +21,8 @@ import negocio.PrestamoNegocio;
 import negocioimplementacion.CuentaNegocioImp;
 import negocioimplementacion.CuotaNegocioImp;
 import negocioimplementacion.PrestamoNegocioImp;
+import utilidades.Mensaje;
+import utilidades.ValidarSesion;
 
 
 @WebServlet("/ServletPagarPrestamo")
@@ -30,10 +32,10 @@ public class ServletPagarPrestamo extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		
-		if (!verificarSesionActiva(request, response)) {
+        if (!ValidarSesion.validarCliente(request, response)) {
             return; 
         }
-		
+				
 		Prestamo prestamo = (Prestamo)request.getSession().getAttribute("prestamo");
 		
 		request.setAttribute("prestamo", prestamo);
@@ -103,19 +105,10 @@ public class ServletPagarPrestamo extends HttpServlet {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("MENUS/IndexCuenta.jsp");
 			dispatcher.forward(request, response);
 		}
-		request.setAttribute("mensaje", "Cuota/s pagada/s exitosamente.");
-        request.setAttribute("tipoMensaje", "success");
+        Mensaje.exito(request, "Cuota/s pagada/s exitosamente.");
+
 		doGet(request, response);
 	}
-	
-	private boolean verificarSesionActiva(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false); // false evita crear nueva sesión
-        if (session == null || session.getAttribute("usuario") == null) {
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no hay usuario en sesión
-            return false;
-        }
-              
-        return true; 
-    }
+
 
 }

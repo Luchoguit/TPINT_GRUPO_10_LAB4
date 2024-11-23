@@ -23,6 +23,8 @@ import negocio.ProvinciaNegocio;
 import negocioimplementacion.ClienteNegocioImp;
 import negocioimplementacion.LocalidadNegocioImp;
 import negocioimplementacion.ProvinciaNegocioImp;
+import utilidades.Mensaje;
+import utilidades.ValidarSesion;
 
 
 @WebServlet("/ServletAltaCliente")
@@ -32,10 +34,10 @@ public class ServletAltaCliente extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		if (!verificarSesionActiva(request, response)) {
+        if (!ValidarSesion.validarAdministrador(request, response)) {
             return; 
         }
-		
+				
 	    // Preguntamos si no hay provincia seleccionada (primera carga de la pagina)
 		// De ser asi, cargamos solo las provincias en el desplegable
 	    if (request.getParameter("provinciaId") == null) {
@@ -226,8 +228,7 @@ public class ServletAltaCliente extends HttpServlet {
             }
 
             if (resultado) {
-            	request.setAttribute("mensaje", "Cliente creado exitosamente.");
-                request.setAttribute("tipoMensaje", "success");
+                Mensaje.exito(request,"Cliente creado exitosamente");
                 System.out.println("Alta de cliente exitosa.");
                 
                 // Reenvío al JSP
@@ -240,33 +241,28 @@ public class ServletAltaCliente extends HttpServlet {
             	
             	if(dniRepetido == true)
             	{
-                	request.setAttribute("mensaje", "Ya existe un cliente con ese DNI.");
-                    request.setAttribute("tipoMensaje", "error");
+            		Mensaje.error(request, "Ya existe un cliente con ese DNI.");
                 	System.out.println("Error: dni repetido");
             	}
             	else if(cuilRepetido == true)
             	{
-                	request.setAttribute("mensaje", "Ya existe un cliente con ese CUIL.");
-                    request.setAttribute("tipoMensaje", "error");
+            		Mensaje.error(request, "Ya existe un cliente con ese CUIL.");
                 	System.out.println("Error: cuil repetido");
             	}
             	else if(emailRepetido == true)
             	{
-                	request.setAttribute("mensaje", "El correo ingresado ya esta utilizado.");
-                    request.setAttribute("tipoMensaje", "error");
+            		Mensaje.error(request, "El correo ingresado ya esta utilizado.");
                 	System.out.println("Error: correo repetido");
             	}
             	else if(telefonoRepetido == true)
             	{
-                	request.setAttribute("mensaje", "El telefono ingresado ya esta utilizado.");
-                    request.setAttribute("tipoMensaje", "error");
+            		Mensaje.error(request, "El telefono ingresado ya esta utilizado.");
                 	System.out.println("Error: telefono repetido");
             	}
             	else
             	{
+            		Mensaje.error(request, "Error en el alta de cliente.");
                     System.out.println("Error en el alta de cliente.");
-                    request.setAttribute("tipoMensaje", "error");
-                    request.setAttribute("mensaje", "Error en el alta de cliente.");
             	}
 
                 // Carga de provincias
@@ -313,22 +309,6 @@ public class ServletAltaCliente extends HttpServlet {
         ProvinciaNegocio provinciaNegocio = new ProvinciaNegocioImp();
         List<Provincia> listaProvincias = provinciaNegocio.listarProvincias();
         request.setAttribute("provincias", listaProvincias);
-    }
-    
-    private boolean verificarSesionActiva(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false); // false evita crear nueva sesión
-        if (session == null || session.getAttribute("usuario") == null) {
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no hay usuario en sesión
-            return false;
-        }
-        
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (!usuario.esAdministrador()) { // Verificar si el usuario es administrador
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no es administrador
-            return false;
-        }
-        
-        return true; 
     }
 
 }

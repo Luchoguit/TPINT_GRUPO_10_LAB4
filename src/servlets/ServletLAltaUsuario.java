@@ -18,6 +18,8 @@ import negocio.ClienteNegocio;
 import negocio.UsuarioNegocio;
 import negocioimplementacion.ClienteNegocioImp;
 import negocioimplementacion.UsuarioNegocioImp;
+import utilidades.Mensaje;
+import utilidades.ValidarSesion;
 
 @WebServlet("/ServletLAltaUsuario")
 public class ServletLAltaUsuario extends HttpServlet {
@@ -25,9 +27,9 @@ public class ServletLAltaUsuario extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
-    	if (!verificarSesionActiva(request, response)) {
+        if (!ValidarSesion.validarAdministrador(request, response)) {
             return; 
-        }
+        }		
     	
         ClienteNegocio clienteNegocio = new ClienteNegocioImp();
         List<Cliente> clientesSinUsuario = clienteNegocio.listarClientesSinUsuario();
@@ -57,16 +59,18 @@ public class ServletLAltaUsuario extends HttpServlet {
                 boolean usuarioCreado = usuarioNegocio.altaUsuario(usuario);
 
                 if (usuarioCreado) {                   
-                    request.setAttribute("mensaje", "Usuario creado exitosamente.");
-                    request.setAttribute("tipoMensaje", "success");
+                    Mensaje.exito(request, "Usuario creado exitosamente.");
+
                 } else {
-                    request.setAttribute("mensaje", "Error al crear el usuario.");
+                    Mensaje.error(request, "Error al crear el usuario.");
                 }
             } catch (NumberFormatException e) {
-                request.setAttribute("mensaje", "El ID del cliente no es válido.");
+                Mensaje.error(request, "El ID del cliente no es válido.");
+
             }
         } else {
-            request.setAttribute("mensaje", "Las contraseñas no coinciden.");
+            Mensaje.error(request, "Las contraseñas no coinciden.");
+            
         }
         
         ClienteNegocio clienteNegocio = new ClienteNegocioImp();
@@ -76,22 +80,6 @@ public class ServletLAltaUsuario extends HttpServlet {
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasAdmin/AltaUsuario.jsp");
         dispatcher.forward(request, response);
-    }
-    
-    private boolean verificarSesionActiva(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false); // false evita crear nueva sesión
-        if (session == null || session.getAttribute("usuario") == null) {
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no hay usuario en sesión
-            return false;
-        }
-        
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (!usuario.esAdministrador()) { // Verificar si el usuario es administrador
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no es administrador
-            return false;
-        }
-        
-        return true; 
     }
     
 }

@@ -21,6 +21,8 @@ import negocio.ProvinciaNegocio;
 import negocioimplementacion.ClienteNegocioImp;
 import negocioimplementacion.LocalidadNegocioImp;
 import negocioimplementacion.ProvinciaNegocioImp;
+import utilidades.Mensaje;
+import utilidades.ValidarSesion;
 
 
 
@@ -32,9 +34,10 @@ public class ServletsInfoCompletaCliente extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
        	
-    	if (!verificarSesionActiva(request, response)) {
+        if (!ValidarSesion.validarAdministrador(request, response)) {
             return; 
         }
+		
 		
         
     }
@@ -53,33 +56,18 @@ public class ServletsInfoCompletaCliente extends HttpServlet {
                 request.setAttribute("cliente", cliente);
             } else {
                 // Enviar un mensaje de error si no se encuentra el cliente
-                request.setAttribute("error", "No se encontró un cliente con el DNI proporcionado.");
+                Mensaje.error(request, "No se encontró un cliente con el DNI proporcionado.");
+
             }
         } else {
             // Enviar un mensaje de error si el DNI es nulo o vacío
-            request.setAttribute("error", "DNI no válido.");
+            Mensaje.error(request, "DNI no válido.");
+
         }
 
         // Redirigir a la página JSP
         RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/InformacionCompletaCliente.jsp");
         dispatcher.forward(request, response);
     }
-    
-    private boolean verificarSesionActiva(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false); // false evita crear nueva sesión
-        if (session == null || session.getAttribute("usuario") == null) {
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no hay usuario en sesión
-            return false;
-        }
-        
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (!usuario.esAdministrador()) { // Verificar si el usuario es administrador
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no es administrador
-            return false;
-        }
-        
-        return true; 
-    }
-
-    
+       
 }

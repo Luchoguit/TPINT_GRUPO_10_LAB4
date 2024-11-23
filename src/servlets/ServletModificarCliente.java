@@ -21,6 +21,7 @@ import negocio.ProvinciaNegocio;
 import negocioimplementacion.ClienteNegocioImp;
 import negocioimplementacion.LocalidadNegocioImp;
 import negocioimplementacion.ProvinciaNegocioImp;
+import utilidades.ValidarSesion;
 
 
 @WebServlet("/ServletModificarCliente")
@@ -28,6 +29,11 @@ public class ServletModificarCliente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
+        if (!ValidarSesion.validarAdministrador(request, response)) {
+            return; 
+        }
+		    	
     	String idClienteStr = request.getParameter("idcliente");
     	    
     	int idCliente = Integer.parseInt(idClienteStr);

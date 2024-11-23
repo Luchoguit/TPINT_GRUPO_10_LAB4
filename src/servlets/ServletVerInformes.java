@@ -18,6 +18,7 @@ import entidad.Cuenta;
 import entidad.Movimiento;
 import negocio.MovimientoNegocio;
 import negocioimplementacion.MovimientoNegocioImp;
+import utilidades.ValidarSesion;
 
 
 @WebServlet("/ServletVerInformes")
@@ -26,9 +27,10 @@ public class ServletVerInformes extends HttpServlet {
        
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (!verificarSesionActiva(request, response)) {
-	        return; 
-	    }
+        if (!ValidarSesion.validarCliente(request, response)) {
+            return; 
+        }
+		
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasUser/VerInformes.jsp");
         dispatcher.forward(request, response);
@@ -102,15 +104,5 @@ public class ServletVerInformes extends HttpServlet {
 	    RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasUser/VerInformes.jsp");
 	    dispatcher.forward(request, response);
 	}
-	
-	private boolean verificarSesionActiva(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false); // false evita crear nueva sesión
-        if (session == null || session.getAttribute("usuario") == null) {
-            response.sendRedirect("LOGIN/Login.jsp"); // Redirige al login si no hay usuario en sesión
-            return false;
-        }
-              
-        return true; 
-    }
 	
 }
