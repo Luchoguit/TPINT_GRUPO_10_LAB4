@@ -12,6 +12,7 @@
     </style>
             <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloMensajes.css">
             <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloFormulario.css">
+            <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloBotones.css">
     
 </head>
 <body>
@@ -101,12 +102,12 @@
     <div class="button-container">
     <!-- Enlace para ir a la Pagina Principal -->
     <a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp">
-    <input type="button" value="Ir a la Pagina Principal">
+    <input type="button" class="button button-blue" value="Ir a la Pagina Principal">
     </a>
 
     <!-- Enlace para volver al Listado de Clientes -->
     <a href="/TPINT_GRUPO_10_LAB4/ServletListadoClientes">
-        <input type="button" value="Volver al Listado de Clientes">
+        <input type="button" class="button button-blue" value="Volver al Listado de Clientes">
     </a>
 </div>
 </div>

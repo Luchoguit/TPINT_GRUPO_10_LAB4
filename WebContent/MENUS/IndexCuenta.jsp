@@ -31,8 +31,8 @@
         }
 
         h1 {
-            margin-bottom: 30px;
-            color: black; 
+            margin-bottom: 10px;
+            color: #495057; 
             font-size: 28px;
             font-weight: 600;
         }
@@ -127,10 +127,11 @@
 <body>
 
 <div class="main-container">
-    <h1>CUENTA SUELDO</h1>
+    <h1>CUENTA: ${cuenta.numeroCuenta}</h1>
+	<h3 style="color: #495057;">Tipo: ${cuenta.tipoCuenta.descripcion}</h3>
 
     <div class="logged-user">
-        Usuario logueado: ${usuario.nombreUsuario}
+        Usuario: ${usuario.nombreUsuario}
 
     </div>
 

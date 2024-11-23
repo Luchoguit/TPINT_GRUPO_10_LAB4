@@ -13,6 +13,7 @@
     
             <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloMensajes.css">
             <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloFormulario.css">
+            <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloBotones.css">
     
 </head>
 <body>
@@ -132,13 +133,13 @@
     </div>
 
 	<div class="volver-menu">
-	    <button type="submit" class="btn-volver">Guardar cambios</button>
+	    <button type="submit" class="button button-green">Guardar cambios</button>
 	</div>
 </form>
 	
 	    <!-- Enlace para volver al menu -->
     <a href="/TPINT_GRUPO_10_LAB4/ServletListadoClientes" style="margin-top: 10px;" class="volver-menu">
-        <input type="button" value="Volver al Listado de Clientes" class="btn-volver">
+        <input type="button" value="Volver al Listado de Clientes" class="button button-blue">
     </a>
 	
 </div>

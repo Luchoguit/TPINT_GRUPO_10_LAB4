@@ -131,7 +131,7 @@
 
     <div class="logged-user">
         <!-- Mostrar el usuario logueado -->
-        Usuario logueado: ${usuario.nombreUsuario}
+        Usuario: ${usuario.nombreUsuario}
 
     </div>
 

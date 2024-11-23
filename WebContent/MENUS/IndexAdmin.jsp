@@ -132,7 +132,7 @@
     <h1>BANCO G10</h1>
 
     <div class="logged-user">
-   		 Admin logueado: ${usuario.nombreUsuario}
+   		 Admin: ${usuario.nombreUsuario}
     </div>
 
     <ul class="navigation">
