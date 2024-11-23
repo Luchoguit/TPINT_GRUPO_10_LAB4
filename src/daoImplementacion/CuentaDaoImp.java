@@ -69,7 +69,7 @@ public class CuentaDaoImp implements CuentaDao {
 	private static final String qryListarCuentas = "SELECT C.*, TC.descripcion AS tipoCuentaDescripcion "
 			+ "FROM cuentas C "
 			+ "JOIN tipos_de_cuentas TC ON TC.id = C.id_tipoCuenta "
-			+ "WHERE C.id_usuario = ?";
+			+ "WHERE C.id_usuario = ? AND C.estado = 1";
 
 	@Override
 	public List<Cuenta> listarCuentas(Usuario usuario) {
