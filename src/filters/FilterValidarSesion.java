@@ -47,7 +47,29 @@ public class FilterValidarSesion implements Filter {
         
         
         System.out.println("[DEBUG] Validando al usuario logueado");
+        	
         
+        	if(requestURI.contains("Login.jsp"))
+        	{
+        		if (session != null && session.getAttribute("usuario") != null) 
+        		{
+                    Usuario user = (Usuario) session.getAttribute("usuario");
+                    
+                    if (user.esAdministrador()) 
+                    {
+                        System.out.println("[DEBUG] ADMIN con sesión activa, redirigiendo a IndexAdmin");
+                        httpResponse.sendRedirect("/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp");
+                        
+                    } else 
+                    {
+                        System.out.println("[DEBUG] CLIENTE con sesión activa, redirigiendo a IndexUser");
+                        httpResponse.sendRedirect("/TPINT_GRUPO_10_LAB4/MENUS/IndexUser.jsp");
+                    }
+                    
+                    return;  
+        		}
+        	}
+        	
         	
 	        if (requestURI.contains("IndexAdmin") || requestURI.contains("VentanasAdmin")) 
 	        {  
