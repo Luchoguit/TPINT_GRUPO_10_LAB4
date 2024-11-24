@@ -81,7 +81,17 @@
     <h1 class="table-title">Extracto de Cuenta</h1>
     <%
         Cuenta cuentaSeleccionada = (Cuenta) request.getSession().getAttribute("cuenta");
-        Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
+        Cliente cliente = null;
+        
+        if(request.getSession().getAttribute("clienteSeleccionado") != null)
+        {
+        	cliente = (Cliente) request.getSession().getAttribute("clienteSeleccionado");
+        }
+        else
+        {
+        	cliente = (Cliente) request.getSession().getAttribute("cliente");
+        }
+        
         java.time.LocalDateTime fechaHoy = java.time.LocalDateTime.now(); 
     %>
     

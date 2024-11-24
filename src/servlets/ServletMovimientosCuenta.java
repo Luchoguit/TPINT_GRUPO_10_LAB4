@@ -14,9 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import entidad.Cliente;
 import entidad.Cuenta;
 import entidad.Movimiento;
 import entidad.Usuario;
+import negocioimplementacion.ClienteNegocioImp;
 import negocioimplementacion.CuentaNegocioImp;
 import utilidades.ValidarSesion;
 
@@ -42,6 +44,10 @@ public class ServletMovimientosCuenta extends HttpServlet {
         	String idCuenta = request.getParameter("idCuenta");
         	cuentaSeleccionada = cuentaNegocio.obtenerCuentaPorId(Integer.parseInt(idCuenta));
         	request.getSession().setAttribute("cuenta", cuentaSeleccionada);
+        	
+        	ClienteNegocioImp clienteNegocio = new ClienteNegocioImp();
+        	Cliente propietarioCuentaSeleccionada = clienteNegocio.obtenerPorId(cuentaSeleccionada.getUsuario().getCliente().getId());
+        	request.getSession().setAttribute("clienteSeleccionado", propietarioCuentaSeleccionada);
         }
         //Aqui entra desde USUARIO
         else 
