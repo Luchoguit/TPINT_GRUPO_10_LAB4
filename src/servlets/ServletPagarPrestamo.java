@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -81,6 +82,27 @@ public class ServletPagarPrestamo extends HttpServlet {
 		
 
 		//--------------//
+		
+		
+		// SE VALIDA SI ALCANZA EL SALDO EN LA CUENTA PARA PAGAR LO SELECCIONADO:
+		CuentaNegocioImp cuentaNegocio = new CuentaNegocioImp();
+		Cuenta cuenta = cuentaNegocio.obtenerCuentaPorId(idCuenta);
+		
+		BigDecimal saldo = cuenta.getSaldo();
+		
+		BigDecimal cantidadCuotas = new BigDecimal(cantCuotas);
+		
+		BigDecimal totalSeleccionado = prestamo.getImporteMensual();
+		totalSeleccionado = totalSeleccionado.multiply(cantidadCuotas);
+		
+		saldo = saldo.subtract(totalSeleccionado);
+		
+		if(saldo.compareTo(BigDecimal.ZERO) < 0) 
+		{
+			Mensaje.error(request, "Saldos insuficientes en la cuenta");
+			doGet(request, response);
+			return;
+		}
 		
 		/// REGISTRAR EL PAGO DE LA CUOTA
 		CuotaNegocio cuotaNegocio = new CuotaNegocioImp();
