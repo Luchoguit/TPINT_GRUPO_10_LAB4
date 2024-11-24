@@ -137,7 +137,7 @@
         <td><%= cuenta.getUsuario().getCliente().getNombre() %></td>
         <td><%= cuenta.getUsuario().getCliente().getApellido() %></td>
         <td>
-            <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletMovimientos">
+            <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletMovimientosCuenta">
                 <input type="hidden" name="idCuenta" value="<%= cuenta.getId() %>">
                 <input type="submit" name="btnMovimientos" value="+" class="button button-green">
             </form>

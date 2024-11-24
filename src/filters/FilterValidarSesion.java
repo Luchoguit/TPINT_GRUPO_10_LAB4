@@ -90,11 +90,11 @@ public class FilterValidarSesion implements Filter {
 		            }
 		            
 		            Usuario user = (Usuario) session.getAttribute("usuario");
-		            if (user.esAdministrador() == true) 
+		            if (user.esAdministrador() == true && (!requestURI.contains("Movimientos"))) 
 		            {  
-		                
 		            	
 		            	System.out.println("[DEBUG] Es admin, acceso denegado a cuenta");
+		            	System.out.println("Se intento acceder a " + requestURI.toString());
 		            	
 		                httpResponse.sendRedirect("/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp");
 		                return;

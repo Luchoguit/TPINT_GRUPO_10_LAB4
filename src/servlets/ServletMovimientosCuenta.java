@@ -29,13 +29,28 @@ public class ServletMovimientosCuenta extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-        if (!ValidarSesion.validarCliente(request, response)) {
-            return; 
-        }
+       // if (!ValidarSesion.validarCliente(request, response)) {
+         //   return; 
+        //}
 				
-		Cuenta cuentaSeleccionada = (Cuenta) request.getSession().getAttribute("cuenta");
+        CuentaNegocioImp cuentaNegocio = new CuentaNegocioImp();
+        Cuenta cuentaSeleccionada = null;
+        
+        //Aqui entra desde ADMIN
+        if(request.getParameter("idCuenta") != null)
+        {
+        	String idCuenta = request.getParameter("idCuenta");
+        	cuentaSeleccionada = cuentaNegocio.obtenerCuentaPorId(Integer.parseInt(idCuenta));
+        	request.getSession().setAttribute("cuenta", cuentaSeleccionada);
+        }
+        //Aqui entra desde USUARIO
+        else 
+        {
+        	cuentaSeleccionada = (Cuenta) request.getSession().getAttribute("cuenta");
+        }
+        
 		
-		CuentaNegocioImp cuentaNegocio = new CuentaNegocioImp();
+		
 		List<Movimiento> movimientos = cuentaNegocio.listarMovimientosCuenta(cuentaSeleccionada);
 		
 		List<BigDecimal> saldosParciales = actualizarSaldosInvertidos(movimientos, cuentaSeleccionada);
