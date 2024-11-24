@@ -10,8 +10,8 @@ public class CuotaNegocioImp implements CuotaNegocio {
 	private CuotaDao cuotaDao = new CuotaDaoImp();
 	
 	@Override
-	public boolean pagarCuotas(int idPrestamo, int cantidadCuotas) {
-		return cuotaDao.pagarCuotas(idPrestamo, cantidadCuotas);
+	public boolean pagarCuotas(int idPrestamo, int cantidadCuotas, int idCuenta) {
+		return cuotaDao.pagarCuotas(idPrestamo, cantidadCuotas, idCuenta);
 	}
 
 	@Override

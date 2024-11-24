@@ -71,13 +71,13 @@ public class CuotaDaoImp implements CuotaDao {
 
 	private static final String qryPagarCuotas = 
 		    "UPDATE cuotas " +
-		    "SET pagada = true, fecha_pago = ? " +
+		    "SET pagada = true, fecha_pago = ?, id_cuenta_pago = ? " +
 		    "WHERE id_prestamo = ? AND pagada = false " +
 		    "ORDER BY numero_cuota ASC " +
 		    "LIMIT ?";
 
 		@Override
-		public boolean pagarCuotas(int idPrestamo, int cantidadCuotas) {
+		public boolean pagarCuotas(int idPrestamo, int cantidadCuotas, int idCuenta) {
 		    boolean resultado = false;
 		    Connection conexion = null;
 		    PreparedStatement statement = null;
@@ -89,8 +89,9 @@ public class CuotaDaoImp implements CuotaDao {
 		        // Preparar sentencia
 		        statement = conexion.prepareStatement(qryPagarCuotas);
 		        statement.setDate(1, new java.sql.Date(System.currentTimeMillis())); // Fecha actual
-		        statement.setInt(2, idPrestamo);
-		        statement.setInt(3, cantidadCuotas);
+		        statement.setInt(2, idCuenta);
+		        statement.setInt(3, idPrestamo);
+		        statement.setInt(4, cantidadCuotas);
 
 		        // Ejecutar actualización
 		        int filasAfectadas = statement.executeUpdate();

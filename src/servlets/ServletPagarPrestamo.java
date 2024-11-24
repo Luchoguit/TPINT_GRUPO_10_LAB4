@@ -84,7 +84,7 @@ public class ServletPagarPrestamo extends HttpServlet {
 		
 		/// REGISTRAR EL PAGO DE LA CUOTA
 		CuotaNegocio cuotaNegocio = new CuotaNegocioImp();
-		boolean resultado = cuotaNegocio.pagarCuotas(prestamo.getIdPrestamo(), cantCuotas);	
+		boolean resultado = cuotaNegocio.pagarCuotas(prestamo.getIdPrestamo(), cantCuotas, idCuenta);	
 
 		/// EL UPDATE AL SALDO DE LA CUENTA Y 
 		//  EL INSERT DEL MOVIMIENTO SE REALIZAN MEDIANTE TRIGGER

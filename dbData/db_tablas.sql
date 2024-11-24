@@ -123,7 +123,9 @@ CREATE TABLE Cuotas (
     monto DECIMAL(15, 2) NOT NULL,
     fecha_pago DATE NOT NULL,
     pagada BOOLEAN NOT NULL DEFAULT FALSE,
-    FOREIGN KEY (id_prestamo) REFERENCES Prestamos(id_prestamo)
+    id_cuenta_pago INT NULL, 
+    FOREIGN KEY (id_prestamo) REFERENCES Prestamos(id_prestamo),
+    FOREIGN KEY (id_cuenta_pago) REFERENCES cuentas(id)
 );
 
 DELIMITER //
@@ -240,12 +242,12 @@ BEGIN
         -- Se descuenta la cuota del saldo de la cuenta
         UPDATE cuentas
         SET saldo = saldo - NEW.monto
-        WHERE id = (SELECT id_cuenta FROM Prestamos WHERE id_prestamo = NEW.id_prestamo);
+        WHERE id = NEW.id_cuenta_pago;
         
         -- Insert del pago de cuota en la tabla de Movimientos
         INSERT INTO movimientos (id_cuenta, id_tipoMovimiento, detalle, importe, Saldo_disponible)
         VALUES (
-            (SELECT id_cuenta FROM Prestamos WHERE id_prestamo = NEW.id_prestamo),  
+            NEW.id_cuenta_pago,  
             3,  
             CONCAT('Pago de cuota ', NEW.numero_cuota, ' del prestamo ', NEW.id_prestamo),  
             NEW.monto, 
