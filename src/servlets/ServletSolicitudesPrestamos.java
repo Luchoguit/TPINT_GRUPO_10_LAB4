@@ -29,6 +29,7 @@ import negocioimplementacion.PrestamoNegocioImp;
 import negocioimplementacion.SolicitudAltaCuentaNegocioImp;
 import negocioimplementacion.SolicitudPrestamoNegocioImp;
 import negocioimplementacion.UsuarioNegocioImp;
+import utilidades.Mensaje;
 import utilidades.ValidarSesion;
 
 
@@ -106,6 +107,8 @@ public class ServletSolicitudesPrestamos extends HttpServlet {
 	        	CuotaNegocio cuotaNegocio = new CuotaNegocioImp();
 	        	boolean resultadoCuotas = cuotaNegocio.generarCuotas(prestamo);
 	        	System.out.println("[DEBUG] resultado crear cuotas: " + resultadoCuotas);
+	        	
+	        	Mensaje.exito(request, "Solicitud aceptada exitosamente");
 	        }
 
 	    } else {
@@ -115,10 +118,13 @@ public class ServletSolicitudesPrestamos extends HttpServlet {
 	    	boolean resultadoRechazar = spNegocio.rechazarPrestamo(idPrestamo);
 	    	
 	        System.out.println("[DEBUG] resultado rechazar: " + resultadoRechazar);
+	        
+	        Mensaje.exito(request, "Solicitud rechazada exitosamente");
 
 	    }
         } catch (Exception e) {
             e.printStackTrace();
+            Mensaje.error(request, "Ha ocurrido un error en la gestión de la solicitud");
         }
         
 	    doGet(request, response);

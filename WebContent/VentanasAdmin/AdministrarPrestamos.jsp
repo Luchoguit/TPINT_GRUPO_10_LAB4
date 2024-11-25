@@ -24,6 +24,22 @@
     int totalPaginas = (int) request.getAttribute("totalPaginas");
 %>
 
+
+   <!-- Contenedor de mensajes -->
+    <% 
+        String mensaje = (String) request.getAttribute("mensaje");
+        if (mensaje != null) {
+            String tipoMensaje = "error";
+            if (mensaje.contains("aceptada") || mensaje.contains("rechazada")) {
+                tipoMensaje = "success";
+            }
+    %>
+        <div class="message-container <%= tipoMensaje %>">
+            <%= mensaje %>
+        </div>
+    <% } %>
+
+
 <table>
     <thead>
         <tr>
