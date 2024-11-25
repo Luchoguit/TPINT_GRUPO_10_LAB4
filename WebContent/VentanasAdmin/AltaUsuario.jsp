@@ -23,7 +23,7 @@
         String mensaje = (String) request.getAttribute("mensaje");
         if (mensaje != null) {
             String tipoMensaje = "error";
-            if (mensaje.contains("exitoso")) {
+            if (mensaje.contains("exitosamente")) {
                 tipoMensaje = "success";
             }
     %>
