@@ -69,6 +69,13 @@
     .back-button:hover {
         background-color: #218838;
     }
+    
+    
+    .no-ultima-pagina
+    {
+    	display: none
+    }
+    
 </style>
 
         <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloMensajes.css">
@@ -76,6 +83,13 @@
 
 </head>
 <body>
+
+<% 
+    // Datos para paginación
+    int paginaActual = (int) request.getAttribute("paginaActual");
+    int totalPaginas = (int) request.getAttribute("totalPaginas");
+%>
+
 
 <div class="table-container">
     <h1 class="table-title">Extracto de Cuenta</h1>
@@ -102,7 +116,7 @@
     </div>
 	
 	<% if (request.getAttribute("movimientos") != null) {
-		List<Movimiento> movimientos = (List<Movimiento>) request.getAttribute("movimientos");
+		List<Movimiento> movimientos = (List<Movimiento>) request.getAttribute("listaMovimientos");
 		java.time.LocalDateTime fechaCreacion = cuentaSeleccionada.getFechaCreacion();
 		if (movimientos.size() > 0) { %>
 		    <table>
@@ -117,7 +131,7 @@
 				<tbody>
 					<tr>
 		<%
-			List<BigDecimal> saldosParciales = (List<BigDecimal>) request.getAttribute("saldos");
+			List<BigDecimal> saldosParciales = (List<BigDecimal>) request.getAttribute("listaSaldosParciales");
 			int iteracion = 0;
 			int tipo_movimiento_alta_prestamo = 2;
 
@@ -144,7 +158,7 @@
 		<%
 			iteracion++;
 			} %>
-					<tr>
+					<tr <%if(!(paginaActual == totalPaginas)){ %> class="no-ultima-pagina" <%} %>>
 		                <td><%= Formato.formatoFechaHora(fechaCreacion) %></td>
 		                <td>Saldo Inicial</td>
 		                <td></td>
@@ -157,6 +171,27 @@
 			<h3>Aquí aparecerán sus movimientos cuando utilice la cuenta</h3>
 		<% }
 	} %>
+	
+	
+	<!-- Controles de paginación -->
+<div class="pagination">
+    <% if (paginaActual > 1) { %>
+        <a href="?page=<%= paginaActual - 1 %>" class="pagination-link">&laquo; Anterior</a>
+    <% }
+     for (int i = 1; i <= totalPaginas; i++) { %>
+        <% if (i == paginaActual) { %>
+            <span class="pagination-current"><%= i %></span>
+        <% } else { %>
+            <a href="?page=<%= i %>" class="pagination-link"><%= i %></a>
+        <% } 
+     } %>
+    <% if (paginaActual < totalPaginas) { %>
+        <a href="?page=<%= paginaActual + 1 %>" class="pagination-link">Siguiente &raquo;</a>
+    <% } %>
+</div>
+	
+	
+	
     <div class="button-container">
         <input type="button" value="Volver" class="back-button" onclick="window.history.back()">
     </div>

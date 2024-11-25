@@ -69,6 +69,35 @@ public class ServletMovimientosCuenta extends HttpServlet {
 		
 		System.out.println("Cantidad de movimientos en servlet: " + movimientos.size());
 		
+		
+	     // Manejo de paginación
+        int registrosPorPagina = 10;
+        int paginaActual = 1;
+
+        // Obtener el número de pagina actual desde la request
+        String pageParam = request.getParameter("page");
+        if (pageParam != null && !pageParam.isEmpty()) {
+     	   paginaActual = Integer.parseInt(pageParam);
+        }
+
+        // Calcular los indices para la sublista de Clientes
+        int totalRecords = movimientos.size();
+        int totalPaginas = (int) Math.ceil((double) totalRecords / registrosPorPagina);
+        int startIndex = (paginaActual - 1) * registrosPorPagina;
+        int endIndex = Math.min(startIndex + registrosPorPagina, totalRecords);
+
+        // Sublista de Movimientos y saldos parciales para la pagina actual
+        List<Movimiento> movimientosPagina = movimientos.subList(startIndex, endIndex);
+        List<BigDecimal> saldosParcialesPagina = saldosParciales.subList(startIndex, endIndex);
+
+        // Pasar atributos a la vista
+        request.setAttribute("listaMovimientos", movimientosPagina);
+        request.setAttribute("listaSaldosParciales", saldosParcialesPagina);
+        request.setAttribute("totalPaginas", totalPaginas);
+        request.setAttribute("paginaActual", paginaActual);
+		
+		
+		
         RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasUser/Movimientos.jsp");
         dispatcher.forward(request, response);
 	}
