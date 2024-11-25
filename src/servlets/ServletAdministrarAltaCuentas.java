@@ -115,6 +115,18 @@ public class ServletAdministrarAltaCuentas extends HttpServlet {
 	    System.out.println("[DEBUG] id de objeto solicitud: " + solicitud.getId());
 
 	    try {
+	    	
+	    	
+	    	if("rechazar".equals(accion))
+	    	{
+	    		boolean resultadoRespuesta = solicitudNegocio.responderSolicitud(solicitudId);
+		        System.out.println("[DEBUG] resultado respuesta de solicitud: " + resultadoRespuesta);
+		        
+		        Mensaje.exito(request, "Solicitud rechazada exitosamente");
+		        
+	    	}
+	    	
+	    	
 	        if ("aceptar".equals(accion)) {
 
 	            UsuarioNegocio userNegocio = new UsuarioNegocioImp();

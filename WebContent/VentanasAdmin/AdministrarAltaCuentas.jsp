@@ -22,15 +22,19 @@
 
 <h2>Administrar solicitud alta cuentas</h2>
 
-<%
-    String mensaje = (String) request.getAttribute("mensaje");
-    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
-    if (mensaje != null && tipoMensaje != null) {
-%>
-    <div class="message-container <%= tipoMensaje %>">
-        <%= mensaje %>
-    </div>
-<% } %>
+   <!-- Contenedor de mensajes -->
+    <% 
+        String mensaje = (String) request.getAttribute("mensaje");
+        if (mensaje != null) {
+            String tipoMensaje = "error";
+            if (mensaje.contains("Cuenta dada de alta exitosamente") || mensaje.contains("Solicitud rechazada exitosamente")) {
+                tipoMensaje = "success";
+            }
+    %>
+        <div class="message-container <%= tipoMensaje %>">
+            <%= mensaje %>
+        </div>
+    <% } %>
 
 <% 
     // Datos para paginación
