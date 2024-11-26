@@ -84,6 +84,8 @@
 </head>
 <body>
 
+
+
 <% 
     // Datos para paginación
     int paginaActual = (int) request.getAttribute("paginaActual");
@@ -93,6 +95,18 @@
 
 <div class="table-container">
     <h1 class="table-title">Extracto de Cuenta</h1>
+    
+    <% 
+    String mensaje = (String) request.getAttribute("mensaje");
+    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
+    if (mensaje != null && tipoMensaje != null) {
+    %>
+        <!-- Mostrar el mensaje con el estilo adecuado -->
+        <div class="message-container <%= tipoMensaje %>">
+            <%= mensaje %>
+        </div>
+    <% } %>
+    
     <%
         Cuenta cuentaSeleccionada = (Cuenta) request.getSession().getAttribute("cuenta");
         Cliente cliente = null;

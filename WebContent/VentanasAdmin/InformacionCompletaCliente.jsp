@@ -21,14 +21,9 @@
     <h2>Datos del Cliente</h2>
 
     <% 
-        // Obtener el mensaje del atributo
-        String mensaje = (String) request.getAttribute("error");
-        if (mensaje != null) {
-            // Determinar el tipo de mensaje (error o success)
-            String tipoMensaje = "error";
-            if (mensaje.contains("exitoso")) {
-                tipoMensaje = "success";
-            }
+    String mensaje = (String) request.getAttribute("mensaje");
+    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
+    if (mensaje != null && tipoMensaje != null) {
     %>
         <!-- Mostrar el mensaje con el estilo adecuado -->
         <div class="message-container <%= tipoMensaje %>">

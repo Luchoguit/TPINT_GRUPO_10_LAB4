@@ -27,12 +27,9 @@
 
    <!-- Contenedor de mensajes -->
     <% 
-        String mensaje = (String) request.getAttribute("mensaje");
-        if (mensaje != null) {
-            String tipoMensaje = "error";
-            if (mensaje.contains("aceptada") || mensaje.contains("rechazada")) {
-                tipoMensaje = "success";
-            }
+    String mensaje = (String) request.getAttribute("mensaje");
+    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
+    if (mensaje != null && tipoMensaje != null) {
     %>
         <div class="message-container <%= tipoMensaje %>">
             <%= mensaje %>
