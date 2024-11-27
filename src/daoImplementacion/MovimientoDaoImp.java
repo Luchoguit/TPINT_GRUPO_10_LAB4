@@ -56,6 +56,47 @@ public class MovimientoDaoImp implements MovimientoDao {
 	    }
 	    return lista;
 	}
+	
+	private static final String qrybuscarTodosLosMovimientos = "SELECT * FROM movimientos "
+			+ "WHERE fechaHora BETWEEN ? AND ?";
+
+	@Override
+	public List<Movimiento> todosLosMovimientosPorFechas(String fechaInicio, String fechaFin) {
+	    List<Movimiento> lista = new ArrayList<>();
+	    
+	    try {
+	    	
+	        Connection con = Conexion.getConexion().getSQLConexion();
+	        PreparedStatement statement = con.prepareStatement(qrybuscarTodosLosMovimientos);
+
+	        statement.setString(1, fechaInicio);
+	        statement.setString(2, fechaFin);
+
+	        ResultSet resultSet = statement.executeQuery();
+
+
+	        while (resultSet.next()) {
+	            Movimiento m = new Movimiento();
+	            m.setId(resultSet.getInt("id"));
+	            Cuenta cuentaOrigen = new Cuenta();
+	            cuentaOrigen.setId(resultSet.getInt("id_cuenta"));
+	            m.setCuentaOrigen(cuentaOrigen);
+	            Cuenta cuentaDestino = new Cuenta();
+	            cuentaDestino.setId(resultSet.getInt("id_cuentaDestino"));
+	            m.setCuentaDestino(cuentaDestino);
+	            TipoMovimiento tipoMovimiento = new TipoMovimiento();
+	            tipoMovimiento.setId(resultSet.getInt("id_tipoMovimiento"));
+	            m.setTipoMovimiento(tipoMovimiento);
+	            m.setDetalle(resultSet.getString("detalle"));
+	            m.setFechaHora(resultSet.getTimestamp("fechaHora").toLocalDateTime());
+	            m.setImporte(resultSet.getBigDecimal("importe"));
+	            lista.add(m);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return lista;
+	}
 
 
 }

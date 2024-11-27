@@ -16,4 +16,9 @@ public class MovimientoNegocioImp implements MovimientoNegocio {
 		return movimientoDao.obtenerMovimientosPorFechas(idCuenta, fechaInicio, fechaFin);
 	}
 
+	@Override
+	public List<Movimiento> todosLosMovimientosPorFechas(String fechaInicio, String fechaFin) {
+		return movimientoDao.todosLosMovimientosPorFechas(fechaInicio, fechaFin);
+	}
+
 }
