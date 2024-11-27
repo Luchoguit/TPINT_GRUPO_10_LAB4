@@ -18,9 +18,11 @@ import entidad.Usuario;
 import negocio.ClienteNegocio;
 import negocio.LocalidadNegocio;
 import negocio.ProvinciaNegocio;
+import negocio.UsuarioNegocio;
 import negocioimplementacion.ClienteNegocioImp;
 import negocioimplementacion.LocalidadNegocioImp;
 import negocioimplementacion.ProvinciaNegocioImp;
+import negocioimplementacion.UsuarioNegocioImp;
 import utilidades.Mensaje;
 import utilidades.ValidarSesion;
 
@@ -38,36 +40,34 @@ public class ServletsInfoCompletaCliente extends HttpServlet {
             return; 
         }
 		
-		
-        
-    }
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	// Obtener el DNI del cliente desde el parámetro de la URL
-        String dni = request.getParameter("dniCliente");
-
-        if (dni != null && !dni.isEmpty()) {
+        int idCliente = Integer.parseInt(request.getParameter("idCliente"));
            
         	ClienteNegocio clienteNegocio = new ClienteNegocioImp();
 
-            // Buscar cliente por DNI
-            Cliente cliente = clienteNegocio.obtenerPorDNI(dni);
+            Cliente cliente = clienteNegocio.obtenerPorId(idCliente);
 
             if (cliente != null) {        
                 request.setAttribute("cliente", cliente);
+                
+                UsuarioNegocio userNegocio = new UsuarioNegocioImp();
+                Usuario user = userNegocio.obtenerUsuarioPorId(idCliente);
+                
+                request.setAttribute("usuario", user);
+                
             } else {
-                // Enviar un mensaje de error si no se encuentra el cliente
                 Mensaje.error(request, "No se encontró un cliente con el DNI proporcionado.");
 
             }
-        } else {
-            // Enviar un mensaje de error si el DNI es nulo o vacío
-            Mensaje.error(request, "DNI no válido.");
 
-        }
+        
 
         // Redirigir a la página JSP
         RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/InformacionCompletaCliente.jsp");
         dispatcher.forward(request, response);
+    }
+        
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
     }
        
 }

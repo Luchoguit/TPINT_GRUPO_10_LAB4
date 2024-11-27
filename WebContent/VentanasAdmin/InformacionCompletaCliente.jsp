@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@page import="entidad.Cliente" %>
+<%@page import="entidad.Usuario" %>
 <%@page import="java.util.List" %>
 <%@page import="entidad.Provincia" %>
 <%@page import="entidad.Localidad" %>
@@ -92,6 +93,11 @@
         <div class="form-group">
             <label for="telefono">Telefono</label>
             <input id="telefono" type="text" readonly value="<%= request.getAttribute("cliente") != null ? ((Cliente) request.getAttribute("cliente")).getTelefono() : "" %>">
+        </div>
+        
+        <div class="form-group">
+            <label for="usuario">Nombre de usuario</label>
+            <input id="usuario" type="text" readonly value="<%= request.getAttribute("usuario") != null ? ((Usuario) request.getAttribute("usuario")).getNombreUsuario() : "" %>">
         </div>
     </form>
     <div class="button-container">

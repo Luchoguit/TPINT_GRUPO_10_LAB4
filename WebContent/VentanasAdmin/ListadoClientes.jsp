@@ -97,8 +97,8 @@
         
         <!-- Botón para ver más detalles -->
         <td>
-            <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletsInfoCompletaCliente">
-                <input type="hidden" name="dniCliente" value="<%= cliente.getDni() %>">
+            <form method="get" action="/TPINT_GRUPO_10_LAB4/ServletsInfoCompletaCliente">
+                <input type="hidden" name="idCliente" value="<%= cliente.getId() %>">
                 <input type="submit" name="verMas" value=" + " class="button button-green">
             </form>
         </td>

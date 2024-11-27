@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import entidad.Cliente;
+import entidad.Usuario;
 import negocio.ClienteNegocio;
 import negocio.LocalidadNegocio;
 import negocio.ProvinciaNegocio;
@@ -33,9 +34,11 @@ public class ServletVerDatos extends HttpServlet {
 		
 		
         Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
+        Usuario user = (Usuario) request.getSession().getAttribute("usuario");
 		 
             if (cliente != null) {        
                 request.setAttribute("cliente", cliente);
+                request.setAttribute("usuario", user);
             } else {
 
                 Mensaje.error(request, "Debe loguearse para ver sus datos.");
