@@ -17,6 +17,7 @@ import entidad.Cliente;
 import entidad.Usuario;
 import negocio.ClienteNegocio;
 import negocioimplementacion.ClienteNegocioImp;
+import utilidades.Mensaje;
 import utilidades.ValidarSesion;
 
 
@@ -30,15 +31,30 @@ public class ServletListadoClientesEliminados extends HttpServlet {
             return; 
         }
 		
-		cargarClientes(request, response, null);
+        String filtroCliente = request.getParameter("filtroCliente");
+		cargarClientes(request, response, filtroCliente);
 		
 		
 	}
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String filtroCliente = request.getParameter("filtroCliente");
-        cargarClientes(request, response, filtroCliente);
+		
+			String dniCliente = request.getParameter("dniCliente");
+			
+			ClienteNegocioImp clienteNegocio = new ClienteNegocioImp();
+			
+			Cliente aux = clienteNegocio.obtenerPorDNI(dniCliente);
+			
+			
+			Boolean resultado = clienteNegocio.activarCliente(aux.getId());
+
+			if (resultado) {
+            Mensaje.exito(request, "Cliente activado exitosamente.");
+            } else {
+				Mensaje.error(request, "El cliente no pudo ser activado.");
+			}
+            doGet(request, response);
 	}
 	
 	private void cargarClientes(HttpServletRequest request, HttpServletResponse response, String filtroCliente) throws ServletException, IOException {

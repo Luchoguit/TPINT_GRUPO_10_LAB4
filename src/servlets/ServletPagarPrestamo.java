@@ -82,7 +82,7 @@ public class ServletPagarPrestamo extends HttpServlet {
 		
 
 		//--------------//
-		
+		//Antes de le excepcion
 		
 		// SE VALIDA SI ALCANZA EL SALDO EN LA CUENTA PARA PAGAR LO SELECCIONADO:
 		CuentaNegocioImp cuentaNegocio = new CuentaNegocioImp();
@@ -104,6 +104,8 @@ public class ServletPagarPrestamo extends HttpServlet {
 			return;
 		}
 		
+		
+		
 		/// REGISTRAR EL PAGO DE LA CUOTA
 		CuotaNegocio cuotaNegocio = new CuotaNegocioImp();
 		boolean resultado = cuotaNegocio.pagarCuotas(prestamo.getIdPrestamo(), cantCuotas, idCuenta);	
@@ -111,7 +113,7 @@ public class ServletPagarPrestamo extends HttpServlet {
 		/// EL UPDATE AL SALDO DE LA CUENTA Y 
 		//  EL INSERT DEL MOVIMIENTO SE REALIZAN MEDIANTE TRIGGER
 		
-		
+		///Despues de la excepcion
 		int cantCuotasAbonadas = cuotaNegocio.cantidadCuotasPagas(prestamo.getIdPrestamo());
 		
 		System.out.println("[DEBUG] cantidad de cuotas abonadas: " + cantCuotasAbonadas);

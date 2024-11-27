@@ -113,7 +113,7 @@
 
         <!-- Botón para eliminar -->
         <td>
-            <form id="formEliminar_<%= cliente.getDni() %>" onsubmit="return confirmarEliminacion()" method="post" action="/TPINT_GRUPO_10_LAB4/ServletEliminarCliente">
+            <form id="formEliminar_<%= cliente.getDni() %>" onsubmit="return confirmarEliminacion()" method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoClientes">
                 <input type="hidden" name="dniCliente" value="<%= cliente.getDni() %>">
                 <input type="submit" name="btnEliminar" value="Eliminar" class="button button-red">
             </form>

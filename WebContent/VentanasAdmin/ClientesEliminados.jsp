@@ -94,7 +94,7 @@
         <td><%= cliente.getCorreo() %></td>
         <td><%= cliente.getTelefono() %></td>
         <td>    
-            <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletActivarCliente">
+            <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoClientesEliminados">
                 <input type="hidden" name="dniCliente" value="<%= cliente.getDni() %>">
                 <input type="submit" name="btnActivar" value="Activar" class="button button-green">
             </form>
