@@ -57,7 +57,7 @@
 
 <!-- Filtro de búsqueda -->
 <div class="filter-container">
-    <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletListadoClientes">
+    <form method="get" action="/TPINT_GRUPO_10_LAB4/ServletListadoClientes">
         <input type="text" name="filtroCliente" placeholder="Ingrese DNI, nombre o apellido">
         <input type="submit" name="btnFiltrar" value="Filtrar" class="button button-blue">
     </form>
