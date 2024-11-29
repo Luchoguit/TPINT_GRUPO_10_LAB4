@@ -29,7 +29,8 @@ public class ServletInformesAdmin extends HttpServlet {
         if (!ValidarSesion.validarAdministrador(request, response)) {
             return; 
         }
-		
+
+        
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/InformesAdmin.jsp");
         dispatcher.forward(request, response);
@@ -63,20 +64,25 @@ public class ServletInformesAdmin extends HttpServlet {
 	     * EGRESO: DEPOSITO DE PRESTAMO (Y ALTA DE CUENTA??)
 	     */
 	     
+	    int totalMovimientos = listaMovimientos.size();
+	    int cantAltaCuentas = 0, cantAltaPrestamos = 0, cantPagoPrestamos = 0, cantTransferencias = 0;
 	    for (Movimiento movimiento : listaMovimientos) {
 	        int tipoMovimientoId = movimiento.getTipoMovimiento().getId();
-
+	        
 	        	switch (tipoMovimientoId) {
 	            case 1: // Alta de cuenta - ??
+	            	cantAltaCuentas ++;
 	            	break;
 	            case 2: // Alta de prestamo - Egreso
 	                totalEgresos = totalEgresos.add(movimiento.getImporte());
+	                cantAltaPrestamos ++;
 	                break;
-
 	            case 3: // Pago de prestamo - Ingreso
 	                totalIngresos = totalIngresos.add(movimiento.getImporte());
+	                cantPagoPrestamos ++;
 	                break;
 	            case 4: // Transferencia -
+	            	cantTransferencias ++;
 	                break;
 	            default:
 	                System.out.println("[DEBUG] Tipo de movimiento desconocido: " + tipoMovimientoId);
@@ -84,6 +90,7 @@ public class ServletInformesAdmin extends HttpServlet {
 	    }
 
 	    BigDecimal balance = totalIngresos.subtract(totalEgresos);
+	   
 
 
 	    System.out.println("[DEBUG] totalIngresos: " + totalIngresos);
@@ -91,9 +98,14 @@ public class ServletInformesAdmin extends HttpServlet {
 	    System.out.println("[DEBUG] balance: " + balance);
 
 
+	    request.setAttribute("totalMovimientos", totalMovimientos);
 	    request.setAttribute("totalIngresos", totalIngresos);
 	    request.setAttribute("totalEgresos", totalEgresos);
 	    request.setAttribute("balance", balance);
+	    request.setAttribute("cantAltaCuentas", cantAltaCuentas);
+	    request.setAttribute("cantAltaPrestamos", cantAltaPrestamos);
+	    request.setAttribute("cantPagoPrestamos", cantPagoPrestamos);
+	    request.setAttribute("cantTransferencias", cantTransferencias);
 
 
 	    RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasAdmin/InformesAdmin.jsp");

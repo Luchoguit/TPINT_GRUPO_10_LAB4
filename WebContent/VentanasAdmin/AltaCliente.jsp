@@ -127,6 +127,9 @@
         </div>
     </form>
 
+    <a href="/TPINT_GRUPO_10_LAB4/ServletLAltaUsuario" class="volver-menu">
+        <input type="button" value="Ir a Alta de Usuario" class="button button-blue"> <!-- Aplicamos el estilo de botón -->
+    </a>
     <!-- Enlace para volver al menu -->
     <a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp" class="volver-menu">
         <input type="button" value="Volver al Menu" class="button button-blue"> <!-- Aplicamos el estilo de botón -->

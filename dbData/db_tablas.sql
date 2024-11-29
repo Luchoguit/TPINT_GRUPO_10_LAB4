@@ -288,6 +288,26 @@ END //
 DELIMITER ;
 
 
+DELIMITER //
+
+CREATE TRIGGER movimientoAltaCuenta
+AFTER INSERT ON cuentas
+FOR EACH ROW
+BEGIN
+    -- Insert del alta de cuenta en la tabla de movimientos
+    INSERT INTO movimientos (id_cuenta, id_tipoMovimiento, detalle, importe, Saldo_disponible, id_cuentaDestino)
+    VALUES (
+        NEW.id,  
+        1, 
+        'Alta cuenta',
+        NEW.saldo,  
+        NEW.saldo,
+        NULL
+    );
+END //
+
+DELIMITER ;
+
 -- Insercion TiposDeMovimiento
 INSERT INTO tipos_de_movimientos (id, descripcion) VALUES
 (1, 'Alta de cuenta'),
