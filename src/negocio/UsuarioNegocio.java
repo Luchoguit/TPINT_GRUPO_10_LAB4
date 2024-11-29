@@ -10,5 +10,5 @@ public interface UsuarioNegocio {
 	Usuario getUsuario(String nombre, String contrasenia);
 	Usuario obtenerUsuarioPorId(int id);
 
-
+	boolean actualizarUser(Usuario usuario);
 }

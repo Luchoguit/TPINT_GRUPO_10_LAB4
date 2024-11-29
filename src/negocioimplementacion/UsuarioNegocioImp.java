@@ -24,5 +24,8 @@ public class UsuarioNegocioImp implements UsuarioNegocio {
 		return usuarioDao.obtenerUsuarioPorId(id);
 	}
 
-
+	@Override
+	public boolean actualizarUser(Usuario usuario) {
+		return usuarioDao.actualizarUser(usuario);
+	}
 }

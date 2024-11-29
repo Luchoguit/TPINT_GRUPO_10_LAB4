@@ -201,4 +201,44 @@ public class UsuarioDaoImp implements UsuarioDao {
 	    return user;
 	}	
 	
+	
+	private static final String actualizarUser = "UPDATE usuarios SET contrasenia = ? WHERE id = ?";
+	
+	public boolean actualizarUser(Usuario usuario) {
+	    Connection con = null;
+	    PreparedStatement ps = null;
+	    boolean resultado = false;
+
+	    try {
+	        con = Conexion.getConexion().getSQLConexion();
+
+	        ps = con.prepareStatement(actualizarUser);
+	        ps.setString(1, usuario.getContraseña()); 
+	        ps.setInt(2, usuario.getCliente().getId());
+
+	        int rowsAffected = ps.executeUpdate();
+	        resultado = (rowsAffected > 0);
+
+	        if (resultado) {
+	            con.commit(); // Confirma la transacción si la actualización fue exitosa
+	        } else {
+	            con.rollback(); // Revierte la transacción si no se actualizó ninguna fila
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        try {
+	            if (con != null) {
+	                con.rollback();
+	            }
+	        } catch (SQLException ex) {
+	            ex.printStackTrace();
+	        }
+	    } finally {
+	    	Conexion.getConexion().cerrarConexion();
+	    }
+
+	    return resultado;
+	}
+	
 }
