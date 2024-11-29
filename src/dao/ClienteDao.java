@@ -19,7 +19,7 @@ public interface ClienteDao {
     boolean verificarCuilIngresado(String cuil);
     boolean verificarEmailIngresado(String email);
     boolean verificarTelefonoIngresado(String telefono);
-    
+    boolean verificarCuentasyPrestamosActivos(int idCliente);
     
 	
     

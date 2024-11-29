@@ -544,5 +544,39 @@ public class ClienteDaoImp implements ClienteDao {
 	    return cliente;
 	}	
 	
+	@Override
+	public boolean verificarCuentasyPrestamosActivos(int idCliente) {
+	    Connection conn = null;
+	    PreparedStatement stmt = null;
+	    ResultSet rs = null;
+	    
+	    String sql = "SELECT VerificarCuentasyPrestamosActivos(?) AS tieneActivos"; 
+	    
+	    try {
+	        conn = Conexion.getConexion().getSQLConexion(); 
+	        stmt = conn.prepareStatement(sql);
+	        stmt.setInt(1, idCliente);
+
+	        rs = stmt.executeQuery();
+
+	        if (rs.next()) {
+	            return rs.getInt("tieneActivos") == 1;
+	        }
+	        return false;  // Si no hay resultado, retornamos false
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (stmt != null) stmt.close();
+	            Conexion.getConexion().cerrarConexion();  
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
+	
+	
 	
 }

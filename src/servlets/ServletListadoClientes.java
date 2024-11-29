@@ -38,24 +38,32 @@ public class ServletListadoClientes extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String dniCliente = request.getParameter("dniCliente");
 
-    	String dniCliente = request.getParameter("dniCliente");
-		
-		ClienteNegocioImp clienteNegocio = new ClienteNegocioImp();
-		
-		Cliente aux = clienteNegocio.obtenerPorDNI(dniCliente);
-		
-		
-		Boolean resultado = clienteNegocio.eliminarCliente(aux.getId());
-		
-		if(resultado) {
-			Mensaje.exito(request, "Cliente eliminado exitosamente.");	
-		}else {
-			Mensaje.error(request, "El Cliente no pudo ser eliminado.");
-		}
-		doGet(request,response);    	
+        ClienteNegocioImp clienteNegocio = new ClienteNegocioImp();
+        Cliente aux = clienteNegocio.obtenerPorDNI(dniCliente);
+
+        if (aux != null) {
+   
+            boolean tieneActivos = clienteNegocio.verificarCuentasyPrestamosActivos(aux.getId());
+
+            if (tieneActivos) {
+                Mensaje.error(request, "El cliente no puede ser eliminado porque tiene cuentas o préstamos activos.");
+            } else {
+            
+                boolean resultado = clienteNegocio.eliminarCliente(aux.getId());
+                if (resultado) {
+                    Mensaje.exito(request, "Cliente eliminado exitosamente.");
+                } else {
+                    Mensaje.error(request, "El cliente no pudo ser eliminado.");
+                }
+            }
+        } else {
+            Mensaje.error(request, "No se encontró un cliente con el DNI proporcionado.");
+        }
+
+        doGet(request, response);  
     }
-
     private void cargarClientes(HttpServletRequest request, HttpServletResponse response, String filtroCliente) throws ServletException, IOException {
         ClienteNegocio clienteNegocio = new ClienteNegocioImp();
         List<Cliente> listaClientes = clienteNegocio.listarClientes();

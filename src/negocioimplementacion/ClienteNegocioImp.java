@@ -69,4 +69,13 @@ public class ClienteNegocioImp implements ClienteNegocio {
 	public Cliente obtenerPorId(int id) {
 		return clienteDao.obtenerPorId(id);
 	}
+
+	@Override
+	public boolean verificarCuentasyPrestamosActivos(int idCliente) {
+		
+		return clienteDao.verificarCuentasyPrestamosActivos(idCliente);
+		
+	}
+	
+	
 }

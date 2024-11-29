@@ -19,6 +19,7 @@ public interface ClienteNegocio {
     boolean verificarEmailIngresado(String email);
     boolean verificarTelefonoIngresado(String telefono);
 	boolean actualizarCliente(Cliente cliente);
+	public boolean verificarCuentasyPrestamosActivos(int idCliente);
    
 
 }

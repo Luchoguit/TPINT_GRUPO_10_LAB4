@@ -258,7 +258,34 @@ END $$
 
 DELIMITER ;
 
+DELIMITER //
 
+CREATE FUNCTION VerificarCuentasyPrestamosActivos(cliente_id INT)
+RETURNS BOOLEAN
+DETERMINISTIC
+BEGIN
+    DECLARE tieneCuentaActiva BOOLEAN DEFAULT FALSE;
+    DECLARE tienePrestamoActivo BOOLEAN DEFAULT FALSE;
+
+    -- vemos si tiene cuentas activas
+    SELECT COUNT(*)
+    INTO tieneCuentaActiva
+    FROM cuentas
+    WHERE id_usuario = (SELECT id FROM usuarios WHERE id = cliente_id)
+      AND estado = TRUE;
+
+    -- o si tiene prestamos activos 
+    SELECT COUNT(*)
+    INTO tienePrestamoActivo
+    FROM prestamos
+    WHERE id_cliente = cliente_id
+      AND estado = TRUE;
+
+    -- Retorna TRUE si tiene cuenta o préstamo activo 
+    RETURN (tieneCuentaActiva > 0 OR tienePrestamoActivo > 0);
+END //
+
+DELIMITER ;
 
 
 -- Insercion TiposDeMovimiento
