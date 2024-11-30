@@ -101,10 +101,11 @@ CREATE TABLE Prestamos (
     importe_pedido DECIMAL(15, 2) NOT NULL,
     plazo_meses INT NOT NULL,
     importe_mensual DECIMAL(15, 2) NOT NULL,
+	importe_final DECIMAL(15, 2) NOT NULL,
     cantidad_cuotas INT NOT NULL,
-    estado BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (id_cliente) REFERENCES Clientes(id),
-    FOREIGN KEY (id_cuenta) REFERENCES Cuentas(id)
+    FOREIGN KEY (id_cuenta) REFERENCES Cuentas(id),
+    estado BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE Solicitudes_Prestamos(
