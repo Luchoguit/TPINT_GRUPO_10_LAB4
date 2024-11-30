@@ -34,6 +34,8 @@
 
     <% 
         Prestamo prestamo = (Prestamo) request.getAttribute("prestamo");
+    	BigDecimal tasaAplicada = (BigDecimal) request.getSession().getAttribute("tasaInteres");
+    	tasaAplicada = tasaAplicada.multiply(new BigDecimal("100"));
         if (prestamo != null) {
     %>
 
@@ -67,6 +69,11 @@
         <div class="form-group">
             <label for="monto">Monto por cuota:</label>
             <span><%= Formato.formatoMonetario(prestamo.getImporteMensual()) %></span>
+        </div>
+        
+         <div class="form-group">
+            <label for="tasa">Tasa de interés aplicada:</label>
+            <span><%= tasaAplicada %>%</span>
         </div>
 
         <!-- Botón Solicitar Préstamo -->

@@ -91,6 +91,7 @@ public class ServletPedirPrestamo extends HttpServlet {
 		
 		request.setAttribute("importeTotal", importeTotal);
 		request.getSession().setAttribute("prestamo", prestamo);
+		request.getSession().setAttribute("tasaInteres", tasaInteres);
 	    response.sendRedirect("ServletConfirmarPrestamo");		
 	    		 
 	}

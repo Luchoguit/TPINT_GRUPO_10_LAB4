@@ -23,7 +23,7 @@
     }
 </script>
 </head>
-<body>
+<body onload="actualizarCuotas()">
 
 <div class="form-container">
     <h2>Solicitar Préstamo</h2>
@@ -48,7 +48,7 @@
 		<div class="form-group">
 		    <label for="plazo">Plazo de pago:</label>
 		    <select id="plazo" name="plazo" required onchange="actualizarCuotas()">
-		        <option value="6">6 meses</option>
+		        <option value="6" selected>6 meses</option>
 		        <option value="12">12 meses</option>
 		        <option value="18">18 meses</option>
 		        <option value="24">24 meses</option>
@@ -111,6 +111,13 @@
         const cuotasSelect = document.getElementById("cuotas");
         const plazo = parseInt(document.getElementById("plazo").value);
 
+        // Verificar que el plazo sea un número válido y esté presente en las opciones
+        if (!plazo || isNaN(plazo)) {
+            cuotasSelect.innerHTML = '<option value="">Debe seleccionar el plazo de pago primero</option>';
+            return;
+        }
+        
+        
         // Opciones de cuotas posibles según el plazo
         const opcionesCuotas = {
             6: [6],
@@ -119,6 +126,13 @@
             24: [6, 12, 18, 24]
         };
 
+        // Verificar que el plazo esté en las opciones definidas
+        if (!opcionesCuotas[plazo]) {
+            cuotasSelect.innerHTML = '<option value="">Plazo no válido</option>';
+            return;
+        }
+        
+        
         // Limpiar las opciones actuales
         cuotasSelect.innerHTML = "";
 
@@ -129,6 +143,9 @@
             option.text = cuota + " Cuotas";
             cuotasSelect.add(option);
         });
+        
+        // Seleccionar la primera opción por defecto (si existen opciones de cuotas)
+        cuotasSelect.selectedIndex = 0;
     }
 </script>
 </body>
