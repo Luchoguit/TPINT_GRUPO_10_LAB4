@@ -58,7 +58,7 @@
 		<div class="form-group">
 		    <label for="cuotas">Cantidad de Cuotas:</label>
 		    <select id="cuotas" name="cuotas" required>
-                <option value="6">6 Cuotas</option>
+                <option value="">Debe seleccionar el plazo de pago primero</option>
 		    </select>
 		</div>
 
@@ -88,7 +88,7 @@
 
         <!-- Botón principal: Solicitar Préstamo -->
         <div class="form-buttons">
-           <button type="submit" class="button button-green">Solicitar Préstamo</button>       
+           <button type="submit" class="button button-green">Calcular Préstamo</button>       
         </div>
     </form>
 

@@ -2,6 +2,7 @@
 <%@page import="entidad.Cuenta" %>
 <%@page import="java.util.List" %>
 <%@page import="utilidades.Formato" %>
+<%@page import="java.math.BigDecimal" %>
 
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
@@ -71,9 +72,11 @@
     <table>
         <thead>
             <tr>
+                <th>Importe solicitado</th>
+                <th>Total a pagar</th>
                 <th>Cuotas Pagas</th>
+                <th>Importe restante a pagar</th>
                 <th>Valor de la Cuota</th>
-                <th>Monto Total</th>
                 <th>Fecha Préstamo</th>
                 <th>Cuenta</th>
                 <th>Saldo Disponible</th> 
@@ -87,11 +90,15 @@
                 int cantidadImpagas = (int)request.getAttribute("cantidadImpagas");
                 Prestamo prestamo = (Prestamo)request.getAttribute("prestamo");
                 if (prestamo != null) {
+                	BigDecimal totalAbonado = prestamo.getImporteMensual().multiply(new BigDecimal(cantidadCuotasPagas));
+    	            BigDecimal saldoRestante = prestamo.getImporteFinal().subtract(totalAbonado);
             %>
 					<tr>
-                    <td><%= cantidadCuotasPagas %> / <%= prestamo.getCantidadCuotas() %></td>
-                    <td><%= Formato.formatoMonetario(prestamo.getImporteMensual()) %></td>
                     <td><%= Formato.formatoMonetario(prestamo.getImportePedido()) %></td>
+                    <td><%= Formato.formatoMonetario(prestamo.getImporteFinal()) %></td>
+                    <td><%= cantidadCuotasPagas %> / <%= prestamo.getCantidadCuotas() %></td>
+                    <td><%= Formato.formatoMonetario(saldoRestante) %></td>
+                    <td><%= Formato.formatoMonetario(prestamo.getImporteMensual()) %></td>
                     <td><%= Formato.formatoFecha(prestamo.getFechaAlta()) %></td>
                     <td>
                     <select name="cuenta" required onchange="updateSaldoDisponible(this)">
