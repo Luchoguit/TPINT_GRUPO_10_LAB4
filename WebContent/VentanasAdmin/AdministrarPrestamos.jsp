@@ -46,6 +46,7 @@
             <th>Monto del prestamo</th>
             <th>Cuotas</th>
             <th>Importe mensual</th>
+            <th>Importe final</th>
             <th>A pagar en</th>
             <th>Fecha de Solicitud</th>
             <th></th>
@@ -66,6 +67,7 @@
             <td><%= Formato.formatoMonetario(prestamo.getImportePedido()) %></td>
             <td><%= prestamo.getCantidadCuotas() %></td>
             <td><%= Formato.formatoMonetario(prestamo.getImporteMensual()) %></td>
+            <td><%= Formato.formatoMonetario(prestamo.getImporteFinal()) %></td>
             <td><%= prestamo.getPlazoMeses() + " meses" %></td>
             <td><%= Formato.formatoFecha(prestamo.getFechaAlta()) %></td>
             <td>

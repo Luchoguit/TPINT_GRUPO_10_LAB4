@@ -102,6 +102,7 @@ public class SolicitudPrestamoDaoImp implements SolicitudPrestamoDao {
 	        	    prestamo.setImportePedido(resultSet.getBigDecimal("P.importe_pedido"));
 	        	    prestamo.setPlazoMeses(resultSet.getInt("P.plazo_meses"));
 	        	    prestamo.setImporteMensual(resultSet.getBigDecimal("P.importe_mensual"));
+	        	    prestamo.setImporteFinal(resultSet.getBigDecimal("P.importe_final"));
 	        	    prestamo.setCantidadCuotas(resultSet.getInt("P.cantidad_cuotas"));
 	        	    prestamo.setEstado(resultSet.getBoolean("P.estado"));
 	            

@@ -23,8 +23,8 @@ import entidad.Usuario;
 public class PrestamoDaoImp implements PrestamoDao {
 
 	
-	private static final String qryInsertPrestamo = "INSERT INTO prestamos (id_cliente, id_cuenta, fecha_alta, importe_pedido, plazo_meses, importe_mensual, cantidad_cuotas) "
-			+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+	private static final String qryInsertPrestamo = "INSERT INTO prestamos (id_cliente, id_cuenta, fecha_alta, importe_pedido, plazo_meses, importe_mensual, importe_final, cantidad_cuotas) "
+			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 	
 	@Override
@@ -44,7 +44,8 @@ public class PrestamoDaoImp implements PrestamoDao {
             statement.setBigDecimal(4, prestamo.getImportePedido());
             statement.setInt(5, prestamo.getPlazoMeses());
             statement.setBigDecimal(6, prestamo.getImporteMensual());
-            statement.setInt(7, prestamo.getCantidadCuotas());
+            statement.setBigDecimal(7, prestamo.getImporteFinal());
+            statement.setInt(8, prestamo.getCantidadCuotas());
 
             // Ejecución de la consulta
             if (statement.executeUpdate() > 0) {
@@ -142,10 +143,11 @@ public class PrestamoDaoImp implements PrestamoDao {
 	        	BigDecimal importePedido = resultSet.getBigDecimal("P.importe_pedido");
 	        	int plazoMeses = resultSet.getInt("P.plazo_meses");
 	        	BigDecimal importeMensual = resultSet.getBigDecimal("P.importe_mensual");
+	        	BigDecimal importeFinal = resultSet.getBigDecimal("P.importe_final");
 	        	int cantidadCuotas = resultSet.getInt("P.cantidad_cuotas");
 	        	boolean estado = resultSet.getBoolean("P.estado");
 
-	            Prestamo prestamo = new Prestamo(idPrestamo, cliente, cuenta, fechaAlta, importePedido, plazoMeses, importeMensual, cantidadCuotas, estado);
+	            Prestamo prestamo = new Prestamo(idPrestamo, cliente, cuenta, fechaAlta, importePedido, plazoMeses, importeMensual, importeFinal, cantidadCuotas, estado);
 	            listaPrestamos.add(prestamo);
 	        }
 
@@ -238,6 +240,7 @@ public class PrestamoDaoImp implements PrestamoDao {
 	        	prestamo.setImportePedido(resultSet.getBigDecimal("P.importe_pedido"));
 	        	prestamo.setPlazoMeses(resultSet.getInt("P.plazo_meses"));
 	        	prestamo.setImporteMensual(resultSet.getBigDecimal("P.importe_mensual"));
+	        	prestamo.setImporteFinal(resultSet.getBigDecimal("P.importe_final"));
 	        	prestamo.setCantidadCuotas(resultSet.getInt("P.cantidad_cuotas"));
 	        	prestamo.setEstado(resultSet.getBoolean("P.estado"));
 	        }
@@ -326,10 +329,11 @@ public class PrestamoDaoImp implements PrestamoDao {
 	        	BigDecimal importePedido = resultSet.getBigDecimal("P.importe_pedido");
 	        	int plazoMeses = resultSet.getInt("P.plazo_meses");
 	        	BigDecimal importeMensual = resultSet.getBigDecimal("P.importe_mensual");
+	        	BigDecimal importeFinal = resultSet.getBigDecimal("P.importe_final");
 	        	int cantidadCuotas = resultSet.getInt("P.cantidad_cuotas");
 	        	boolean estado = resultSet.getBoolean("P.estado");
 
-	            Prestamo prestamo = new Prestamo(idPrestamo, cliente, cuenta, fechaAlta, importePedido, plazoMeses, importeMensual, cantidadCuotas, estado);
+	            Prestamo prestamo = new Prestamo(idPrestamo, cliente, cuenta, fechaAlta, importePedido, plazoMeses, importeMensual, importeFinal, cantidadCuotas, estado);
 	            listaPrestamos.add(prestamo);
 	        }
 

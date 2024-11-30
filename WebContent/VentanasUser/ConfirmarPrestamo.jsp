@@ -34,7 +34,6 @@
 
     <% 
         Prestamo prestamo = (Prestamo) request.getAttribute("prestamo");
-        BigDecimal importeTotal = (BigDecimal) request.getAttribute("importeTotal");
         if (prestamo != null) {
     %>
 
@@ -62,7 +61,7 @@
     
         <div class="form-group">
             <label for="monto">Total a pagar:</label>
-            <span><%= Formato.formatoMonetario(importeTotal) %></span>
+            <span><%= Formato.formatoMonetario(prestamo.getImporteFinal()) %></span>
         </div>
     
         <div class="form-group">

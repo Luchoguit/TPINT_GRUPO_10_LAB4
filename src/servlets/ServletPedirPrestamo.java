@@ -82,7 +82,7 @@ public class ServletPedirPrestamo extends HttpServlet {
 		BigDecimal importeTotal = importePedido.add(importePedido.multiply(tasaInteres));
 		BigDecimal importeMensual = importeTotal.divide(BigDecimal.valueOf(cantidadCuotas), 2, RoundingMode.HALF_UP);
 	
-		Prestamo prestamo = new Prestamo(cliente, cuenta, importePedido, plazoMeses, importeMensual, cantidadCuotas);
+		Prestamo prestamo = new Prestamo(cliente, cuenta, importePedido, plazoMeses, importeMensual, importeTotal, cantidadCuotas);
 	
 		System.out.println("[DEBUG] doPost pedirPrestamo");
         System.out.println("[DEBUG] importe pedido: " + prestamo.getImportePedido());

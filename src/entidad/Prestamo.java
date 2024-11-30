@@ -12,6 +12,7 @@ public class Prestamo {
 	private BigDecimal importePedido;
 	private int plazoMeses;
 	private BigDecimal importeMensual;
+	private BigDecimal importeFinal;
 	private int cantidadCuotas;
 	private boolean estado;
 	
@@ -19,7 +20,7 @@ public class Prestamo {
 	public Prestamo() {	}
 	
 	public Prestamo(int idPrestamo, Cliente cliente, Cuenta cuenta, LocalDateTime fechaAlta, BigDecimal importePedido,
-			int plazoMeses, BigDecimal importeMensual, int cantidadCuotas, boolean estado) {
+			int plazoMeses, BigDecimal importeMensual, BigDecimal importeFinal, int cantidadCuotas, boolean estado) {
 		this.idPrestamo = idPrestamo;
 		this.cliente = cliente;
 		this.cuenta = cuenta;
@@ -27,17 +28,19 @@ public class Prestamo {
 		this.importePedido = importePedido;
 		this.plazoMeses = plazoMeses;
 		this.importeMensual = importeMensual;
+		this.importeFinal = importeFinal;
 		this.cantidadCuotas = cantidadCuotas;
 		this.estado = estado;
 	}
 
 	public Prestamo(Cliente cliente, Cuenta cuenta, BigDecimal importePedido, int plazoMeses,
-			BigDecimal importeMensual, int cantidadCuotas) {
+			BigDecimal importeMensual, BigDecimal importeFinal, int cantidadCuotas) {
 			this.cliente = cliente;
 			this.cuenta = cuenta;
 			this.importePedido = importePedido;
 			this.plazoMeses = plazoMeses;
 			this.importeMensual = importeMensual;
+			this.importeFinal = importeFinal;
 			this.cantidadCuotas = cantidadCuotas;
 		}
 
@@ -111,6 +114,13 @@ public class Prestamo {
 		this.importeMensual = importeMensual;
 	}
 
+	public BigDecimal getImporteFinal() {
+		return importeFinal;
+	}
+
+	public void setImporteFinal(BigDecimal importeFinal) {
+		this.importeFinal = importeFinal;
+	}
 
 	public int getCantidadCuotas() {
 		return cantidadCuotas;

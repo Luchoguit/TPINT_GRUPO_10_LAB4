@@ -27,9 +27,7 @@ public class ServletConfirmarPrestamo extends HttpServlet {
 		Prestamo prestamo = (Prestamo) request.getSession().getAttribute("prestamo");
 
 		if (prestamo != null) {
-			BigDecimal importeTotal = prestamo.getImporteMensual().multiply(BigDecimal.valueOf(prestamo.getCantidadCuotas()));
 			request.setAttribute("prestamo", prestamo);
-		    request.setAttribute("importeTotal", importeTotal); 
 		}
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasUser/ConfirmarPrestamo.jsp");
