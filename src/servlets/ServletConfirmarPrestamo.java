@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,25 +25,16 @@ public class ServletConfirmarPrestamo extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		Prestamo prestamo = (Prestamo) request.getSession().getAttribute("prestamo");
-		BigDecimal importeTotal = (BigDecimal) request.getAttribute("importeTotal");
-		
-		System.out.println("[DEBUG] doGet ConfirmarPrestamo");
-        System.out.println("[DEBUG] importe pedido: " + prestamo.getImportePedido());
-        System.out.println("[DEBUG] importe total: " + importeTotal);
 
 		if (prestamo != null) {
-			request.setAttribute("importeSolicitado", prestamo.getImportePedido());
-			request.setAttribute("plazoMeses", prestamo.getPlazoMeses());
-			request.setAttribute("cantidadCuotas", prestamo.getCantidadCuotas());
-			request.setAttribute("numeroCuenta", prestamo.getCuenta().getNumeroCuenta() );
+			BigDecimal importeTotal = prestamo.getImporteMensual().multiply(BigDecimal.valueOf(prestamo.getCantidadCuotas()));
+			request.setAttribute("prestamo", prestamo);
 		    request.setAttribute("importeTotal", importeTotal); 
-		    request.setAttribute("importeMensual", prestamo.getImporteMensual());
 		}
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasUser/ConfirmarPrestamo.jsp");
 		dispatcher.forward(request, response);
 
-		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -63,7 +55,7 @@ public class ServletConfirmarPrestamo extends HttpServlet {
 	    
 	   request.getSession().removeAttribute("prestamo");
 
-	   response.sendRedirect("ServletPedirPrestamo");		
+		doGet(request, response);
 	}
 
 }

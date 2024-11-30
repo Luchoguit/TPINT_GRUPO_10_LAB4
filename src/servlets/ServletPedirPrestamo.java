@@ -92,10 +92,7 @@ public class ServletPedirPrestamo extends HttpServlet {
 		request.setAttribute("importeTotal", importeTotal);
 		request.getSession().setAttribute("prestamo", prestamo);
 	    response.sendRedirect("ServletConfirmarPrestamo");		
-	    
-
-
-		 
+	    		 
 	}
 	
 

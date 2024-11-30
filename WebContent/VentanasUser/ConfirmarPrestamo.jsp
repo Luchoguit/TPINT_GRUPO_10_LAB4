@@ -1,5 +1,7 @@
 <%@page import="entidad.Cuenta" %>
-<%@page import="java.util.List" %>
+<%@page import="entidad.Prestamo" %>
+<%@page import="java.math.BigDecimal" %>
+<%@page import="utilidades.Formato" %>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -30,44 +32,53 @@
         </div>
     <% } %>
 
+    <% 
+        Prestamo prestamo = (Prestamo) request.getAttribute("prestamo");
+        BigDecimal importeTotal = (BigDecimal) request.getAttribute("importeTotal");
+        if (prestamo != null) {
+    %>
+
+    <!-- Formulario -->
     <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletConfirmarPrestamo">
         <div class="form-group">
             <label for="monto">Monto del Préstamo:</label>
-     	   <span>$ <%= request.getAttribute("importeSolicitado") %></span>
+            <span><%= Formato.formatoMonetario(prestamo.getImportePedido()) %></span>
         </div>
-
-		<div class="form-group">
-		    <label for="plazo">Plazo de pago:</label>
-     	   <span><%= request.getAttribute("plazoMeses") %></span>
-		</div>
-		
-		<div class="form-group">
-		    <label for="cuotas">Cantidad de Cuotas:</label>
-     	   <span><%= request.getAttribute("cantidadCuotas") %></span>
-		</div>
-
+    
+        <div class="form-group">
+            <label for="plazo">Plazo de pago:</label>
+            <span><%= prestamo.getPlazoMeses() %></span>
+        </div>
+    
+        <div class="form-group">
+            <label for="cuotas">Cantidad de Cuotas:</label>
+            <span><%= prestamo.getCantidadCuotas() %></span>
+        </div>
+    
         <div class="form-group">
             <label for="cuenta">Numero de cuenta de Depósito:</label>
-     	   <span><%= request.getAttribute("numeroCuenta") %></span>
+            <span><%= prestamo.getCuenta().getNumeroCuenta() %></span>
         </div>
-        
+    
         <div class="form-group">
             <label for="monto">Total a pagar:</label>
-     	   <span>$ <%= request.getAttribute("importeTotal") %></span>
+            <span><%= Formato.formatoMonetario(importeTotal) %></span>
         </div>
-        
+    
         <div class="form-group">
             <label for="monto">Monto por cuota:</label>
-        <span>$ <%= request.getAttribute("importeMensual") %></span>
+            <span><%= Formato.formatoMonetario(prestamo.getImporteMensual()) %></span>
         </div>
 
-        <!-- Botón principal: Solicitar Préstamo -->
+        <!-- Botón Solicitar Préstamo -->
         <div class="form-buttons">
            <button type="submit" class="button button-green">Solicitar Préstamo</button>       
         </div>
     </form>
 
-    <!-- Botón secundario: Regresar -->
+    <% } %>
+
+    <!-- Botón Regresar  -->
     <div class="volver-menu">
         <form method="get" action="/TPINT_GRUPO_10_LAB4/ServletPedirPrestamo">
            <button type="submit" class="button button-blue">Volver</button>
