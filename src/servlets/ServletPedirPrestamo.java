@@ -52,31 +52,50 @@ public class ServletPedirPrestamo extends HttpServlet {
 	    Cliente cliente = (Cliente) request.getSession().getAttribute("cliente");
 
 	    int idCuenta = Integer.parseInt(request.getParameter("cuenta"));
-	    Cuenta cuenta = new Cuenta();
-	    cuenta.setId(idCuenta);
+	    CuentaNegocio cuentaNegocio = new CuentaNegocioImp();    
+	    Cuenta cuenta = cuentaNegocio.obtenerCuentaPorId(idCuenta);
 
 	    BigDecimal importePedido = new BigDecimal(request.getParameter("monto").replaceAll("[^0-9]", ""));
 	    System.out.println("[DEBUG] importePedido: " + importePedido);
-	    int plazoMeses = Integer.parseInt(request.getParameter("plazo"));
+	    int plazoMeses = Integer.parseInt(request.getParameter("plazo"));    
+	    
 	    int cantidadCuotas = Integer.parseInt(request.getParameter("cuotas"));
 
-	    // Calcular el importe mensual
-	    BigDecimal importeMensual = importePedido.divide(BigDecimal.valueOf(cantidadCuotas), 2, RoundingMode.HALF_UP);
-	    Prestamo prestamo = new Prestamo(cliente, cuenta, importePedido, plazoMeses, importeMensual, cantidadCuotas);
-
-	    PrestamoNegocio prestamoNegocio = new PrestamoNegocioImp();
-	    boolean resultadoAltaPrestamo = prestamoNegocio.altaPrestamo(prestamo);
 	    
-	    if (resultadoAltaPrestamo) {
-            Mensaje.exito(request, "Solicitud enviada con exito.");
+	    BigDecimal tasaInteres = BigDecimal.ZERO;
 
-            
-        } else {
-            Mensaje.error(request, "No se pudo realizar la solicitud.");
+		switch (plazoMeses) {
+		     case 6:
+		         tasaInteres = new BigDecimal("0.05");
+		         break;
+		     case 12:
+		         tasaInteres = new BigDecimal("0.10");
+		         break;
+		     case 18:
+		         tasaInteres = new BigDecimal("0.15");
+		         break;
+		     case 24:
+		         tasaInteres = new BigDecimal("0.20");
+		         break;
+		}
+	
+		BigDecimal importeTotal = importePedido.add(importePedido.multiply(tasaInteres));
+		BigDecimal importeMensual = importeTotal.divide(BigDecimal.valueOf(cantidadCuotas), 2, RoundingMode.HALF_UP);
+	
+		Prestamo prestamo = new Prestamo(cliente, cuenta, importePedido, plazoMeses, importeMensual, cantidadCuotas);
+	
+		System.out.println("[DEBUG] doPost pedirPrestamo");
+        System.out.println("[DEBUG] importe pedido: " + prestamo.getImportePedido());
+        System.out.println("[DEBUG] importe total: " + importeTotal);
+		
+		
+		request.setAttribute("importeTotal", importeTotal);
+		request.getSession().setAttribute("prestamo", prestamo);
+	    response.sendRedirect("ServletConfirmarPrestamo");		
+	    
 
-        }
 
-	    doGet(request, response);
+		 
 	}
 	
 

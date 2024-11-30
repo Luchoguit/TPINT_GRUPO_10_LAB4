@@ -88,7 +88,7 @@
 
         <!-- Botón principal: Solicitar Préstamo -->
         <div class="form-buttons">
-           <button type="submit" class="button button-green">Solicitar Préstamo</button>       
+           <button type="submit" class="button button-green">Calcular Préstamo</button>       
         </div>
     </form>
 
