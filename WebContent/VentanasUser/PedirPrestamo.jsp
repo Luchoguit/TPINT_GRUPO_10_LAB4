@@ -45,25 +45,22 @@
             <input type="text" id="monto" name="monto" required oninput="formatCurrency(this)">
         </div>
 
-        <div class="form-group">
-            <label for="cuotas">Cantidad de Cuotas:</label>
-            <select id="cuotas" name="cuotas" required>
+		<div class="form-group">
+		    <label for="plazo">Plazo de pago:</label>
+		    <select id="plazo" name="plazo" required onchange="actualizarCuotas()">
+		        <option value="6">6 meses</option>
+		        <option value="12">12 meses</option>
+		        <option value="18">18 meses</option>
+		        <option value="24">24 meses</option>
+		    </select>
+		</div>
+		
+		<div class="form-group">
+		    <label for="cuotas">Cantidad de Cuotas:</label>
+		    <select id="cuotas" name="cuotas" required>
                 <option value="6">6 Cuotas</option>
-                <option value="12">12 Cuotas</option>
-                <option value="18">18 Cuotas</option>
-                <option value="24">24 Cuotas</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="plazo">Plazo de pago:</label>
-            <select id="plazo" name="plazo" required>
-                <option value="6">6 meses</option>
-                <option value="12">12 meses</option>
-                <option value="18">18 meses</option>
-                <option value="24">24 meses</option>
-            </select>
-        </div>
+		    </select>
+		</div>
 
         <div class="form-group">
             <label for="cuenta">Cuenta de Depósito:</label>
@@ -103,5 +100,36 @@
     </div>
 </div>
 
+<script>
+    function formatCurrency(input) {
+        let value = input.value.replace(/\D/g, '');
+        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        input.value = '$ ' + value;
+    }
+
+    function actualizarCuotas() {
+        const cuotasSelect = document.getElementById("cuotas");
+        const plazo = parseInt(document.getElementById("plazo").value);
+
+        // Opciones de cuotas posibles según el plazo
+        const opcionesCuotas = {
+            6: [6],
+            12: [6, 12],
+            18: [6, 12, 18],
+            24: [6, 12, 18, 24]
+        };
+
+        // Limpiar las opciones actuales
+        cuotasSelect.innerHTML = "";
+
+        // Agregar las nuevas opciones de cuotas
+        opcionesCuotas[plazo].forEach(cuota => {
+            const option = document.createElement("option");
+            option.value = cuota;
+            option.text = cuota + " Cuotas";
+            cuotasSelect.add(option);
+        });
+    }
+</script>
 </body>
 </html>
