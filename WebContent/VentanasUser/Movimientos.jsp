@@ -71,10 +71,6 @@
     }
     
     
-    .no-ultima-pagina
-    {
-    	display: none
-    }
     
 </style>
 
@@ -143,17 +139,28 @@
 		            </tr>
 		        </thead>
 				<tbody>
-					<tr>
+					
 		<%
 			List<BigDecimal> saldosParciales = (List<BigDecimal>) request.getAttribute("listaSaldosParciales");
 			int iteracion = 0;
 			int tipo_movimiento_alta_prestamo = 2;
-
+			
+			int tipo_movimiento_alta_cuenta = 1;
+			boolean depositoInicial = false;
+			
 			for (Movimiento movimiento : movimientos) {
 				boolean salida = false;
-				if (!(movimiento.getCuentaDestino().getId() == cuentaSeleccionada.getId() || 
-				      movimiento.getTipoMovimiento().getId() == tipo_movimiento_alta_prestamo)) {
-					salida = true;
+				
+				if(movimiento.getTipoMovimiento().getId() == tipo_movimiento_alta_cuenta)
+				{
+					depositoInicial = true;
+				}
+				else
+				{
+					if (!(movimiento.getCuentaDestino().getId() == cuentaSeleccionada.getId() || 
+					      movimiento.getTipoMovimiento().getId() == tipo_movimiento_alta_prestamo)) {
+						salida = true;
+					}
 				}
 				BigDecimal saldoIteracion = saldosParciales.get(iteracion);
 		%>
@@ -161,24 +168,23 @@
 		                <td><%= Formato.formatoFechaHora(movimiento.getFechaHora()) %></td>
 		                <td><%= movimiento.getDetalle() %></td>
 		                <td>
-		                    <% if (salida) { %>
-		                        <%= Formato.formatoMonetario(movimiento.getImporte().negate()) %>
-		                    <% } else { %>
+		                    <% if (depositoInicial) { %>
 		                        <%= Formato.formatoMonetario(movimiento.getImporte()) %>
-		                    <% } %>
+		                    <% depositoInicial = false;
+		                    } else if(salida) { %>
+		                        <%= Formato.formatoMonetario(movimiento.getImporte().negate()) %>
+		                    <% }else{ %>
+		                    	<%= Formato.formatoMonetario(movimiento.getImporte()) %>
+		                    <%} %>
 		                </td>
 		                <td><%= Formato.formatoMonetario(saldoIteracion) %></td>
 		            </tr>
+
 		<%
 			iteracion++;
-			} %>
-					<tr <%if(!(paginaActual == totalPaginas)){ %> class="no-ultima-pagina" <%} %>>
-		                <td><%= Formato.formatoFechaHora(fechaCreacion) %></td>
-		                <td>Saldo Inicial</td>
-		                <td></td>
-		                <td><%= Formato.formatoMonetario(new BigDecimal("10000.00")) %></td>
-		            </tr>
-        		</tbody>
+			} 
+			%>
+				</tbody>
     		</table>
     <% 
 		} else { %>

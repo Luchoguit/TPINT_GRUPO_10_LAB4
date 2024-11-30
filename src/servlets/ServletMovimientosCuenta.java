@@ -112,22 +112,31 @@ public class ServletMovimientosCuenta extends HttpServlet {
 	
 	private List<BigDecimal> actualizarSaldosInvertidos(List<Movimiento> movimientos, Cuenta cuentaSeleccionada)
 	{
-		BigDecimal acumulador = new BigDecimal("10000");
+		BigDecimal acumulador = BigDecimal.ZERO;
 		int tipo_movimiento_alta_prestamo = 2;
+		int tipo_movimiento_alta_cuenta = 1;
 
 		
 		List<BigDecimal> saldosParciales = new ArrayList<>();
 		
 		for(Movimiento m : movimientos)
 		{
-			if(m.getCuentaDestino().getId()== cuentaSeleccionada.getId() || m.getTipoMovimiento().getId() == tipo_movimiento_alta_prestamo)
+			if(tipo_movimiento_alta_cuenta == 1)
 			{
 				acumulador = acumulador.add(m.getImporte());
 			}
-			else
+			else 
 			{
-				acumulador = acumulador.subtract(m.getImporte());
+				if(m.getCuentaDestino().getId()== cuentaSeleccionada.getId() || m.getTipoMovimiento().getId() == tipo_movimiento_alta_prestamo)
+				{
+					acumulador = acumulador.add(m.getImporte());
+				}
+				else
+				{
+					acumulador = acumulador.subtract(m.getImporte());
+				}
 			}
+
 			
 			saldosParciales.add(acumulador);
 		}
