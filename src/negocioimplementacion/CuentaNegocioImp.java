@@ -84,6 +84,9 @@ public class CuentaNegocioImp implements CuentaNegocio{
 		return cuentaDao.listarMovimientosCuenta(cuenta);
 	};
 	
-	
+	@Override
+	public boolean verificarCuentaAsociadaAPrestamo(int idCuenta){
+		return cuentaDao.verificarCuentaAsociadaAPrestamo(idCuenta);
+	};
 
 }

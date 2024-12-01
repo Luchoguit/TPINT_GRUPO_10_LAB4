@@ -691,4 +691,39 @@ public class CuentaDaoImp implements CuentaDao {
 	    return listaMovimientos;
 		
 	}
+	
+	@Override
+	public boolean verificarCuentaAsociadaAPrestamo(int idCuenta) {
+	    Connection conn = null;
+	    PreparedStatement stmt = null;
+	    ResultSet rs = null;
+
+	    String sql = "SELECT VerificarCuentaAsociadaAPrestamo(?) AS cuentaAsociada"; 
+	    
+	    try {
+	        conn = Conexion.getConexion().getSQLConexion(); 
+	        stmt = conn.prepareStatement(sql);
+	        stmt.setInt(1, idCuenta);  
+
+	        rs = stmt.executeQuery();
+
+	        if (rs.next()) {
+	            return rs.getInt("cuentaAsociada") == 1; 
+	        }
+	        return false;  
+	    } catch (SQLException e) {
+	        e.printStackTrace(); 
+	        return false;
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();  
+	            if (stmt != null) stmt.close();  
+	            Conexion.getConexion().cerrarConexion();  
+	        } catch (SQLException e) {
+	            e.printStackTrace();  
+	        }
+	    }
+	}
+	
+	
 }

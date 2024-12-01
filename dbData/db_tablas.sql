@@ -289,6 +289,29 @@ END //
 DELIMITER ;
 
 
+
+DELIMITER //
+
+CREATE FUNCTION VerificarCuentaAsociadaAPrestamo(cuenta_id INT)
+RETURNS BOOLEAN
+DETERMINISTIC
+BEGIN
+    DECLARE cuentaAsociada BOOLEAN DEFAULT FALSE;
+
+    -- Verificar si la cuenta está asociada a algún préstamo activo
+    SELECT COUNT(*)
+    INTO cuentaAsociada
+    FROM prestamos
+    WHERE id_cuenta = cuenta_id
+      AND estado = TRUE;
+
+    -- Retorna TRUE si la cuenta está asociada a un préstamo activo, FALSE sino.
+    RETURN (cuentaAsociada > 0);
+END //
+
+DELIMITER 
+
+
 DELIMITER //
 
 CREATE TRIGGER movimientoAltaCuenta

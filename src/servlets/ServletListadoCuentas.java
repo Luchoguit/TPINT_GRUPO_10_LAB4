@@ -105,6 +105,17 @@ public class ServletListadoCuentas extends HttpServlet {
         System.out.println("[DEBUG] id cuenta: " + idCuenta);
 
         CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
+        
+        boolean poseeprestamos = cuentaNegocio.verificarCuentaAsociadaAPrestamo(idCuenta);
+       
+        if(poseeprestamos)
+        {
+        	
+        	Mensaje.error(request, "La cuenta no puede ser deshabilitada ya que posee préstamos activos asociados.");
+        	
+        }
+        
+        else {
         boolean resultado = cuentaNegocio.eliminarCuenta(idCuenta);
         if (resultado) {
         Mensaje.exito(request, "Cuenta deshabilitada exitosamente.");
@@ -114,7 +125,8 @@ public class ServletListadoCuentas extends HttpServlet {
             Mensaje.error(request, "No se pudo deshabilitar la cuenta.");
         }
         System.out.println("[DEBUG] resultado: " + resultado);
-
+        }
+        
         doGet(request, response);
     }
       
