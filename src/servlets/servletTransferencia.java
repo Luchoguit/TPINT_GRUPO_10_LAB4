@@ -39,10 +39,11 @@ public class servletTransferencia extends HttpServlet {
             return; 
         }
 
-        CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
+        Cliente clienteSesion = (Cliente) request.getSession().getAttribute("cliente");
         Usuario usuarioSesion = (Usuario) request.getSession().getAttribute("usuario");
         Cuenta cuentaSesion = (Cuenta) request.getSession().getAttribute("cuenta");
         
+        CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
 
         // Lista de cuentas propias
         List<Cuenta> cuentasPropias = cuentaNegocio.listarCuentas(usuarioSesion);
@@ -61,6 +62,7 @@ public class servletTransferencia extends HttpServlet {
             }
         }
 
+        request.setAttribute("clienteSesion", clienteSesion);
         request.setAttribute("cuentasConClientes", cuentasConClientes);
         request.setAttribute("cuentasPropias", cuentasPropias);
 
@@ -122,73 +124,8 @@ public class servletTransferencia extends HttpServlet {
 
 		}
 		
-		
-		if(request.getParameter("btnTransferir") != null)
-		{
-			boolean error = false;
-			
-			CuentaNegocioImp negocioImp = new CuentaNegocioImp();
-			
-			Cuenta cuentaOrigen = (Cuenta) request.getSession().getAttribute("cuenta");
-			
-			TipoMovimiento tipoMovimiento = new TipoMovimiento(4, "Transferencia");
-			
-			String detalle = request.getParameter("concepto");
-			LocalDateTime fechaHora = LocalDateTime.now();
-			BigDecimal importe = new BigDecimal(request.getParameter("monto").replaceAll("[^0-9]", ""));
-			
-			//validacion transferencia = 0
-			if (importe.compareTo(BigDecimal.ZERO) == 0 || importe.compareTo(BigDecimal.ZERO) < 0) {
-				System.out.println("[DEBUG] transferencia invalida");
-	            Mensaje.error(request, "Valor de transferencia invalido.");	            
+	    doGet(request, response);
 
-				request.setAttribute("ValorInvalido", "error");
-				error = true;
-			}
-			
-			//validacion transferencia numero invalido
-			String importeStr = request.getParameter("monto").toString();
-			if (importeStr.startsWith("0")  || importeStr.startsWith("0.") ) {
-				System.out.println("[DEBUG] transferencia invalida");
-	            Mensaje.error(request, "Valor de transferencia invalido.");	            
-				request.setAttribute("ValorInvalido", "error");
-				error = true;
-			}
-			
-			
-			
-			if (error == false) {
-				String cbuDestino = (String) request.getSession().getAttribute("cbuDestino");
-				Cuenta cuentaDestino = negocioImp.obtenerCuentaPorCBU(cbuDestino);
-				
-				Movimiento movimiento = new Movimiento(1, cuentaOrigen, tipoMovimiento, detalle, fechaHora, importe, cuentaDestino);
-				
-				BigDecimal saldoActualizado = movimiento.getCuentaOrigen().getSaldo().subtract(movimiento.getImporte());
-				
-				if(saldoActualizado.floatValue() >= 0.00)
-				{
-					if(negocioImp.realizarTransferencia(movimiento))
-					{	
-			            Mensaje.exito(request,  "Transferencia realizada exitosamente");	            
-
-					}
-					else
-					{
-			            Mensaje.error(request,  "Ha ocurrido un error al transferir");	            
-					}
-				}
-				else 
-				{
-		            Mensaje.error(request, "Saldo insuficiente");	            
-
-				}
-			}
-			
-			
-		}
-		
-		RequestDispatcher rd = request.getRequestDispatcher("VentanasUser/Transferencias.jsp");
-		rd.forward(request, response);
 	}
 	
 

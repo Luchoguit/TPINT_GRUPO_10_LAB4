@@ -130,20 +130,75 @@
 		<% } %>
 
 <div>
-<div class="container" style="margin-left: 100px">
-
-	
-
-
+<h3>Cuentas Propias</h3>
+<table border="1">
+    <tr>
+        <th>Cliente</th>
+        <th>Número de Cuenta</th>
+        <th>CBU</th>
+		<th>Transferir</th>
+    </tr>
+    <% 
+    List<Cuenta> cuentasPropias = (List<Cuenta>) request.getAttribute("cuentasPropias");
+    Cliente clienteActual = (Cliente) request.getAttribute("clienteSesion");
+    for (Cuenta cuentaPropia : cuentasPropias) {
+    %>
+        <tr>
+            <td><%= clienteActual.getNombre() + " " + clienteActual.getApellido() %></td>
+            <td><%= cuentaPropia.getNumeroCuenta() %></td>
+            <td><%= cuentaPropia.getCbu() %></td>
+            <td>
+					<form method="get" action="/TPINT_GRUPO_10_LAB4/ServletConfirmarTransferencia">
+			        <input type="hidden" name="CBU" value="<%= cuentaPropia.getCbu()%>">
+		       		<input type="submit" value="Transferir" class="btn-succes">
+		          	</form>            
+		    </td>
+        </tr>
+    <% } %>
+</table>
+		
+<h3>Destinatarios recientes:</h3>
+<table border="1">
+    <tr>
+        <th>Cliente</th>
+        <th>Número de Cuenta</th>
+        <th>CBU</th>
+		<th>Transferir</th>
+    </tr>
+    <% 
+    Map<Cuenta, Cliente> cuentasConClientes = (Map<Cuenta, Cliente>) request.getAttribute("cuentasConClientes");
+    if (cuentasConClientes != null) {
+        for (Map.Entry<Cuenta, Cliente> entry : cuentasConClientes.entrySet()) {
+            Cuenta c = entry.getKey();
+            Cliente cliente = entry.getValue();
+    %>
+            <tr>
+                <td><%= cliente.getNombre() + " " + cliente.getApellido() %></td>
+                <td><%= c.getNumeroCuenta() %></td>
+                <td><%= c.getCbu() %></td>
+		      	<td>
+					<form method="get" action="/TPINT_GRUPO_10_LAB4/ServletConfirmarTransferencia">
+			        <input type="hidden" name="CBU" value="<%= c.getCbu()%>">
+					<input type="submit" value="Transferir" class="btn-succes">
+		          	</form> 
+             	</td>
+            </tr>
+    <% 
+        } 
+    } 
+    %>
+    
+    </table>       
+    
+        <div class="container">
     <form  method="post" action="/TPINT_GRUPO_10_LAB4/servletTransferencia" style="display: flex; align-items: center; gap: 10px;">
-        <h2 style="text-align: center; margin: 10;">CBU </h2>
+        <h3 style="text-align: center; margin: 10;">Buscar por CBU: </h3>
         <input type="text" name="inputCBU" onkeypress="soloNumeros(event)" placeholder="Ingrese CBU a transferir" style="margin-left: 5px; width: 250px;">
         <input type="submit" name="btnCBU" value="Buscar" style="margin-left: 5px">
     </form>
 </div>
 		
 		<% 
-		
 		boolean mismaCuenta = false;
 		if(request.getParameter("inputCBU") != null)
 		{
@@ -163,65 +218,22 @@
 		}
 
 		%>
-
-		<h3>Seleccionar cuenta propia:</h3>
-		<select name="cuentaPropia">
-		    <option value="">Seleccione una cuenta</option>
-		    <% for(Cuenta c : (List<Cuenta>) request.getAttribute("cuentasPropias")) { %>
-		        <option value="<%= c.getCbu() %>">
-		            <%= c.getCbu() %> - Saldo: <%= Formato.formatoMonetario(c.getSaldo())%>
-		        </option>
-		    <% } %>
-		</select>
 		
-<h3>Destinatarios recientes:</h3>
-<table border="1">
-    <tr>
-        <th>Nombre del Cliente</th>
-        <th>Número de Cuenta</th>
-        <th>CBU</th>
-    </tr>
-    <% 
-    Map<Cuenta, Cliente> cuentasConClientes = (Map<Cuenta, Cliente>) request.getAttribute("cuentasConClientes");
-    if (cuentasConClientes != null) {
-        for (Map.Entry<Cuenta, Cliente> entry : cuentasConClientes.entrySet()) {
-            Cuenta c = entry.getKey();
-            Cliente cliente = entry.getValue();
-    %>
-            <tr>
-                <td><%= cliente.getNombre() + " " + cliente.getApellido() %></td>
-                <td><%= c.getNumeroCuenta() %></td>
-                <td><%= c.getCbu() %></td>
-            </tr>
-    <% 
-        } 
-    } 
-    %>
-</table>
-
-        
+ 
         <!-- Tabla de datos del CBU -->
         <table>
             <thead>
                 <tr>
-                    <th>Nombre Usuario</th>
-                    <th>ID Usuario</th>
-                    <th>ID Cuenta</th>
+                    <th>Cliente</th>
+                    <th>Numero de Cuenta</th>
                     <th>CBU</th>
                     <th>Transferir</th>
                 </tr>
             </thead>
             <tbody>
-					
-	
-
-					
                 	<tr>
 					    <td><%= cuenta != null && cuentaDestino.getUsuario() != null && cuentaDestino.getUsuario().getNombreUsuario() != null && mismaCuenta == false
 					             ? cuentaDestino.getUsuario().getNombreUsuario() 
-					             : "--" %></td>
-					    <td><%= cuenta != null && cuentaDestino.getUsuario() != null && mismaCuenta == false
-					             ? cuentaDestino.getUsuario().getCliente().getId() 
 					             : "--" %></td>
 					    <td><%= cuenta != null && mismaCuenta == false
 					             ? cuentaDestino.getId() 
@@ -229,29 +241,18 @@
 					    <td><%= cuentaDestino != null && cuentaDestino.getCbu() != null && mismaCuenta == false
 					             ? cuentaDestino.getCbu() 
 					             : "--" %></td>
-					      	<td><form onsubmit="mostrarFormulario(event)">
-			                    <input type="hidden" name="CBU" value="<%= cuentaDestino != null  ? cuentaDestino.getCbu() : 0%>">
-			                    <% if (cuentaDestino != null && cuentaDestino.getCbu() != null && mismaCuenta == false) { %>
-        							<button type="button" onclick="mostrarFormularioTransferencia()">Transferencia</button>
-    							<% } %>
-		                		</form>
-		                	</td>
+					   	<td>
+						   	<form method="get" action="/TPINT_GRUPO_10_LAB4/ServletConfirmarTransferencia">
+					            <input type="hidden" name="CBU" value="<%= cuentaDestino != null  ? cuentaDestino.getCbu() : 0%>">
+					            <% if (cuentaDestino != null && cuentaDestino.getCbu() != null && mismaCuenta == false) { %>
+		        				<input type="submit" value="Transferir" class="btn-succes">
+		    					<% } %>
+			                </form>
+		               	</td>
            				 
 					</tr>
             </tbody>
-        </table>
- 
-  <form  method="post" action="/TPINT_GRUPO_10_LAB4/servletTransferencia" style="display: flex; align-items: center; gap: 10px; ">
-	   <div id="formularioMonto" style="display: none; margin-top: 15px; margin-left: 100px">
-        <label for="monto">Monto $</label>
-        <input type="text" id="monto" name="monto" placeholder="Ingrese el monto" required oninput="formatCurrency(this)">
-        <label>Concepto </label>
-        <input type="text" id="concepto" name="concepto" placeholder="Opcional">
-        <input type="hidden" name="CBUDestino" value="<%= cuenta != null ? cuentaDestino.getCbu() : 0 %>">
-        <br><br>
-        <input type="submit" name="btnTransferir" value="Aceptar" onclick="confirmarTransferencia()">
-    </div>
-	</form>
+        </table>    
 	
 	 <div class="volver-menu">
     	 <!-- Enlace para volver al menu -->
@@ -262,39 +263,5 @@
 	
 	
 </div>
-<script>
-    function mostrarFormularioTransferencia() {
-        event.preventDefault(); // Evita el envío del formulario
-        document.getElementById("formularioMonto").style.display = "block"; // Muestra el formulario de monto
-    }
-
-    function aceptarTransferencia() {
-        const monto = document.getElementById("monto").value;
-        alert("Transferencia aceptada por $" + monto);
-        
-    }
-    
-    
-	function soloNumeros(event) {
-	    var key = event.keyCode || event.which;
-	    var tecla = String.fromCharCode(key);
-	    var regex = /^[0-9]$/;  
-	    if (!regex.test(tecla)) {
-	        event.preventDefault(); 
-	    }
-	}
-    
-	 function confirmarTransferencia() {
-	        const monto = document.getElementById('monto').value;
-	        if (!monto || parseFloat(monto) <= 0) {
-	            alert('Por favor, ingrese un monto válido.');
-	            return false; // Evita el envío si el monto no es válido
-	        }
-	        return confirm('¿Está seguro de que desea realizar esta transferencia?');
-	    }
-	
-	
-</script>
-
 </body>
 </html>
