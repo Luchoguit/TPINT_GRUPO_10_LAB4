@@ -81,10 +81,19 @@ public class ServletConfirmarTransferencia extends HttpServlet {
 			
 			
 			if (error == false) {
-				String cbuDestino = (String) request.getSession().getAttribute("cbuDestino");
+				String cbuDestino = (String) request.getParameter("CBUDestino");
+				System.out.println("[DEBUG] cbu destino" + cbuDestino);
+				
 				Cuenta cuentaDestino = negocioImp.obtenerCuentaPorCBU(cbuDestino);
 				
-				Movimiento movimiento = new Movimiento(1, cuentaOrigen, tipoMovimiento, detalle, fechaHora, importe, cuentaDestino);
+				Movimiento movimiento = new Movimiento(cuentaOrigen, tipoMovimiento, detalle, fechaHora, importe, cuentaDestino);
+				
+				
+				System.out.println("[DEBUG] Mov.cuentaOrigen" + cuentaOrigen.getCbu());
+				System.out.println("[DEBUG] Mov.Importe" + importe);
+				System.out.println("[DEBUG] Mov.cuentaDestino" + cuentaDestino.getCbu());
+				System.out.println("[DEBUG] Mov.cuentaDestino.saldo" + cuentaDestino.getSaldo());
+
 				
 				BigDecimal saldoActualizado = movimiento.getCuentaOrigen().getSaldo().subtract(movimiento.getImporte());
 				

@@ -26,6 +26,16 @@ public class Movimiento {
         this.importe = importe;
         this.cuentaDestino = cuentaDestino;
     }
+	
+	public Movimiento(Cuenta cuentaOrigen, TipoMovimiento tipoMovimiento, String detalle, 
+            LocalDateTime fechaHora, BigDecimal importe, Cuenta cuentaDestino) {
+	this.cuentaOrigen = cuentaOrigen;
+	this.tipoMovimiento = tipoMovimiento;
+	this.detalle = detalle;
+	this.fechaHora = fechaHora;
+	this.importe = importe;
+	this.cuentaDestino = cuentaDestino;
+	}
 
     public int getId() {
         return id;
