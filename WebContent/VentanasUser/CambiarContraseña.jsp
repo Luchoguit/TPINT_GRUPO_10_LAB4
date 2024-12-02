@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Alta de Usuario</title>
+    <title>Cambiar contraseña</title>
     
     <!-- Importar los estilos de botones -->
     <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloMensajes.css">
@@ -16,40 +16,38 @@
 <body>
 
 <div class="form-container">
-    <h1>Modificar Usuario</h1>
+    <h1>Cambiar contraseña</h1>
 
     <!-- Contenedor de mensajes -->
     <% 
-        String mensaje = (String) request.getAttribute("mensaje");
-        if (mensaje != null) {
-            String tipoMensaje = "error";
-            if (mensaje.contains("exitosamente")) {
-                tipoMensaje = "success";
-            }
+    String mensaje = (String) request.getAttribute("mensaje");
+    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
+    if (mensaje != null && tipoMensaje != null) {
     %>
+        <!-- Mostrar el mensaje con el estilo adecuado -->
         <div class="message-container <%= tipoMensaje %>">
             <%= mensaje %>
         </div>
     <% } %>
 
-
-<%
-	Usuario user = (Usuario) request.getAttribute("user");
-    if (user != null) {
-%>
-     <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletModificarUsuario">
-        <input id="id" name="id" type="hidden" value="<%= user.getCliente() != null ? user.getCliente().getId() : ""  %>">
-                
-        <!-- Contraseña -->
+     <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletCambiarContraseña">
+      
+        <!-- Contraseña actual -->
         <div class="form-group">
-            <label for="contrasena">Contraseña</label>
-            <input id="contrasena" type="password"  class="contra" name="contrasena" maxlength="50" required value="<%= user.getContraseña() %>">
+            <label for="contrasenaActual">Ingrese su contraseña actual</label>
+            <input id="contrasenaActual" type="password"  class="contra" name="contrasenaActual" maxlength="50">
+        </div>     
+                
+        <!-- Contraseña nueva -->
+        <div class="form-group">
+            <label for="contrasenaNueva">Ingrese su nueva contraseña</label>
+            <input id="contrasenaNueva" type="password"  class="contra" name="contrasenaNueva" maxlength="50">
         </div>
 
         <!-- Repetir Contraseña -->
         <div class="form-group">
-            <label for="contrasena2">Repetir Contraseña</label>
-            <input id="contrasena2" type="password"  class="contra" name="contrasena2" maxlength="50" required value="<%= user.getContraseña() %>">
+            <label for="contrasenaNueva2">Repetir nueva contraseña</label>
+            <input id="contrasenaNueva2" type="password"  class="contra" name="contrasenaNueva2" maxlength="50">
         </div>
 		<a href="#" id="mostrar-contra" onclick="mostrarContra()">
 		        Mostrar contraseña
@@ -64,11 +62,6 @@
     <a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp" class="volver-menu">
         <input type="button" value="Volver al Menu" class="button button-blue"> 
     </a>
-<%
-    } else {
-        out.println("<p>No hay un usuario en sesión. Por favor, inicie sesión nuevamente.</p>");
-    }
-%>
 
 </div>
 
@@ -76,16 +69,20 @@
 <script>
 
 function mostrarContra() {
-    const passwordField = document.getElementById("contrasena");
-    const passwordField2 = document.getElementById("contrasena2");
+    const passwordField1 = document.getElementById("contrasenaActual");
+    const passwordField2 = document.getElementById("contrasenaNueva");
+    const passwordField3 = document.getElementById("contrasenaNueva2");
     const toggleLink = document.getElementById("mostrar-contra");
-    if (passwordField.type === "password") {
-        passwordField.type = "text";
+    
+    if (passwordField1.type === "password") {
+        passwordField1.type = "text";
         passwordField2.type = "text";
+        passwordField3.type = "text";
         toggleLink.textContent = "Ocultar contraseña";
     } else {
-        passwordField.type = "password";
+        passwordField1.type = "password";
         passwordField2.type = "password";
+        passwordField3.type = "password";
         toggleLink.textContent = "Mostrar contraseña";
     }
 }

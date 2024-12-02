@@ -139,7 +139,7 @@
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletVerCuentas">Seleccionar cuentas <i class="fa fa-list-alt"></i></a></li>
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletSolicitarAltaCuenta">Crear nueva cuenta <i class="fa fa-plus-circle"></i></a></li>
        	<li><a href="/TPINT_GRUPO_10_LAB4/ServletVerDatos">Ver datos personales <i class="fa fa-user"></i></a></li>
-       	<li><a href="/TPINT_GRUPO_10_LAB4/ServletModificarUsuario">Modificar Usuario <i class="fa fa-hand-holding-usd"></i></a></li>
+       	<li><a href="/TPINT_GRUPO_10_LAB4/ServletCambiarContraseña">Cambiar contraseña <i class="fa fa-hand-holding-usd"></i></a></li>
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletCerrarSesion">Cerrar sesión <i class="fa fa-sign-out-alt"></i></a></li>
     </ul>
     <div class="message">

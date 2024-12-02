@@ -12,16 +12,6 @@
 <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloBotones.css">
 <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloMensajes.css">
 <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloFormulario.css">
-    
-<script>
-    function formatCurrency(input) {
-        // Elimina caracteres que no sean dígitos
-        let value = input.value.replace(/\D/g, '');
-        // Agregar punto cada 3 cifras
-        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        input.value = '$ ' + value;
-    }
-</script>
 </head>
 <body onload="actualizarCuotas()">
 
@@ -53,6 +43,11 @@
 		        <option value="18">18 meses</option>
 		        <option value="24">24 meses</option>
 		    </select>
+		</div>
+		
+		<div class="form-group">
+		    <label for="tasa-interes" style="display: inline;">Tasa de interés aplicada:</label>
+		    <span id="tasa-interes" style="font-weight: bold; color: #333;">5%</span>
 		</div>
 		
 		<div class="form-group">
@@ -110,15 +105,29 @@
     function actualizarCuotas() {
         const cuotasSelect = document.getElementById("cuotas");
         const plazo = parseInt(document.getElementById("plazo").value);
+        const tasaInteresDiv = document.getElementById("tasa-interes");
 
-        // Verificar que el plazo sea un número válido y esté presente en las opciones
+        // Mostrar la tasa de interés según el plazo seleccionado
+        const tasasInteres = {
+            6: "5%",
+            12: "10%",
+            18: "15%",
+            24: "20%"
+        };
+
+        if (tasasInteres[plazo]) {
+            tasaInteresDiv.textContent = tasasInteres[plazo];
+        } else {
+            tasaInteresDiv.textContent = "N/A";
+        }
+
+        // Verificar que el plazo sea válido antes de modificar cuotas
         if (!plazo || isNaN(plazo)) {
             cuotasSelect.innerHTML = '<option value="">Debe seleccionar el plazo de pago primero</option>';
             return;
         }
-        
-        
-        // Opciones de cuotas posibles según el plazo
+
+        // Opciones de cuotas según el plazo
         const opcionesCuotas = {
             6: [6],
             12: [6, 12],
@@ -126,13 +135,6 @@
             24: [6, 12, 18, 24]
         };
 
-        // Verificar que el plazo esté en las opciones definidas
-        if (!opcionesCuotas[plazo]) {
-            cuotasSelect.innerHTML = '<option value="">Plazo no válido</option>';
-            return;
-        }
-        
-        
         // Limpiar las opciones actuales
         cuotasSelect.innerHTML = "";
 
@@ -143,10 +145,12 @@
             option.text = cuota + " Cuotas";
             cuotasSelect.add(option);
         });
-        
-        // Seleccionar la primera opción por defecto (si existen opciones de cuotas)
+
+        // Seleccionar la primera opción por defecto (si existen opciones)
         cuotasSelect.selectedIndex = 0;
     }
+    
+    
 </script>
 </body>
 </html>

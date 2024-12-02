@@ -84,14 +84,9 @@ public class ServletPedirPrestamo extends HttpServlet {
 	
 		Prestamo prestamo = new Prestamo(cliente, cuenta, importePedido, plazoMeses, importeMensual, importeTotal, cantidadCuotas);
 	
-		System.out.println("[DEBUG] doPost pedirPrestamo");
-        System.out.println("[DEBUG] importe pedido: " + prestamo.getImportePedido());
-        System.out.println("[DEBUG] importe total: " + importeTotal);
-		
 		
 		request.setAttribute("importeTotal", importeTotal);
 		request.getSession().setAttribute("prestamo", prestamo);
-		request.getSession().setAttribute("tasaInteres", tasaInteres);
 	    response.sendRedirect("ServletConfirmarPrestamo");		
 	    		 
 	}
