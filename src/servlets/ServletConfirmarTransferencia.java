@@ -28,6 +28,7 @@ public class ServletConfirmarTransferencia extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+	if(request.getParameter("CBU") != null) {
 	String cbu = (String) request.getParameter("CBU");
 	
 	CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
@@ -38,7 +39,7 @@ public class ServletConfirmarTransferencia extends HttpServlet {
 	
 	request.setAttribute("cuentaDestino", cuentaDestino);
 	request.setAttribute("clienteDestino", clienteDestino);
-	
+	}
     RequestDispatcher dispatcher = request.getRequestDispatcher("VentanasUser/ConfirmarTransferencia.jsp");
     dispatcher.forward(request, response);
 	}
@@ -79,7 +80,6 @@ public class ServletConfirmarTransferencia extends HttpServlet {
 			}
 			
 			
-			
 			if (error == false) {
 				String cbuDestino = (String) request.getSession().getAttribute("cbuDestino");
 				Cuenta cuentaDestino = negocioImp.obtenerCuentaPorCBU(cbuDestino);
@@ -108,10 +108,7 @@ public class ServletConfirmarTransferencia extends HttpServlet {
 			}
 			
 			
-		}
-		
-		
-		
+		}	
 		
 		doGet(request, response);
 	}

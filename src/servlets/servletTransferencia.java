@@ -49,8 +49,9 @@ public class servletTransferencia extends HttpServlet {
         List<Cuenta> cuentasPropias = cuentaNegocio.listarCuentas(usuarioSesion);
         cuentasPropias.removeIf(c -> c.getCbu().equals(cuentaSesion.getCbu())); // Elimina la cuenta actual
 
-        // Lista de destinatarios frecuentes (implementa este método)
+        // Lista de destinatarios frecuentes
         List<Cuenta> destinatariosFrecuentes = cuentaNegocio.obtenerDestinatariosFrecuentes(cuentaSesion.getId());
+		
         
         ClienteNegocio clienteNegocio = new ClienteNegocioImp();
         Map<Cuenta, Cliente> cuentasConClientes = new HashMap<>();
@@ -59,6 +60,8 @@ public class servletTransferencia extends HttpServlet {
             Cliente cliente = clienteNegocio.obtenerPorId(cuenta.getUsuario().getCliente().getId());
             if (cliente != null) {
                 cuentasConClientes.put(cuenta, cliente);
+            } else {
+                System.out.println("[DEBUG] Cliente nulo para la cuenta con CBU: " + cuenta.getCbu());
             }
         }
 
@@ -76,17 +79,11 @@ public class servletTransferencia extends HttpServlet {
 		if(request.getParameter("btnCBU") != null) {
 			
 			String cbu = request.getParameter("inputCBU");
+			System.out.println("CBU Ingresado: " + cbu);
+			
 			CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
-			Cuenta cuenta = new Cuenta();
-			
 			boolean existeCuentaConCbu = cuentaNegocio.existeCuentaConCbu(cbu); 
-			
-			if(request.getSession().getAttribute("cuenta") != null)
-			{
-				System.out.println("[DEBUG] Llego una cuenta");
-				Cuenta cuentaCliente = (Cuenta) request.getSession().getAttribute("cuenta");
-			}
-			
+						
 			Cuenta cuentaCliente = (Cuenta) request.getSession().getAttribute("cuenta");
 			
 			
@@ -111,17 +108,21 @@ public class servletTransferencia extends HttpServlet {
 				System.out.println("[DEBUG] Son distintos CBU");
 				
 			}
+			
+			request.setAttribute("cbuDestino", cbu);
 
-			cuenta = cuentaNegocio.obtenerCuentaPorCBU(cbu);
 			Cuenta cuentaDestino = cuentaNegocio.obtenerCuentaPorCBU(cbu);
-			request.getSession().setAttribute("cuentaDestino", cuentaDestino);
-			
-			request.getSession().setAttribute("cbuDestino", cbu);
-			
-			if (cuenta != null) {
-				request.setAttribute("Cuenta", cuenta);
+			System.out.println("Numero de cuenta destino: " + cuentaDestino.getNumeroCuenta());			
+			if (cuentaDestino != null) {
+				request.setAttribute("cuentaDestino", cuentaDestino);
+				ClienteNegocio clienteNegocio = new ClienteNegocioImp();
+				Cliente clienteDestino = clienteNegocio.obtenerPorId(cuentaDestino.getUsuario().getCliente().getId());
+				
+				if(cuentaDestino!= null) {
+					request.setAttribute("clienteDestino", clienteDestino);
+				}
 			}
-
+			
 		}
 		
 	    doGet(request, response);

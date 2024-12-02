@@ -93,27 +93,31 @@
         <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloBotones.css">
         <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloTabla.css">
         <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloMensajes.css">
-        <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloPaginacion.css">
 
 <script>
-    function formatCurrency(input) {
-        // Elimina caracteres que no sean dígitos
-        let value = input.value.replace(/\D/g, '');
-        // Agregar punto cada 3 cifras
-        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        input.value = '$ ' + value;
-    }
+  
+	function soloNumeros(event) {
+	    var key = event.keyCode || event.which;
+	    var tecla = String.fromCharCode(key);
+	    var regex = /^[0-9]$/;  
+	    if (!regex.test(tecla)) {
+	        event.preventDefault(); 
+	    }
+	}
 </script>
 
 </head>
 <body>
 
-<%Cuenta cuenta = null;
+<%
+	Cuenta cuentaActual = (Cuenta) request.getSession().getAttribute("cuenta");
 	Cuenta cuentaDestino = null;
-	Usuario user = null;
-	if (request.getAttribute("Cuenta") != null){
-		cuenta = (Cuenta) request.getSession().getAttribute("cuenta");
-		cuentaDestino = (Cuenta) request.getSession().getAttribute("cuentaDestino");
+	if (request.getAttribute("cuentaDestino") != null){
+		cuentaDestino = (Cuenta) request.getAttribute("cuentaDestino");
+	}
+	Cliente clienteDestino = null;
+	if (request.getAttribute("clienteDestino") != null){
+		clienteDestino = (Cliente) request.getAttribute("clienteDestino");
 	}
 %>
 
@@ -169,16 +173,16 @@
     Map<Cuenta, Cliente> cuentasConClientes = (Map<Cuenta, Cliente>) request.getAttribute("cuentasConClientes");
     if (cuentasConClientes != null) {
         for (Map.Entry<Cuenta, Cliente> entry : cuentasConClientes.entrySet()) {
-            Cuenta c = entry.getKey();
-            Cliente cliente = entry.getValue();
+            Cuenta cuentaReciente = entry.getKey();
+            Cliente clienteReciente = entry.getValue();
     %>
             <tr>
-                <td><%= cliente.getNombre() + " " + cliente.getApellido() %></td>
-                <td><%= c.getNumeroCuenta() %></td>
-                <td><%= c.getCbu() %></td>
+                <td><%= clienteReciente.getNombre() + " " + clienteReciente.getApellido() %></td>
+                <td><%= cuentaReciente.getNumeroCuenta() %></td>
+                <td><%= cuentaReciente.getCbu() %></td>
 		      	<td>
 					<form method="get" action="/TPINT_GRUPO_10_LAB4/ServletConfirmarTransferencia">
-			        <input type="hidden" name="CBU" value="<%= c.getCbu()%>">
+			        <input type="hidden" name="CBU" value="<%= cuentaReciente.getCbu()%>">
 					<input type="submit" value="Transferir" class="btn-succes">
 		          	</form> 
              	</td>
@@ -204,9 +208,9 @@
 		{
 			String cbuIngresado = request.getParameter("inputCBU");
 			System.out.println("CBU Ingresado: " + cbuIngresado);
-			System.out.println("CBU de cuenta actual: " + cuenta.getCbu());
+			System.out.println("CBU de cuenta actual: " + cuentaActual.getCbu());
 			
-			if(cbuIngresado.equals(cuenta.getCbu()))
+			if(cbuIngresado.equals(cuentaActual.getCbu()))
 			{
 				System.out.println("Si vez este mensaje son la misma cuenta");
 				mismaCuenta = true;
@@ -232,11 +236,11 @@
             </thead>
             <tbody>
                 	<tr>
-					    <td><%= cuenta != null && cuentaDestino.getUsuario() != null && cuentaDestino.getUsuario().getNombreUsuario() != null && mismaCuenta == false
-					             ? cuentaDestino.getUsuario().getNombreUsuario() 
+					    <td><%= clienteDestino != null && clienteDestino.getNombre() != null && clienteDestino.getApellido() != null && mismaCuenta == false
+					             ? clienteDestino.getNombre() + " " + clienteDestino.getApellido() 
 					             : "--" %></td>
-					    <td><%= cuenta != null && mismaCuenta == false
-					             ? cuentaDestino.getId() 
+					    <td><%= cuentaDestino != null && mismaCuenta == false
+					             ? cuentaDestino.getNumeroCuenta() 
 					             : "--" %></td>
 					    <td><%= cuentaDestino != null && cuentaDestino.getCbu() != null && mismaCuenta == false
 					             ? cuentaDestino.getCbu() 
@@ -245,7 +249,7 @@
 						   	<form method="get" action="/TPINT_GRUPO_10_LAB4/ServletConfirmarTransferencia">
 					            <input type="hidden" name="CBU" value="<%= cuentaDestino != null  ? cuentaDestino.getCbu() : 0%>">
 					            <% if (cuentaDestino != null && cuentaDestino.getCbu() != null && mismaCuenta == false) { %>
-		        				<input type="submit" value="Transferir" class="btn-succes">
+		        				<input type="submit" value="Transferir" class="btn-green">
 		    					<% } %>
 			                </form>
 		               	</td>

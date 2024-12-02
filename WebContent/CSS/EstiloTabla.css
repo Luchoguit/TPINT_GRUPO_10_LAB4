@@ -35,12 +35,6 @@ th {
     gap: 5px;
 }
 
-.volver-menu {
-    display: flex;               
-    justify-content: center;     
-    align-items: center;                     
-}
-
 .message-container {
     padding: 15px;
     margin: 20px 0;

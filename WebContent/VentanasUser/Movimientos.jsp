@@ -57,25 +57,33 @@
         font-size: 24px;
         margin-bottom: 20px;
     }  
-   .back-button {
-        padding: 15px 40px; 
-        background-color: #28a745;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        font-size: 24px; 
-        cursor: pointer;
-    }
-    .back-button:hover {
-        background-color: #218838;
-    }
-    
+   .volver-menu {
+		    display: flex;               
+		    justify-content: center;     
+		    align-items: center;                     
+		}
+        
+     .btn-volver {
+		    background-color: #007bff;   
+		    color: white;                
+		    padding: 10px 20px;          
+		    border: none;                
+		    border-radius: 5px;          
+		    font-size: 16px;             
+		    cursor: pointer;            
+		    transition: background-color 0.3s ease;  
+		}
+		
+		.btn-volver:hover {
+		    background-color: #0056b3;   
+		 }
     
     
 </style>
 
         <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloMensajes.css">
         <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloPaginacion.css">
+        <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloBotones.css">
 
 </head>
 <body>
@@ -209,13 +217,13 @@
         <a href="?page=<%= paginaActual + 1 %>" class="pagination-link">Siguiente &raquo;</a>
     <% } %>
 </div>
-	
-	
-	
-    <div class="button-container">
-        <input type="button" value="Volver" class="back-button" onclick="window.history.back()">
-    </div>
-</div>
 
+	 <div class="volver-menu">
+		<a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexCuenta.jsp" class="volver-menu">
+			<input type="button" value="Volver a cuenta" class="btn-volver">
+		</a>
+     </div>
+
+</div>     
 </body>
 </html>

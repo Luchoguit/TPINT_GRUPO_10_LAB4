@@ -785,6 +785,8 @@ public class CuentaDaoImp implements CuentaDao {
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
+	    } finally {
+            Conexion.getConexion().cerrarConexion();  
 	    }
 
 	    return destinatariosFrecuentes;

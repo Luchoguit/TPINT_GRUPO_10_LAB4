@@ -499,7 +499,8 @@ public class ClienteDaoImp implements ClienteDao {
 
 	    try {
 	        Connection con = Conexion.getConexion().getSQLConexion();
-	        System.out.println("[DEBUG] Conexion a la base de datos establecida para obtener cliente por DNI");
+	        System.out.println("[DEBUG] Conexion a la base de datos establecida para obtener cliente por ID");
+	        System.out.println("[DEBUG] ID Cliente: " + id);
 
 	        PreparedStatement statement = con.prepareStatement(qryObtenerClientePorId);
 	        statement.setInt(1, id); // Asignar el DNI al parametro de la consulta
