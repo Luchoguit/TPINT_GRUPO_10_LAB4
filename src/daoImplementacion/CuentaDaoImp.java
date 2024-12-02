@@ -22,6 +22,8 @@ import entidad.Provincia;
 import entidad.TipoCuenta;
 import entidad.TipoMovimiento;
 import entidad.Usuario;
+import negocio.CuentaNegocio;
+import negocioimplementacion.CuentaNegocioImp;
 
 public class CuentaDaoImp implements CuentaDao {
 	
@@ -725,5 +727,69 @@ public class CuentaDaoImp implements CuentaDao {
 	    }
 	}
 	
+	private static final String qryDestinatariosFrecuentes = 
+		    "SELECT C.*, TC.descripcion, U.*, COUNT(M.id_cuentaDestino) AS frecuencia " +
+		    "FROM movimientos M " +
+		    "JOIN cuentas C ON C.id = M.id_cuentaDestino " +
+		    "JOIN tipos_de_cuentas TC ON TC.id = C.id_tipoCuenta " +
+		    "JOIN usuarios U ON U.id = C.id_usuario " +
+		    "WHERE M.id_cuenta = ? AND M.id_cuentaDestino IS NOT NULL " +
+		    "GROUP BY M.id_cuentaDestino " +
+		    "ORDER BY frecuencia DESC " +
+		    "LIMIT 3";
+
+
+	@Override
+	public List<Cuenta> obtenerDestinatariosFrecuentes(int idCuenta) {
+	    List<Cuenta> destinatariosFrecuentes = new ArrayList<>();
+
+	    try (Connection con = Conexion.getConexion().getSQLConexion();
+	         PreparedStatement statement = con.prepareStatement(qryDestinatariosFrecuentes)) {
+	        
+	        statement.setInt(1, idCuenta);
+
+	        try (ResultSet resultSet = statement.executeQuery()) {
+	            while (resultSet.next()) {
+	                Cuenta cuenta = new Cuenta();
+	                cuenta.setId(resultSet.getInt("C.id"));
+	                cuenta.setNumeroCuenta(resultSet.getString("C.numero_cuenta"));
+	                
+	                LocalDateTime fechaCreacion = resultSet.getTimestamp("C.fecha_creacion").toLocalDateTime();
+	                cuenta.setFechaCreacion(fechaCreacion);
+	                cuenta.setCbu(resultSet.getString("C.cbu"));
+	                cuenta.setSaldo(resultSet.getBigDecimal("C.saldo"));
+	                cuenta.setEstado(resultSet.getBoolean("C.estado"));
+
+	                TipoCuenta tipoCuenta = new TipoCuenta();
+	                tipoCuenta.setId(resultSet.getInt("C.id_tipoCuenta"));
+	                tipoCuenta.setDescripcion(resultSet.getString("TC.descripcion"));
+	                cuenta.setTipoCuenta(tipoCuenta);
+
+	                Cliente cliente = new Cliente();
+	                cliente.setId(resultSet.getInt("U.id"));
+
+	                Usuario usuario = new Usuario();
+	                usuario.setCliente(cliente);
+	                usuario.setNombreUsuario(resultSet.getString("U.nombre_usuario"));
+	                usuario.setContraseña(resultSet.getString("U.contrasenia"));
+	                
+	                LocalDateTime fechaCreacionUsuario = resultSet.getTimestamp("U.fecha_creacion").toLocalDateTime();
+	                usuario.setFechaCreacion(fechaCreacionUsuario);
+	                usuario.setTipoUsuario(resultSet.getString("U.tipo"));
+	                usuario.setEstado(resultSet.getBoolean("U.estado"));
+
+	                cuenta.setUsuario(usuario);
+
+	                destinatariosFrecuentes.add(cuenta);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return destinatariosFrecuentes;
+	}
+
+
 	
 }

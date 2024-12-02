@@ -3,6 +3,7 @@ package daoImplementacion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,8 @@ import dao.MovimientoDao;
 import entidad.Cuenta;
 import entidad.Movimiento;
 import entidad.TipoMovimiento;
+import negocio.CuentaNegocio;
+import negocioimplementacion.CuentaNegocioImp;
 
 public class MovimientoDaoImp implements MovimientoDao {
 
@@ -97,6 +100,5 @@ public class MovimientoDaoImp implements MovimientoDao {
 	    }
 	    return lista;
 	}
-
-
+	
 }

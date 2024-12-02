@@ -26,4 +26,7 @@ public interface CuentaNegocio {
 	boolean actualizarSaldo(Movimiento movimiento, boolean salida);
 	List<Movimiento> listarMovimientosCuenta(Cuenta cuenta);
 	boolean verificarCuentaAsociadaAPrestamo(int idCuenta);
+	
+	List<Cuenta> obtenerDestinatariosFrecuentes(int idCuenta);
+
 }

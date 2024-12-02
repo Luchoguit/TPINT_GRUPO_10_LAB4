@@ -26,4 +26,7 @@ public interface CuentaDao {
 	List<Movimiento> listarMovimientosCuenta(Cuenta cuenta);
 	boolean verificarCuentaAsociadaAPrestamo(int idCuenta);
 	
+	List<Cuenta> obtenerDestinatariosFrecuentes(int idCuenta);
+
+	
 }

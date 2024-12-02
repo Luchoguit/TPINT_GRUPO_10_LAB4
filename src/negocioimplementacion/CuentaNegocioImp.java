@@ -89,4 +89,8 @@ public class CuentaNegocioImp implements CuentaNegocio{
 		return cuentaDao.verificarCuentaAsociadaAPrestamo(idCuenta);
 	};
 
+	@Override
+	public List<Cuenta> obtenerDestinatariosFrecuentes(int idCuenta) {
+		return cuentaDao.obtenerDestinatariosFrecuentes(idCuenta);
+	}
 }

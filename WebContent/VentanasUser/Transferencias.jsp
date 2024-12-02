@@ -1,5 +1,9 @@
 <%@page import="entidad.Cuenta" %>
 <%@page import="entidad.Usuario" %>
+<%@page import="entidad.Cliente" %>
+<%@page import="utilidades.Formato" %>
+<%@page import="java.util.List" %>
+<%@page import="java.util.Map" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -159,6 +163,41 @@
 		}
 
 		%>
+
+		<h3>Seleccionar cuenta propia:</h3>
+		<select name="cuentaPropia">
+		    <option value="">Seleccione una cuenta</option>
+		    <% for(Cuenta c : (List<Cuenta>) request.getAttribute("cuentasPropias")) { %>
+		        <option value="<%= c.getCbu() %>">
+		            <%= c.getCbu() %> - Saldo: <%= Formato.formatoMonetario(c.getSaldo())%>
+		        </option>
+		    <% } %>
+		</select>
+		
+<h3>Destinatarios recientes:</h3>
+<table border="1">
+    <tr>
+        <th>Nombre del Cliente</th>
+        <th>Número de Cuenta</th>
+        <th>CBU</th>
+    </tr>
+    <% 
+    Map<Cuenta, Cliente> cuentasConClientes = (Map<Cuenta, Cliente>) request.getAttribute("cuentasConClientes");
+    if (cuentasConClientes != null) {
+        for (Map.Entry<Cuenta, Cliente> entry : cuentasConClientes.entrySet()) {
+            Cuenta c = entry.getKey();
+            Cliente cliente = entry.getValue();
+    %>
+            <tr>
+                <td><%= cliente.getNombre() + " " + cliente.getApellido() %></td>
+                <td><%= c.getNumeroCuenta() %></td>
+                <td><%= c.getCbu() %></td>
+            </tr>
+    <% 
+        } 
+    } 
+    %>
+</table>
 
         
         <!-- Tabla de datos del CBU -->

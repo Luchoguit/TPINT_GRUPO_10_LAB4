@@ -4,6 +4,7 @@ import java.util.List;
 
 import dao.MovimientoDao;
 import daoImplementacion.MovimientoDaoImp;
+import entidad.Cuenta;
 import entidad.Movimiento;
 import negocio.MovimientoNegocio;
 
