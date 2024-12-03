@@ -79,7 +79,17 @@ public class servletTransferencia extends HttpServlet {
 		if(request.getParameter("btnCBU") != null) {
 			
 			String cbu = request.getParameter("inputCBU");
+			
+			
 			System.out.println("CBU Ingresado: " + cbu);
+			
+			if(cbu.trim().isEmpty())
+			{
+				System.out.println("[DEBUG] CBU Invalido");
+	            Mensaje.error(request, "Debe seleccionar un cbu Valido");
+	            doGet(request, response);
+				return;
+			}
 			
 			CuentaNegocio cuentaNegocio = new CuentaNegocioImp();
 			boolean existeCuentaConCbu = cuentaNegocio.existeCuentaConCbu(cbu); 
@@ -91,6 +101,7 @@ public class servletTransferencia extends HttpServlet {
 			{
 				System.out.println("[DEBUG] CBU Invalido");
 	            Mensaje.error(request, "Debe seleccionar un cbu Valido");
+	            
 			}
 			else {
 				System.out.println("[DEBUG] CBU valido");
