@@ -640,60 +640,89 @@ public class CuentaDaoImp implements CuentaDao {
 	}
 
 	
-	private static final String qryListarMovimientos = "select id, id_cuenta, id_tipoMovimiento, detalle, fechaHora, importe, id_cuentaDestino from movimientos where id_cuenta = ? or id_cuentaDestino = ?";
-	
-	@Override
-	public List<Movimiento> listarMovimientosCuenta(Cuenta cuenta) {
-		
-		List<Movimiento> listaMovimientos = new ArrayList<>();
+	private static final String qryListarMovimientos = 
+		    "SELECT M.*, CUO.*, CL_O.*, CUD.*, CL_D.* " +
+		    "FROM movimientos M " +
+		    "JOIN cuentas CUO ON CUO.id = M.id_cuenta " +
+		    "JOIN clientes CL_O ON CL_O.id = CUO.id_usuario " +
+		    "LEFT JOIN cuentas CUD ON CUD.id = M.id_cuentaDestino " +
+		    "LEFT JOIN clientes CL_D ON CL_D.id = CUD.id_usuario " +
+		    "WHERE M.id_cuenta = ? OR M.id_cuentaDestino = ?";
 
-	    try (Connection con = Conexion.getConexion().getSQLConexion()) {
-	        System.out.println("[DEBUG] Conexion a la base de datos establecida");
-	        
-	        PreparedStatement statementCuentas = con.prepareStatement(qryListarMovimientos);
-	        statementCuentas.setInt(1, cuenta.getId());
-	        statementCuentas.setInt(2, cuenta.getId());
-	        
-	        ResultSet resultSetCuentas = statementCuentas.executeQuery();
+		@Override
+		public List<Movimiento> listarMovimientosCuenta(Cuenta cuenta) {
 
-	        
-	        while (resultSetCuentas.next()) {
-	        	
-	        	
-	        	int id = resultSetCuentas.getInt("id");
-	        	int id_cuenta = resultSetCuentas.getInt("id_cuenta");
-	        	int id_tipoMovimiento = resultSetCuentas.getInt("id_tipoMovimiento");
-	        	String detalle = resultSetCuentas.getString("detalle");
-	        	Timestamp fechaHora = resultSetCuentas.getTimestamp("fechaHora");
-	        	
-	        	Instant instant = fechaHora.toInstant();
-	        	LocalDateTime localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime();
-	        	
-	        	
-	        	BigDecimal importe = resultSetCuentas.getBigDecimal("importe");
-	        	int id_cuentaDestino = resultSetCuentas.getInt("id_cuentaDestino");
-	        	
-	        	TipoMovimiento tipo = new TipoMovimiento(id_tipoMovimiento, null);
-	        	Cuenta cuentaDestino = new Cuenta();
-	        	cuentaDestino.setId(id_cuentaDestino);
-	        	
-	        	Movimiento movimiento = new Movimiento(id, cuenta, tipo, detalle, localDateTime, importe, cuentaDestino);
+		    List<Movimiento> listaMovimientos = new ArrayList<>();
 
-	            
-	
-	            listaMovimientos.add(movimiento);
-	        }
+		    try (Connection con = Conexion.getConexion().getSQLConexion()) {
+		        System.out.println("[DEBUG] Conexion a la base de datos establecida");
 
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    finally {
-	        Conexion.getConexion().cerrarConexion();
-	    }
+		        PreparedStatement statementCuentas = con.prepareStatement(qryListarMovimientos);
+		        statementCuentas.setInt(1, cuenta.getId());
+		        statementCuentas.setInt(2, cuenta.getId());
 
-	    return listaMovimientos;
-		
-	}
+		        ResultSet resultSetCuentas = statementCuentas.executeQuery();
+
+		        while (resultSetCuentas.next()) {
+		            // Datos del movimiento
+		            int id = resultSetCuentas.getInt("M.id");
+		            String detalle = resultSetCuentas.getString("M.detalle");
+		            Timestamp fechaHora = resultSetCuentas.getTimestamp("M.fechaHora");
+		            BigDecimal importe = resultSetCuentas.getBigDecimal("M.importe");
+
+		            LocalDateTime localDateTime = fechaHora.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+		            // Cuenta origen y cliente
+		            Cuenta cuentaOrigen = new Cuenta();
+		            cuentaOrigen.setId(resultSetCuentas.getInt("CUO.id"));
+		            cuentaOrigen.setNumeroCuenta(resultSetCuentas.getString("CUO.numero_cuenta"));
+		            cuentaOrigen.setCbu(resultSetCuentas.getString("CUO.cbu"));
+
+		            Cliente clienteOrigen = new Cliente();
+		            clienteOrigen.setId(resultSetCuentas.getInt("CL_O.id"));
+		            clienteOrigen.setDni(resultSetCuentas.getString("CL_O.dni"));
+		            clienteOrigen.setNombre(resultSetCuentas.getString("CL_O.nombre"));
+		            clienteOrigen.setApellido(resultSetCuentas.getString("CL_O.apellido"));
+
+		            Usuario usuarioOrigen = new Usuario();
+		            usuarioOrigen.setCliente(clienteOrigen);
+		            cuentaOrigen.setUsuario(usuarioOrigen);
+
+		            // Cuenta destino y cliente (puede ser null si no hay destino)
+		            Cuenta cuentaDestino = new Cuenta();
+		            cuentaDestino.setId(resultSetCuentas.getInt("CUD.id"));
+		            cuentaDestino.setNumeroCuenta(resultSetCuentas.getString("CUD.numero_cuenta"));
+		            cuentaOrigen.setCbu(resultSetCuentas.getString("CUD.cbu"));
+
+		            Cliente clienteDestino = new Cliente();
+		            clienteDestino.setId(resultSetCuentas.getInt("CL_D.id"));
+		            clienteDestino.setDni(resultSetCuentas.getString("CL_D.dni"));
+		            clienteDestino.setNombre(resultSetCuentas.getString("CL_D.nombre"));
+		            clienteDestino.setApellido(resultSetCuentas.getString("CL_D.apellido"));
+
+		            Usuario usuarioDestino = new Usuario();
+		            usuarioDestino.setCliente(clienteDestino);
+		            cuentaDestino.setUsuario(usuarioDestino);
+
+		            // Tipo de movimiento
+		            int id_tipoMovimiento = resultSetCuentas.getInt("M.id_tipoMovimiento");
+		            TipoMovimiento tipo = new TipoMovimiento(id_tipoMovimiento, null);
+
+		            // Crear el movimiento
+		            Movimiento movimiento = new Movimiento(id, cuentaOrigen, tipo, detalle, localDateTime, importe, cuentaDestino);
+
+		            listaMovimientos.add(movimiento);
+		        }
+
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    } finally {
+		        Conexion.getConexion().cerrarConexion();
+		    }
+
+		    return listaMovimientos;
+		}
+
 	
 	@Override
 	public boolean verificarCuentaAsociadaAPrestamo(int idCuenta) {

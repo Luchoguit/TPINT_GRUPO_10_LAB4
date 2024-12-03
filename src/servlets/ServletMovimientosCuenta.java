@@ -58,7 +58,7 @@ public class ServletMovimientosCuenta extends HttpServlet {
 		
 		
 		List<Movimiento> movimientos = cuentaNegocio.listarMovimientosCuenta(cuentaSeleccionada);
-		
+				
 		List<BigDecimal> saldosParciales = actualizarSaldosInvertidos(movimientos, cuentaSeleccionada);
 		
 		Collections.reverse(movimientos);
@@ -102,9 +102,6 @@ public class ServletMovimientosCuenta extends HttpServlet {
         dispatcher.forward(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
@@ -115,37 +112,83 @@ public class ServletMovimientosCuenta extends HttpServlet {
 		BigDecimal acumulador = BigDecimal.ZERO;
 		int tipo_movimiento_alta_prestamo = 2;
 		int tipo_movimiento_alta_cuenta = 1;
+		int tipo_movimiento_pago_prestamo = 3;
 
 
 		System.out.println("Id cuenta seleccionada: " + cuentaSeleccionada.getId());
 		
 		List<BigDecimal> saldosParciales = new ArrayList<>();
 		
-		for(Movimiento m : movimientos)
-		{
-			System.out.println("Id cuenta origen: " + m.getCuentaOrigen().getId());
-			System.out.println("Id cuenta destino: " + m.getCuentaDestino().getId());
-			System.out.println("importe: " + m.getImporte());
-			
-			if(m.getTipoMovimiento().getId() == tipo_movimiento_alta_cuenta || m.getTipoMovimiento().getId() == tipo_movimiento_alta_prestamo)
-			{
-				acumulador = acumulador.add(m.getImporte());
-				System.out.println("alta cuenta o alta prestamo (suma)");
-			}
-			else if (m.getCuentaDestino().getId()== cuentaSeleccionada.getId())
-				{
-				acumulador = acumulador.add(m.getImporte());
-				System.out.println("recibe transferencia (suma)");
-				}	
-				else
-				{
-					acumulador = acumulador.subtract(m.getImporte());
-					System.out.println("realiza transferencia o paga prestamo (resta)");
-				}
-			System.out.println("------------------");
-			
-			saldosParciales.add(acumulador);
+		for (Movimiento m : movimientos) {
+		    System.out.println("Id cuenta origen: " + m.getCuentaOrigen().getId());
+		    System.out.println("Id cuenta destino: " + m.getCuentaDestino().getId());
+		    System.out.println("importe: " + m.getImporte());
+
+		    boolean movimientoProcesado = false;
+		    String saltoLinea = System.lineSeparator();
+
+
+		    if (m.getTipoMovimiento().getId() == tipo_movimiento_alta_cuenta) {
+		        acumulador = acumulador.add(m.getImporte());
+		        System.out.println("alta cuenta (suma)");
+		        movimientoProcesado = true;
+		    }
+
+		    if (m.getTipoMovimiento().getId() == tipo_movimiento_alta_prestamo) {
+		        acumulador = acumulador.add(m.getImporte());
+		        System.out.println("alta préstamo (suma)");
+		        movimientoProcesado = true;
+		    }
+
+		    if (m.getCuentaDestino().getId() == cuentaSeleccionada.getId()) {
+		        acumulador = acumulador.add(m.getImporte());
+		        System.out.println("recibe transferencia (suma)");
+		        if (m.getDetalle().isEmpty()) {
+		            m.setDetalle("Transferencia recibida de: " + 
+		                         m.getCuentaOrigen().getUsuario().getCliente().getNombre() + " " + 
+		                         m.getCuentaOrigen().getUsuario().getCliente().getApellido() + saltoLinea + 
+		                         "Cuenta: " + m.getCuentaOrigen().getNumeroCuenta());
+		        } else {
+		            m.setDetalle("Transferencia recibida de: " + 
+		                         m.getCuentaOrigen().getUsuario().getCliente().getNombre() + " " + 
+		                         m.getCuentaOrigen().getUsuario().getCliente().getApellido() + saltoLinea + 
+		                         "Cuenta: " + m.getCuentaOrigen().getNumeroCuenta() + saltoLinea + 
+		                         "Detalle: " + m.getDetalle());
+		        }
+		        
+		        movimientoProcesado = true;
+		    }
+
+		    if (m.getTipoMovimiento().getId() == tipo_movimiento_pago_prestamo) {
+		        acumulador = acumulador.subtract(m.getImporte());
+		        System.out.println("paga préstamo (resta)");
+		        movimientoProcesado = true;
+		    }
+
+		    if (!movimientoProcesado) {
+		        acumulador = acumulador.subtract(m.getImporte());
+		        System.out.println("realiza transferencia (resta)");
+		        if(m.getDetalle().isEmpty())
+		        {
+		        	m.setDetalle("Transferencia realizada a: " + 
+		                    m.getCuentaDestino().getUsuario().getCliente().getNombre() + " " + 
+		                    m.getCuentaDestino().getUsuario().getCliente().getApellido() + saltoLinea + 
+		                    "Cuenta: " + m.getCuentaDestino().getNumeroCuenta());  			        	
+		        } else {
+		        	m.setDetalle("Transferencia realizada a: " + 
+		        			m.getCuentaDestino().getUsuario().getCliente().getNombre() + " " + 
+		                    m.getCuentaDestino().getUsuario().getCliente().getApellido() + saltoLinea + 
+		                    "Cuenta: " + m.getCuentaDestino().getNumeroCuenta() + saltoLinea + 
+		                    "Detalle: " + m.getDetalle());
+  	
+		        }
+		        
+		    }
+
+		    System.out.println("------------------");
+		    saldosParciales.add(acumulador);
 		}
+
 		
 		Collections.reverse(saldosParciales);
 		return saldosParciales;

@@ -5,7 +5,6 @@
 <%@page import="java.math.BigDecimal" %>
 <%@page import="utilidades.Formato" %>
 
-
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -57,45 +56,38 @@
         font-size: 24px;
         margin-bottom: 20px;
     }  
-   .volver-menu {
-		    display: flex;               
-		    justify-content: center;     
-		    align-items: center;                     
-		}
-        
-     .btn-volver {
-		    background-color: #007bff;   
-		    color: white;                
-		    padding: 10px 20px;          
-		    border: none;                
-		    border-radius: 5px;          
-		    font-size: 16px;             
-		    cursor: pointer;            
-		    transition: background-color 0.3s ease;  
-		}
-		
-		.btn-volver:hover {
-		    background-color: #0056b3;   
-		 }
-    
-    
+    .volver-menu {
+        display: flex;               
+        justify-content: center;     
+        align-items: center;                     
+    }
+    .btn-volver {
+        background-color: #007bff;   
+        color: white;                
+        padding: 10px 20px;          
+        border: none;                
+        border-radius: 5px;          
+        font-size: 16px;             
+        cursor: pointer;            
+        transition: background-color 0.3s ease;  
+    }
+    .btn-volver:hover {
+        background-color: #0056b3;   
+    }
 </style>
 
-        <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloMensajes.css">
-        <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloPaginacion.css">
-        <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloBotones.css">
+<link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloMensajes.css">
+<link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloPaginacion.css">
+<link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloBotones.css">
 
 </head>
 <body>
-
-
 
 <% 
     // Datos para paginación
     int paginaActual = (int) request.getAttribute("paginaActual");
     int totalPaginas = (int) request.getAttribute("totalPaginas");
 %>
-
 
 <div class="table-container">
     <h1 class="table-title">Extracto de Cuenta</h1>
@@ -105,7 +97,6 @@
     String tipoMensaje = (String) request.getAttribute("tipoMensaje");
     if (mensaje != null && tipoMensaje != null) {
     %>
-        <!-- Mostrar el mensaje con el estilo adecuado -->
         <div class="message-container <%= tipoMensaje %>">
             <%= mensaje %>
         </div>
@@ -117,11 +108,11 @@
         
         if(request.getSession().getAttribute("clienteSeleccionado") != null)
         {
-        	cliente = (Cliente) request.getSession().getAttribute("clienteSeleccionado");
+            cliente = (Cliente) request.getSession().getAttribute("clienteSeleccionado");
         }
         else
         {
-        	cliente = (Cliente) request.getSession().getAttribute("cliente");
+            cliente = (Cliente) request.getSession().getAttribute("cliente");
         }
         
         java.time.LocalDateTime fechaHoy = java.time.LocalDateTime.now(); 
@@ -132,96 +123,94 @@
         <div><strong>Titular:</strong> <%= cliente.getNombre() + " " + cliente.getApellido() %></div>
         <div><strong>Número de Cuenta:</strong> <%= cuentaSeleccionada.getNumeroCuenta() %></div>
     </div>
-	
-	<% if (request.getAttribute("movimientos") != null) {
-		List<Movimiento> movimientos = (List<Movimiento>) request.getAttribute("listaMovimientos");
-		java.time.LocalDateTime fechaCreacion = cuentaSeleccionada.getFechaCreacion();
-		if (movimientos.size() > 0) { %>
-		    <table>
-		        <thead>
-		            <tr>
-		                <th>Fecha</th>
-		                <th>Concepto</th>
-		                <th>Importe</th>
-		                <th>Saldo</th>
-		            </tr>
-		        </thead>
-				<tbody>
-					
-		<%
-			List<BigDecimal> saldosParciales = (List<BigDecimal>) request.getAttribute("listaSaldosParciales");
-			int iteracion = 0;
-			int tipo_movimiento_alta_prestamo = 2;
-			
-			int tipo_movimiento_alta_cuenta = 1;
-			boolean depositoInicial = false;
-			
-			for (Movimiento movimiento : movimientos) {
-				boolean salida = false;
-				
-				if(movimiento.getTipoMovimiento().getId() == tipo_movimiento_alta_cuenta)
-				{
-					depositoInicial = true;
-				}
-				else
-				{
-					if (!(movimiento.getCuentaDestino().getId() == cuentaSeleccionada.getId() || 
-					      movimiento.getTipoMovimiento().getId() == tipo_movimiento_alta_prestamo)) {
-						salida = true;
-					}
-				}
-				BigDecimal saldoIteracion = saldosParciales.get(iteracion);
-		%>
-		            <tr>
-		                <td><%= Formato.formatoFechaHora(movimiento.getFechaHora()) %></td>
-		                <td><%= movimiento.getDetalle() %></td>
-		                <td>
-		                    <% if (depositoInicial) { %>
-		                        <%= Formato.formatoMonetario(movimiento.getImporte()) %>
-		                    <% depositoInicial = false;
-		                    } else if(salida) { %>
-		                        <%= Formato.formatoMonetario(movimiento.getImporte().negate()) %>
-		                    <% }else{ %>
-		                    	<%= Formato.formatoMonetario(movimiento.getImporte()) %>
-		                    <%} %>
-		                </td>
-		                <td><%= Formato.formatoMonetario(saldoIteracion) %></td>
-		            </tr>
+    
+    <% if (request.getAttribute("movimientos") != null) {
+        List<Movimiento> movimientos = (List<Movimiento>) request.getAttribute("listaMovimientos");
+        java.time.LocalDateTime fechaCreacion = cuentaSeleccionada.getFechaCreacion();
+        if (movimientos.size() > 0) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Concepto</th>
+                        <th>Importe</th>
+                        <th>Saldo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+        <%
+            List<BigDecimal> saldosParciales = (List<BigDecimal>) request.getAttribute("listaSaldosParciales");
+            int iteracion = 0;
+            int tipo_movimiento_alta_prestamo = 2;
+            int tipo_movimiento_alta_cuenta = 1;
+            boolean depositoInicial = false;
+            
+            for (Movimiento movimiento : movimientos) {
+                boolean salida = false;
+                
+                if(movimiento.getTipoMovimiento().getId() == tipo_movimiento_alta_cuenta)
+                {
+                    depositoInicial = true;
+                }
+                else
+                {
+                    if (!(movimiento.getCuentaDestino().getId() == cuentaSeleccionada.getId() || 
+                          movimiento.getTipoMovimiento().getId() == tipo_movimiento_alta_prestamo)) {
+                        salida = true;
+                    }
+                }
+                BigDecimal saldoIteracion = saldosParciales.get(iteracion);
+        %>
+                    <tr>
+                        <td><%= Formato.formatoFechaHora(movimiento.getFechaHora()) %></td>
+                        <td><%= movimiento.getDetalle().replace(System.lineSeparator(), "<br>") %></td>
+                        <td>
+                            <% if (depositoInicial) { %>
+                                <%= Formato.formatoMonetario(movimiento.getImporte()) %>
+                            <% depositoInicial = false;
+                            } else if(salida) { %>
+                                <%= Formato.formatoMonetario(movimiento.getImporte().negate()) %>
+                            <% }else{ %>
+                                <%= Formato.formatoMonetario(movimiento.getImporte()) %>
+                            <%} %>
+                        </td>
+                        <td><%= Formato.formatoMonetario(saldoIteracion) %></td>
+                    </tr>
 
-		<%
-			iteracion++;
-			} 
-			%>
-				</tbody>
-    		</table>
+        <%
+            iteracion++;
+            } 
+            %>
+                </tbody>
+            </table>
     <% 
-		} else { %>
-			<h3>Aquí aparecerán sus movimientos cuando utilice la cuenta</h3>
-		<% }
-	} %>
-	
-	
-	<!-- Controles de paginación -->
-<div class="pagination">
-    <% if (paginaActual > 1) { %>
-        <a href="?page=<%= paginaActual - 1 %>" class="pagination-link">&laquo; Anterior</a>
-    <% }
-     for (int i = 1; i <= totalPaginas; i++) { %>
-        <% if (i == paginaActual) { %>
-            <span class="pagination-current"><%= i %></span>
-        <% } else { %>
-            <a href="?page=<%= i %>" class="pagination-link"><%= i %></a>
-        <% } 
-     } %>
-    <% if (paginaActual < totalPaginas) { %>
-        <a href="?page=<%= paginaActual + 1 %>" class="pagination-link">Siguiente &raquo;</a>
-    <% } %>
-</div>
+        } else { %>
+            <h3>Aquí aparecerán sus movimientos cuando utilice la cuenta</h3>
+        <% }
+    } %>
+    
+    <!-- Controles de paginación -->
+    <div class="pagination">
+        <% if (paginaActual > 1) { %>
+            <a href="?page=<%= paginaActual - 1 %>" class="pagination-link">&laquo; Anterior</a>
+        <% }
+         for (int i = 1; i <= totalPaginas; i++) { %>
+            <% if (i == paginaActual) { %>
+                <span class="pagination-current"><%= i %></span>
+            <% } else { %>
+                <a href="?page=<%= i %>" class="pagination-link"><%= i %></a>
+            <% } 
+         } %>
+        <% if (paginaActual < totalPaginas) { %>
+            <a href="?page=<%= paginaActual + 1 %>" class="pagination-link">Siguiente &raquo;</a>
+        <% } %>
+    </div>
 
-	 <div class="volver-menu">
-		<a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexCuenta.jsp" class="volver-menu">
-			<input type="button" value="Volver a cuenta" class="btn-volver">
-		</a>
+     <div class="volver-menu">
+        <a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexCuenta.jsp" class="volver-menu">
+            <input type="button" value="Volver a cuenta" class="btn-volver">
+        </a>
      </div>
 
 </div>     
