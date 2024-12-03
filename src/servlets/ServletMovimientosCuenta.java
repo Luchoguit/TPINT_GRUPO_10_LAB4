@@ -116,27 +116,33 @@ public class ServletMovimientosCuenta extends HttpServlet {
 		int tipo_movimiento_alta_prestamo = 2;
 		int tipo_movimiento_alta_cuenta = 1;
 
+
+		System.out.println("Id cuenta seleccionada: " + cuentaSeleccionada.getId());
 		
 		List<BigDecimal> saldosParciales = new ArrayList<>();
 		
 		for(Movimiento m : movimientos)
 		{
-			if(tipo_movimiento_alta_cuenta == 1)
+			System.out.println("Id cuenta origen: " + m.getCuentaOrigen().getId());
+			System.out.println("Id cuenta destino: " + m.getCuentaDestino().getId());
+			System.out.println("importe: " + m.getImporte());
+			
+			if(m.getTipoMovimiento().getId() == tipo_movimiento_alta_cuenta || m.getTipoMovimiento().getId() == tipo_movimiento_alta_prestamo)
 			{
 				acumulador = acumulador.add(m.getImporte());
+				System.out.println("alta cuenta o alta prestamo (suma)");
 			}
-			else 
-			{
-				if(m.getCuentaDestino().getId()== cuentaSeleccionada.getId() || m.getTipoMovimiento().getId() == tipo_movimiento_alta_prestamo)
+			else if (m.getCuentaDestino().getId()== cuentaSeleccionada.getId())
 				{
-					acumulador = acumulador.add(m.getImporte());
-				}
+				acumulador = acumulador.add(m.getImporte());
+				System.out.println("recibe transferencia (suma)");
+				}	
 				else
 				{
 					acumulador = acumulador.subtract(m.getImporte());
+					System.out.println("realiza transferencia o paga prestamo (resta)");
 				}
-			}
-
+			System.out.println("------------------");
 			
 			saldosParciales.add(acumulador);
 		}
