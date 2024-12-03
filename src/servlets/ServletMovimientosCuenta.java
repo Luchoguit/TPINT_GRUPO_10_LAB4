@@ -71,11 +71,15 @@ public class ServletMovimientosCuenta extends HttpServlet {
 		String montoMinParam = request.getParameter("montoMin");
 		String montoMaxParam = request.getParameter("montoMax");
 		
+		Boolean esFiltro = false;
+		
 		if (tipoMovimientoParam != null || fechaDesdeParam != null || fechaHastaParam != null || montoMinParam != null || montoMaxParam != null)
 		{
 			movimientos = filtrarMovimientos(movimientos, tipoMovimientoParam, fechaDesdeParam, fechaHastaParam, montoMinParam, montoMaxParam);
+			 esFiltro = true;
 		}
 		
+		request.setAttribute("esFiltro", esFiltro);
 		request.setAttribute("movimientos", movimientos);
 		request.setAttribute("saldos", saldosParciales);
 		
