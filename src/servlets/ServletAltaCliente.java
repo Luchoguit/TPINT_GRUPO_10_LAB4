@@ -142,33 +142,7 @@ public class ServletAltaCliente extends HttpServlet {
             String telefono = request.getParameter("telefono");
      
                 
-            // Validación del telefono
             
-            ValidadorTelefono validadorTelefono = new ValidadorTelefono();
-            
-                try {
-                    validadorTelefono.validar(telefono);
-                } catch (TelefonoInvalidoException e) {
-                   
-                    Mensaje.error(request, e.getMessage());
-                    cargarProvincias(request);  
-                    doGet(request, response);  
-                    return;
-                }
-                
-                
-             // Validación del correo
-                
-                ValidadorMail validadorMail = new ValidadorMail();
-                try {
-                    validadorMail.validarMail1(correo);
-                } catch (MailInvalidoException e) {
-                    Mensaje.error(request, e.getMessage());  
-                    cargarProvincias(request);  
-                    doGet(request, response);  
-                    return;
-                }
-                
                 
                 
             //Validaciones
@@ -229,6 +203,38 @@ public class ServletAltaCliente extends HttpServlet {
             cliente.setTelefono(telefono);
             
 
+// Validación del telefono
+            
+            ValidadorTelefono validadorTelefono = new ValidadorTelefono();
+            
+                try {
+                    validadorTelefono.validar(telefono);
+                } catch (TelefonoInvalidoException e) {
+                   
+                    Mensaje.error(request, e.getMessage());
+                    cargarProvincias(request);  
+                    pregarcarDatos(request, cliente);
+                    doGet(request, response);  
+                    return;
+                }
+                
+                
+             // Validación del correo
+                
+                ValidadorMail validadorMail = new ValidadorMail();
+                try {
+                    validadorMail.validarMail1(correo);
+                } catch (MailInvalidoException e) {
+                    Mensaje.error(request, e.getMessage());  
+                    cargarProvincias(request); 
+                    pregarcarDatos(request, cliente);
+                    doGet(request, response);  
+                    return;
+                }
+                
+            
+            
+            
 
             // Guardar cliente
             boolean resultado = false;
@@ -240,24 +246,7 @@ public class ServletAltaCliente extends HttpServlet {
             else
             {
             	
-            	//Guarda el ingreso del usuario para precargar los campos
-            	
-                request.setAttribute("precargaDni", dni);
-                request.setAttribute("precargaCuil", cuil);
-                request.setAttribute("precargaNombre", nombre);
-                request.setAttribute("precargaApellido", apellido);
-                request.setAttribute("precargaNacionalidad", nacionalidad);
-                request.setAttribute("precargaDireccion", direccion);
-                request.setAttribute("precargaCorreo", correo);
-                request.setAttribute("precargaTelefono", telefono);
-                request.setAttribute("precargaFechaNac", fechaNacimiento);
-                
-                request.setAttribute("precargaSexo", sexo);
-                request.setAttribute("precargaIdProvincia", idProvincia);
-                
-                //String sexo = request.getParameter("sexo");
-                //String fechaNacimientoStr = request.getParameter("fecha_nacimiento");
-
+            	pregarcarDatos(request, cliente);
                 
             }
 
@@ -343,6 +332,30 @@ public class ServletAltaCliente extends HttpServlet {
         ProvinciaNegocio provinciaNegocio = new ProvinciaNegocioImp();
         List<Provincia> listaProvincias = provinciaNegocio.listarProvincias();
         request.setAttribute("provincias", listaProvincias);
+    }
+    
+    private void pregarcarDatos(HttpServletRequest request, Cliente cliente)
+    {
+    	//Guarda el ingreso del usuario para precargar los campos
+    	
+        request.setAttribute("precargaDni", cliente.getDni());
+        request.setAttribute("precargaCuil", cliente.getCuil());
+        request.setAttribute("precargaNombre", cliente.getNombre());
+        request.setAttribute("precargaApellido", cliente.getApellido());
+        request.setAttribute("precargaNacionalidad", cliente.getNacionalidad());
+        request.setAttribute("precargaDireccion", cliente.getDireccion());
+        request.setAttribute("precargaFechaNac", cliente.getFechaNacimiento());
+        request.setAttribute("precargaSexo", cliente.getSexo());
+        
+        
+        //request.setAttribute("precargaCorreo", cliente.getCorreo());
+        //request.setAttribute("precargaTelefono", cliente.getTelefono());
+        
+        
+        //request.setAttribute("precargaIdProvincia", idProvincia);
+        
+        //String sexo = request.getParameter("sexo");
+        //String fechaNacimientoStr = request.getParameter("fecha_nacimiento");
     }
 
 }
