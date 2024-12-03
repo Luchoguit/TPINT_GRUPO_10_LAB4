@@ -2,6 +2,8 @@ package servlets;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -63,15 +65,25 @@ public class ServletMovimientosCuenta extends HttpServlet {
 		
 		Collections.reverse(movimientos);
 		
+		String tipoMovimientoParam = request.getParameter("tipoMovimiento");
+		String fechaDesdeParam = request.getParameter("fechaDesde");
+		String fechaHastaParam = request.getParameter("fechaHasta");
+		String montoMinParam = request.getParameter("montoMin");
+		String montoMaxParam = request.getParameter("montoMax");
 		
-		request.setAttribute("movimientos", movimientos);	
+		if (tipoMovimientoParam != null || fechaDesdeParam != null || fechaHastaParam != null || montoMinParam != null || montoMaxParam != null)
+		{
+			movimientos = filtrarMovimientos(movimientos, tipoMovimientoParam, fechaDesdeParam, fechaHastaParam, montoMinParam, montoMaxParam);
+		}
+		
+		request.setAttribute("movimientos", movimientos);
 		request.setAttribute("saldos", saldosParciales);
 		
 		System.out.println("Cantidad de movimientos en servlet: " + movimientos.size());
 		
 		
 	     // Manejo de paginación
-        int registrosPorPagina = 10;
+        int registrosPorPagina = 5;
         int paginaActual = 1;
 
         // Obtener el número de pagina actual desde la request
@@ -194,6 +206,57 @@ public class ServletMovimientosCuenta extends HttpServlet {
 		return saldosParciales;
 	}
 	
-	
+	private List<Movimiento> filtrarMovimientos(List<Movimiento> movimientos, String tipoMovimientoParam, String fechaDesdeParam, String fechaHastaParam, String montoMinParam, String montoMaxParam)
+	{
+		List<Movimiento> movimientosFiltrados = new ArrayList<>();
+
+		for (Movimiento movimiento : movimientos) {
+		    boolean agregar = true;
+
+		    // Filtro por tipo de movimiento
+		    if (tipoMovimientoParam != null && !tipoMovimientoParam.isEmpty()) {
+		        int tipoMovimientoFiltro = Integer.parseInt(tipoMovimientoParam);
+		        if (movimiento.getTipoMovimiento().getId() != tipoMovimientoFiltro) {
+		            agregar = false;
+		        }
+		    }
+
+		    // Filtro por rango de fechas
+		    if (fechaDesdeParam != null && !fechaDesdeParam.isEmpty()) {
+		        LocalDateTime fechaDesde = LocalDate.parse(fechaDesdeParam).atStartOfDay();
+		        if (movimiento.getFechaHora().isBefore(fechaDesde)) {
+		            agregar = false;
+		        }
+		    }
+
+		    if (fechaHastaParam != null && !fechaHastaParam.isEmpty()) {
+		        LocalDateTime fechaHasta = LocalDate.parse(fechaHastaParam).atTime(23, 59, 59);
+		        if (movimiento.getFechaHora().isAfter(fechaHasta)) {
+		            agregar = false;
+		        }
+		    }
+
+		    // Filtro por rango de montos
+		    if (montoMinParam != null && !montoMinParam.isEmpty()) {
+		        BigDecimal montoMin = new BigDecimal(montoMinParam);
+		        if (movimiento.getImporte().compareTo(montoMin) < 0) {
+		            agregar = false;
+		        }
+		    }
+
+		    if (montoMaxParam != null && !montoMaxParam.isEmpty()) {
+		        BigDecimal montoMax = new BigDecimal(montoMaxParam);
+		        if (movimiento.getImporte().compareTo(montoMax) > 0) {
+		            agregar = false;
+		        }
+		    }
+
+		    if (agregar) {
+		        movimientosFiltrados.add(movimiento);
+		    }
+		}
+
+		return movimientosFiltrados;		
+	}
 
 }

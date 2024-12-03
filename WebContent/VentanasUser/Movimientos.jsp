@@ -124,10 +124,38 @@
         <div><strong>Número de Cuenta:</strong> <%= cuentaSeleccionada.getNumeroCuenta() %></div>
     </div>
     
+	 <form method="get" action="ServletMovimientosCuenta" class="filter-form">
+	    <label for="tipoMovimiento">Tipo de Movimiento:</label>
+	    <select name="tipoMovimiento" id="tipoMovimiento">
+	        <option value="">Todos</option>
+	        <option value="1">Alta de Cuenta</option>
+	        <option value="2">Alta de Préstamo</option>
+	        <option value="3">Pago de Préstamo</option>
+	        <option value="4">Transferencia</option>
+	    </select>
+	
+	    <label for="fechaDesde">Fecha Desde:</label>
+	    <input type="date" name="fechaDesde" id="fechaDesde">
+	
+	    <label for="fechaHasta">Fecha Hasta:</label>
+	    <input type="date" name="fechaHasta" id="fechaHasta">
+	
+	    <label for="montoMin">Monto Mínimo:</label>
+	    <input type="number" name="montoMin" step="0.01" id="montoMin">
+	
+	    <label for="montoMax">Monto Máximo:</label>
+	    <input type="number" name="montoMax" step="0.01" id="montoMax">
+	
+	    <button type="submit">Filtrar</button>
+	</form>
+    
+    
     <% if (request.getAttribute("movimientos") != null) {
         List<Movimiento> movimientos = (List<Movimiento>) request.getAttribute("listaMovimientos");
         java.time.LocalDateTime fechaCreacion = cuentaSeleccionada.getFechaCreacion();
         if (movimientos.size() > 0) { %>
+            
+	        
             <table>
                 <thead>
                     <tr>
@@ -186,26 +214,41 @@
             </table>
     <% 
         } else { %>
-            <h3>Aquí aparecerán sus movimientos cuando utilice la cuenta</h3>
+            <h3>No hay movimientos para mostrar</h3>
         <% }
     } %>
     
     <!-- Controles de paginación -->
-    <div class="pagination">
-        <% if (paginaActual > 1) { %>
-            <a href="?page=<%= paginaActual - 1 %>" class="pagination-link">&laquo; Anterior</a>
-        <% }
-         for (int i = 1; i <= totalPaginas; i++) { %>
-            <% if (i == paginaActual) { %>
-                <span class="pagination-current"><%= i %></span>
-            <% } else { %>
-                <a href="?page=<%= i %>" class="pagination-link"><%= i %></a>
-            <% } 
-         } %>
-        <% if (paginaActual < totalPaginas) { %>
-            <a href="?page=<%= paginaActual + 1 %>" class="pagination-link">Siguiente &raquo;</a>
-        <% } %>
-    </div>
+<div class="pagination">
+    <% 
+        String tipoMovimiento = request.getParameter("tipoMovimiento");
+        String fechaDesde = request.getParameter("fechaDesde");
+        String fechaHasta = request.getParameter("fechaHasta");
+        String montoMin = request.getParameter("montoMin");
+        String montoMax = request.getParameter("montoMax");
+
+        String queryString = "&tipoMovimiento=" + (tipoMovimiento != null ? tipoMovimiento : "") +
+                             "&fechaDesde=" + (fechaDesde != null ? fechaDesde : "") +
+                             "&fechaHasta=" + (fechaHasta != null ? fechaHasta : "") +
+                             "&montoMin=" + (montoMin != null ? montoMin : "") +
+                             "&montoMax=" + (montoMax != null ? montoMax : "");
+    %>
+
+    <% if (paginaActual > 1) { %>
+        <a href="?page=<%= paginaActual - 1 %><%= queryString %>" class="pagination-link">&laquo; Anterior</a>
+    <% }
+     for (int i = 1; i <= totalPaginas; i++) { %>
+        <% if (i == paginaActual) { %>
+            <span class="pagination-current"><%= i %></span>
+        <% } else { %>
+            <a href="?page=<%= i %><%= queryString %>" class="pagination-link"><%= i %></a>
+        <% } 
+     } %>
+    <% if (paginaActual < totalPaginas) { %>
+        <a href="?page=<%= paginaActual + 1 %><%= queryString %>" class="pagination-link">Siguiente &raquo;</a>
+    <% } %>
+</div>
+
 
      <div class="volver-menu">
         <a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexCuenta.jsp" class="volver-menu">
