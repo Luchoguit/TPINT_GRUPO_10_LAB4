@@ -125,6 +125,9 @@
             color: #721c24;
         }
     </style>
+    
+        <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloBotones.css">
+    
 </head>
 <body>
 

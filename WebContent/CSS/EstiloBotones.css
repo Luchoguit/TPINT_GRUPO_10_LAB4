@@ -1,5 +1,12 @@
 @charset "UTF-8";
 
+body {
+    background: url('/TPINT_GRUPO_10_LAB4/CSS/Media/fondoVerde.svg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
 .volver-menu {
     display: flex;               
     justify-content: center;     
