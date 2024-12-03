@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import Exceptions.MailInvalidoException;
+import Exceptions.TelefonoInvalidoException;
+import Exceptions.ValidadorMail;
+import Exceptions.ValidadorTelefono;
 import entidad.Cliente;
 import entidad.Localidad;
 import entidad.Provincia;
@@ -136,7 +140,37 @@ public class ServletAltaCliente extends HttpServlet {
             
             String correo = request.getParameter("correo");
             String telefono = request.getParameter("telefono");
+     
+                
+            // Validación del telefono
             
+            ValidadorTelefono validadorTelefono = new ValidadorTelefono();
+            
+                try {
+                    validadorTelefono.validar(telefono);
+                } catch (TelefonoInvalidoException e) {
+                   
+                    Mensaje.error(request, e.getMessage());
+                    cargarProvincias(request);  
+                    doGet(request, response);  
+                    return;
+                }
+                
+                
+             // Validación del correo
+                
+                ValidadorMail validadorMail = new ValidadorMail();
+                try {
+                    validadorMail.validarMail1(correo);
+                } catch (MailInvalidoException e) {
+                    Mensaje.error(request, e.getMessage());  
+                    cargarProvincias(request);  
+                    doGet(request, response);  
+                    return;
+                }
+                
+                
+                
             //Validaciones
             ClienteNegocioImp clienteNegocio = new ClienteNegocioImp();
             
