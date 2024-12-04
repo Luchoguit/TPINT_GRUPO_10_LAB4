@@ -45,22 +45,22 @@
 
     <div class="form-group">
         <label for="dni">DNI</label>
-        <input id="dni" name="dni" type="number"  value="<%= ((Cliente) request.getAttribute("cliente")).getDni() %>">
+        <input id="dni" required name="dni" type="number"  value="<%= ((Cliente) request.getAttribute("cliente")).getDni() %>">
     </div>
 
     <div class="form-group">
         <label for="cuil">CUIL</label>
-        <input id="cuil" name="cuil" type="number"  value="<%= ((Cliente) request.getAttribute("cliente")).getCuil() %>">
+        <input id="cuil" required name="cuil" type="number"  value="<%= ((Cliente) request.getAttribute("cliente")).getCuil() %>">
     </div>
 
     <div class="form-group">
         <label for="nombre">Nombre</label>
-        <input id="nombre" name="nombre" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getNombre() %>">
+        <input id="nombre" required name="nombre" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getNombre() %>">
     </div>
 
     <div class="form-group">
         <label for="apellido">Apellido</label>
-        <input id="apellido" name="apellido" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getApellido() %>">
+        <input id="apellido" required name="apellido" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getApellido() %>">
     </div>
 
     <div class="form-group">
@@ -73,17 +73,17 @@
 
     <div class="form-group">
         <label for="nacionalidad">Nacionalidad</label>
-        <input id="nacionalidad" name="nacionalidad" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getNacionalidad() %>">
+        <input id="nacionalidad" required name="nacionalidad" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getNacionalidad() %>">
     </div>
 
     <div class="form-group">
         <label for="fecha_nacimiento">Fecha de Nacimiento</label>
-        <input id="fecha_nacimiento" name="fecha_nacimiento" type="date" value="<%= ((Cliente) request.getAttribute("cliente")).getFechaNacimiento() %>">
+        <input id="fecha_nacimiento" required name="fecha_nacimiento" type="date" value="<%= ((Cliente) request.getAttribute("cliente")).getFechaNacimiento() %>">
     </div>
 
     <div class="form-group">
         <label for="direccion">Direccion</label>
-        <input id="direccion" name="direccion" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getDireccion() %>">
+        <input id="direccion" required name="direccion" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getDireccion() %>">
     </div>
 
     <div class="form-group">
@@ -124,12 +124,12 @@
 
     <div class="form-group">
         <label for="correo">Correo Electronico</label>
-        <input id="correo" name="correo" type="email" value="<%= ((Cliente) request.getAttribute("cliente")).getCorreo() %>">
+        <input id="correo" required name="correo" type="email" value="<%= ((Cliente) request.getAttribute("cliente")).getCorreo() %>">
     </div>
 
     <div class="form-group">
         <label for="telefono">Telofono</label>
-        <input id="telefono" name="telefono" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getTelefono() %>">
+        <input id="telefono" required name="telefono" type="text" onkeypress="soloNumeros(event)" value="<%= ((Cliente) request.getAttribute("cliente")).getTelefono() %>">
     </div>
 
 	<div class="volver-menu">
@@ -143,6 +143,18 @@
     </a>
 	
 </div>
+
+<script>
+    function soloNumeros(event) {
+        var key = event.keyCode || event.which;
+        var tecla = String.fromCharCode(key);
+        var regex = /^[0-9]$/;
+        if (!regex.test(tecla)) {
+            event.preventDefault();
+        }
+    }
+</script>
+
 
 </body>
 </html>
