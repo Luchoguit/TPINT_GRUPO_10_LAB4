@@ -112,7 +112,7 @@
         <!-- Correo Electrónico -->
         <div class="form-group">
             <label for="correo">Correo Electrónico</label>
-            <input id="correo" type="email" name="correo" value="<%= request.getAttribute("precargaCorreo") != null ? request.getAttribute("precargaCorreo") : "" %>" maxlength="100" required>
+            <input id="correo" type="text" name="correo" value="<%= request.getAttribute("precargaCorreo") != null ? request.getAttribute("precargaCorreo") : "" %>" maxlength="100" required>
         </div>
 
         <!-- Teléfono -->
