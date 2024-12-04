@@ -60,7 +60,7 @@
     <div class="table-header">
         <div><strong>Fecha:</strong> <%= Formato.formatoFecha(fechaHoy) %></div>
         <div><strong>Titular:</strong> <%= cliente.getNombre() + " " + cliente.getApellido() %></div>
-        <div><strong>Nï¿½mero de Cuenta:</strong> <%= cuentaSeleccionada.getNumeroCuenta() %></div>
+        <div><strong>Número de Cuenta:</strong> <%= cuentaSeleccionada.getNumeroCuenta() %></div>
     </div>
 
     <!-- Formulario de filtros -->
@@ -72,18 +72,18 @@
         <label for="fechaHasta">Hasta:</label>
         <input type="date" name="fechaHasta" id="fechaHasta">
 
-        <label for="montoMin">Monto Mï¿½nimo:</label>
+        <label for="montoMin">Monto Mínimo:</label>
         <input type="number" name="montoMin" onkeypress="soloNumeros(event)" step="0.01" id="montoMin">
 
-        <label for="montoMax">Mï¿½ximo:</label>
+        <label for="montoMax">Máximo:</label>
         <input type="number" name="montoMax" onkeypress="soloNumeros(event)" step="0.01" id="montoMax">
 	
         <label for="tipoMovimiento">Tipo de Movimiento:</label>
         <select name="tipoMovimiento" id="tipoMovimiento">
             <option value="">Todos</option>
             <option value="1">Alta de Cuenta</option>
-            <option value="2">Alta de Prï¿½stamo</option>
-            <option value="3">Pago de Prï¿½stamo</option>
+            <option value="2">Alta de Préstamo</option>
+            <option value="3">Pago de Préstamo</option>
             <option value="4">Transferencia</option>
         </select>
         
@@ -147,29 +147,29 @@
 
 
 <script>
-    document.getElementById("fechaDesde").addEventListener("input", function (e) {
-        let input = e.target.value;
-        input = input.replace(/\D/g, "");
-        if (input.length >= 3) {
-            input = input.substring(0, 2) + "/" + input.substring(2);
-        }
-        if (input.length >= 6) {
-            input = input.substring(0, 5) + "/" + input.substring(5, 9);
-        }
-        e.target.value = input;
-    });
-    
-    document.getElementById("fechaHasta").addEventListener("input", function (e) {
-        let input = e.target.value;
-        input = input.replace(/\D/g, "");
-        if (input.length >= 3) {
-            input = input.substring(0, 2) + "/" + input.substring(2);
-        }
-        if (input.length >= 6) {
-            input = input.substring(0, 5) + "/" + input.substring(5, 9);
-        }
-        e.target.value = input;
-    });
+	document.getElementById("fechaDesde").addEventListener("input", function (e) {
+	    let input = e.target.value;
+	    input = input.replace(/\D/g, "");
+	    if (input.length >= 3) {
+	        input = input.substring(0, 2) + "/" + input.substring(2);
+	    }
+	    if (input.length >= 6) {
+	        input = input.substring(0, 5) + "/" + input.substring(5, 9);
+	    }
+	    e.target.value = input;
+	});
+	
+	document.getElementById("fechaHasta").addEventListener("input", function (e) {
+	    let input = e.target.value;
+	    input = input.replace(/\D/g, "");
+	    if (input.length >= 3) {
+	        input = input.substring(0, 2) + "/" + input.substring(2);
+	    }
+	    if (input.length >= 6) {
+	        input = input.substring(0, 5) + "/" + input.substring(5, 9);
+	    }
+	    e.target.value = input;
+	});
     
     
     function soloNumeros(event) {
