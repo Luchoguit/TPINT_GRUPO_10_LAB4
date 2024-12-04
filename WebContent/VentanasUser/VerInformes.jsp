@@ -14,10 +14,32 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <style>
-.chart-container {
-    width: 100%;  
-    height: 300px;
-}
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .form-container, .message-container, .chart-container {
+            width: 80%;
+            max-width: 800px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .message-container {
+            background-color: #e8f5e9;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+        }
 </style>
 <body>
     <div class="form-container">
@@ -40,7 +62,7 @@
         </div>
     </div>
 
-    <div class="filter-container">
+ 		<div class="message-container success">
         <% 
             // Obtener los valores de los totales y el balance calculados en el Servlet
             BigDecimal totalIngresos = (BigDecimal) request.getAttribute("totalIngresos");
@@ -53,14 +75,16 @@
             if (balance == null) balance = BigDecimal.ZERO;
         %>
 
- 		<div class="message-container success">
             <p><strong>Total Ingresos:</strong> <%= Formato.formatoMonetario(totalIngresos) %></p>
             <p><strong>Total Egresos:</strong> <%= Formato.formatoMonetario(totalEgresos) %></p>
             <p><strong>Balance:</strong> <%= Formato.formatoMonetario(balance) %></p>
         </div>
 
+    <!-- Gráfico de ingresos y egresos -->
+    <div class="chart-container">
         <canvas id="chartMovimientos"></canvas>
-<canvas id="chartMovimientos" class="chart-container"></canvas>
+    </div>
+    
 <script>
     const ctx = document.getElementById('chartMovimientos');
     new Chart(ctx, {

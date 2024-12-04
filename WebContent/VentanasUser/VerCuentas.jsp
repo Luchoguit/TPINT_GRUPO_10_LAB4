@@ -18,7 +18,7 @@
 </head>
 <body>
 
-    <div class="form-container">
+    <div class="table-container">
         <h2 style="text-align: center;">Cuentas Disponibles</h2>
 
         <!-- Tabla de cuentas -->

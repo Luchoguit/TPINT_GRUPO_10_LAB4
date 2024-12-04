@@ -17,6 +17,17 @@
     <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloPaginacion.css">
     <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloBotones.css">
     <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloTabla.css">
+    
+    <style>
+.filter-container {
+    display: flex;  /* Usa flexbox para alinear los elementos */
+    justify-content: space-between;  /* Se distribuyen uniformemente a lo largo del espacio */
+    align-items: center;  /* Alinea los elementos verticalmente */
+    flex-wrap: wrap;  /* Permite que los elementos se ajusten si no hay suficiente espacio */
+    margin: 20px 0;
+}
+    </style>
+    
 </head>
 <body>
 
@@ -49,32 +60,33 @@
     <div class="table-header">
         <div><strong>Fecha:</strong> <%= Formato.formatoFecha(fechaHoy) %></div>
         <div><strong>Titular:</strong> <%= cliente.getNombre() + " " + cliente.getApellido() %></div>
-        <div><strong>Número de Cuenta:</strong> <%= cuentaSeleccionada.getNumeroCuenta() %></div>
+        <div><strong>Nï¿½mero de Cuenta:</strong> <%= cuentaSeleccionada.getNumeroCuenta() %></div>
     </div>
 
     <!-- Formulario de filtros -->
     <form method="get" action="ServletMovimientosCuenta" class="filter-container">
+	
+        <label for="fechaDesde">Fecha Desde:</label>
+        <input type="date" name="fechaDesde" id="fechaDesde">
+
+        <label for="fechaHasta">Hasta:</label>
+        <input type="date" name="fechaHasta" id="fechaHasta">
+
+        <label for="montoMin">Monto Mï¿½nimo:</label>
+        <input type="number" name="montoMin" onkeypress="soloNumeros(event)" step="0.01" id="montoMin">
+
+        <label for="montoMax">Mï¿½ximo:</label>
+        <input type="number" name="montoMax" onkeypress="soloNumeros(event)" step="0.01" id="montoMax">
+	
         <label for="tipoMovimiento">Tipo de Movimiento:</label>
         <select name="tipoMovimiento" id="tipoMovimiento">
             <option value="">Todos</option>
             <option value="1">Alta de Cuenta</option>
-            <option value="2">Alta de Préstamo</option>
-            <option value="3">Pago de Préstamo</option>
+            <option value="2">Alta de Prï¿½stamo</option>
+            <option value="3">Pago de Prï¿½stamo</option>
             <option value="4">Transferencia</option>
         </select>
-
-        <label for="fechaDesde">Fecha Desde:</label>
-        <input type="date" name="fechaDesde" id="fechaDesde">
-
-        <label for="fechaHasta">Fecha Hasta:</label>
-        <input type="date" name="fechaHasta" id="fechaHasta">
-
-        <label for="montoMin">Monto Mínimo:</label>
-        <input type="number" name="montoMin" onkeypress="soloNumeros(event)" step="0.01" id="montoMin">
-
-        <label for="montoMax">Monto Máximo:</label>
-        <input type="number" name="montoMax" onkeypress="soloNumeros(event)" step="0.01" id="montoMax">
-
+        
         <button type="submit" class="button-blue">Filtrar</button>
     </form>
 
@@ -117,7 +129,7 @@
         <h3 class="message-container warning">No hay movimientos para mostrar</h3>
     <% } %>
 
-    <!-- Controles de paginación -->
+    <!-- Controles de paginaciï¿½n -->
     <div class="pagination">
         <% for (int i = 1; i <= totalPaginas; i++) { %>
             <% if (i == paginaActual) { %>

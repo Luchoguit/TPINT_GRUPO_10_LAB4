@@ -3,7 +3,6 @@
 <%@page import="java.math.BigDecimal"%>
 <%@page import="utilidades.Formato" %>
 
-
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html lang="es">
@@ -14,153 +13,74 @@
     <!-- Estilos -->
     <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloBotones.css">
     <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloMensajes.css">
-    <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/CSS/EstiloTabla.css">
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            padding: 20px;
-            margin: 0;
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #f8f8f8;
-        }
-
-        td a {
-            color: #007bff;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        td a:hover {
-            text-decoration: underline;
-        }
-
-        .action-btn-submit {
-            padding: 10px 20px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .action-btn-submit:hover {
-            background-color: #218838;
-        }
-
-        .action-buttons {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .volver-menu {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .volver-btn-back {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .volver-btn-back:hover {
-            background-color: #0056b3;
-        }
-
-    </style>
+    <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloTabla.css">
 </head>
 <body>
 
+    <!-- Contenedor de la Tabla -->
+    <div class="table-container">
+    
     <!-- Título de la Página -->
     <h2>Préstamos Activos</h2>
-
-    <!-- Tabla de Préstamos -->
-    <table>
-        <thead>
-            <tr>
-                <th>Codigo de Préstamo</th>
-                <th>Importe solicitado</th>
-                <th>Cuotas Pagas</th>
-                <th>Valor de la Cuota</th>
-                <th>Total a pagar</th>
-                <th>Fecha del Préstamo</th>
-                <th>Importe restante a pagar</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>		
-			<% 
-			    Map<Prestamo, Integer> prestamosCuotas = (Map<Prestamo, Integer>) request.getAttribute("prestamosCuotas");
-			    if (prestamosCuotas != null) {
-			        for (Map.Entry<Prestamo, Integer> entry : prestamosCuotas.entrySet()) {
-			            Prestamo prestamo = entry.getKey();
-			            int cuotasPagas = entry.getValue();
-			            BigDecimal totalAbonado = prestamo.getImporteMensual().multiply(new BigDecimal(cuotasPagas));
-			            BigDecimal saldoRestante = prestamo.getImporteFinal().subtract(totalAbonado);
-			%>
-			<tr>
-			    <td><%= prestamo.getIdPrestamo() %></td>
-			    <td><%= Formato.formatoMonetario(prestamo.getImportePedido()) %></td>
-			    <td><%= cuotasPagas %> / <%= prestamo.getCantidadCuotas() %></td>
-			    <td><%= Formato.formatoMonetario(prestamo.getImporteMensual()) %></td>
-			    <td><%= Formato.formatoMonetario(prestamo.getImporteFinal()) %></td>
-			    <td><%= Formato.formatoFecha(prestamo.getFechaAlta()) %></td>
-			    <td><%= Formato.formatoMonetario(saldoRestante) %></td>
-			    <td>
-			        <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletVerPrestamos">
-			            <input type="hidden" name="idPrestamo" value="<%= prestamo.getIdPrestamo() %>">
-			            <button type="submit">PAGAR CUOTA</button>
-			        </form>
-			    </td>
-			</tr>
-			<% 
-			        }
-			    }
-			%>
-		</tbody>
-
-    </table>
+    
+        <!-- Tabla de Préstamos -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Codigo de Préstamo</th>
+                    <th>Importe solicitado</th>
+                    <th>Cuotas Pagas</th>
+                    <th>Valor de la Cuota</th>
+                    <th>Total a pagar</th>
+                    <th>Fecha del Préstamo</th>
+                    <th>Importe restante a pagar</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>		
+                <% 
+                    Map<Prestamo, Integer> prestamosCuotas = (Map<Prestamo, Integer>) request.getAttribute("prestamosCuotas");
+                    if (prestamosCuotas != null) {
+                        for (Map.Entry<Prestamo, Integer> entry : prestamosCuotas.entrySet()) {
+                            Prestamo prestamo = entry.getKey();
+                            int cuotasPagas = entry.getValue();
+                            BigDecimal totalAbonado = prestamo.getImporteMensual().multiply(new BigDecimal(cuotasPagas));
+                            BigDecimal saldoRestante = prestamo.getImporteFinal().subtract(totalAbonado);
+                %>
+                <tr>
+                    <td><%= prestamo.getIdPrestamo() %></td>
+                    <td><%= Formato.formatoMonetario(prestamo.getImportePedido()) %></td>
+                    <td><%= cuotasPagas %> / <%= prestamo.getCantidadCuotas() %></td>
+                    <td><%= Formato.formatoMonetario(prestamo.getImporteMensual()) %></td>
+                    <td><%= Formato.formatoMonetario(prestamo.getImporteFinal()) %></td>
+                    <td><%= Formato.formatoFecha(prestamo.getFechaAlta()) %></td>
+                    <td><%= Formato.formatoMonetario(saldoRestante) %></td>
+                    <td>
+                        <form method="post" action="/TPINT_GRUPO_10_LAB4/ServletVerPrestamos">
+                            <input type="hidden" name="idPrestamo" value="<%= prestamo.getIdPrestamo() %>">
+                            <button type="submit">PAGAR CUOTA</button>
+                        </form>
+                    </td>
+                </tr>
+                <% 
+                        }
+                    }
+                %>
+            </tbody>
+        </table>
+    </div>
 
     <!-- Botón para Solicitar un Nuevo Préstamo -->
     <div class="action-buttons">
         <form action="/TPINT_GRUPO_10_LAB4/ServletPedirPrestamo" method="get">
-            <input type="submit" value="Solicitar nuevo Préstamo" class="action-btn-submit">
+            <input type="submit" value="Solicitar nuevo Préstamo" class="button button-green">
         </form>
     </div>
 
     <!-- Botón para Volver al Menú -->
-    <div class="volver-menu">
+    <div class="action-buttons">
         <form method="post" action="/TPINT_GRUPO_10_LAB4/MENUS/IndexCuenta.jsp">
-            <button type="submit" class="volver-btn-back">Volver a cuenta</button>
+            <button type="submit" class="button button-blue">Volver a cuenta</button>
         </form>
     </div>
 

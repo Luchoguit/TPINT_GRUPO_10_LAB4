@@ -113,6 +113,7 @@
     int totalPaginas = (int) request.getAttribute("totalPaginas");
 %>
 
+    <div class="table-container">
 <table>
     <tr>
         <th>Tipo de cuenta</th>
@@ -178,6 +179,11 @@
         <a href="?page=<%= paginaActual + 1 %>" class="pagination-link">Siguiente &raquo;</a>
     <% } %>
 </div>
+</div>
+
+    <a href="/TPINT_GRUPO_10_LAB4/ServletListadoCuentasEliminadas" class="volver-menu">
+        <input type="button" value="Ir a Cuentas eliminadas" class="button button-grey"> <!-- Aplicamos el estilo de botón -->
+    </a>
 
 <!-- Enlace para volver al menú -->
 <div class="volver-menu">

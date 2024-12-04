@@ -1,6 +1,16 @@
 /* EstiloTabla.css */
 @charset "UTF-8";
 
+.table-container {
+    width: 85%;
+    padding: 20px;
+    margin: 20px auto;
+    background: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
 table {
     width: 80%;
     margin: 20px auto;
@@ -22,9 +32,13 @@ th {
     background-color: #f4f4f4;
 }
 
-.filter-container {
-    text-align: center;
-    margin: 20px;
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.table-header div {
+    margin: 5px 0;
 }
 
 .action-buttons {
