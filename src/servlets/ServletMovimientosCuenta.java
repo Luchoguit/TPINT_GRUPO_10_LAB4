@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -226,18 +228,33 @@ public class ServletMovimientosCuenta extends HttpServlet {
 		    }
 
 		    // Filtro por rango de fechas
+		    
+		    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		    
 		    if (fechaDesdeParam != null && !fechaDesdeParam.isEmpty()) {
-		        LocalDateTime fechaDesde = LocalDate.parse(fechaDesdeParam).atStartOfDay();
-		        if (movimiento.getFechaHora().isBefore(fechaDesde)) {
-		            agregar = false;
-		        }
+		    	try {
+			        LocalDateTime fechaDesde = LocalDate.parse(fechaDesdeParam, formatter).atStartOfDay();
+			        if (movimiento.getFechaHora().isBefore(fechaDesde)) {
+			            agregar = false;
+			        }
+		    	}
+		    	catch(DateTimeParseException e)
+		    	{
+		    		
+		    	}
 		    }
 
 		    if (fechaHastaParam != null && !fechaHastaParam.isEmpty()) {
-		        LocalDateTime fechaHasta = LocalDate.parse(fechaHastaParam).atTime(23, 59, 59);
-		        if (movimiento.getFechaHora().isAfter(fechaHasta)) {
-		            agregar = false;
-		        }
+		    	try {
+			        LocalDateTime fechaHasta = LocalDate.parse(fechaHastaParam, formatter).atTime(23, 59, 59);
+			        if (movimiento.getFechaHora().isAfter(fechaHasta)) {
+			            agregar = false;
+			        }
+		    	}
+		    	catch(DateTimeParseException e)
+		    	{
+		    		
+		    	}
 		    }
 
 		    // Filtro por rango de montos
