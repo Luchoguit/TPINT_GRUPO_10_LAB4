@@ -70,10 +70,10 @@
         <input type="date" name="fechaHasta" id="fechaHasta">
 
         <label for="montoMin">Monto Mínimo:</label>
-        <input type="number" name="montoMin" step="0.01" id="montoMin">
+        <input type="number" name="montoMin" onkeypress="soloNumeros(event)" step="0.01" id="montoMin">
 
         <label for="montoMax">Monto Máximo:</label>
-        <input type="number" name="montoMax" step="0.01" id="montoMax">
+        <input type="number" name="montoMax" onkeypress="soloNumeros(event)" step="0.01" id="montoMax">
 
         <button type="submit" class="button-blue">Filtrar</button>
     </form>
@@ -158,6 +158,16 @@
         }
         e.target.value = input;
     });
+    
+    
+    function soloNumeros(event) {
+        var key = event.keyCode || event.which;
+        var tecla = String.fromCharCode(key);
+        var regex = /^[0-9]$/;
+        if (!regex.test(tecla)) {
+            event.preventDefault();
+        }
+    }
     
 </script>
 

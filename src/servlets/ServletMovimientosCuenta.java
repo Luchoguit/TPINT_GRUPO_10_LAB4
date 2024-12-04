@@ -240,7 +240,9 @@ public class ServletMovimientosCuenta extends HttpServlet {
 		    	}
 		    	catch(DateTimeParseException e)
 		    	{
+		    		movimientosFiltrados.clear();
 		    		
+		    		return movimientosFiltrados;
 		    	}
 		    }
 
@@ -253,7 +255,9 @@ public class ServletMovimientosCuenta extends HttpServlet {
 		    	}
 		    	catch(DateTimeParseException e)
 		    	{
+		    		movimientosFiltrados.clear();
 		    		
+		    		return movimientosFiltrados;
 		    	}
 		    }
 
