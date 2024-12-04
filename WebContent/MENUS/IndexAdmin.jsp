@@ -6,31 +6,30 @@
     <title>Página Principal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        body {
-		    font-family: 'Arial', sans-serif;
-		    margin: 0;
-		    padding: 0;
-		    display: flex;
-		    justify-content: center;
-		    align-items: center;
-		    min-height: 100vh;
-		    background-color: #e9ecef;
-		    text-align: center; 
-		}
-
-
-        .main-container {
-		    max-width: 90%;
-		    width: 500px;
-		    padding: 20px;
-		    background: #fff;
-		    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
-		    border-radius: 10px;
-		    text-align: center;
-		    display: flex;
-		    flex-direction: column;
-		    align-items: center;
-		}
+	body {
+	    font-family: 'Arial', sans-serif;
+	    margin: 0;
+	    padding: 0;
+	    background-color: #e9ecef;
+	    text-align: center;
+	    display: flex;
+	    flex-direction: column;
+	    align-items: center;  
+	    min-height: 100vh; 
+	}
+	
+	.main-container {
+	    width: 500px;
+	    padding: 20px;
+	    background: #fff;
+	    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+	    border-radius: 10px;
+	    text-align: center;
+	    display: flex;
+	    flex-direction: column;
+	    align-items: center;
+	    margin-top: 20px;
+	}
 
 
         h1 {
@@ -135,22 +134,23 @@
     <h1>BANCO G10</h1>
 
     <div class="logged-user">
-   		 Admin: ${usuario.nombreUsuario}
+		ADMIN: ${usuario.nombreUsuario.toUpperCase()}
     </div>
 
     <ul class="navigation">
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletAltaCliente">Agregar nuevo cliente <i class="fa fa-user-plus"></i></a></li>
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletLAltaUsuario">Crear nuevo usuario <i class="fa fa-plus-circle"></i></a></li>      
-        <li><a href="/TPINT_GRUPO_10_LAB4/ServletListadoClientes">Ver listado de Clientes <i class="fa fa-list-alt"></i></a></li>
-        <li><a href="/TPINT_GRUPO_10_LAB4/ServletListadoClientesEliminados">Ver clientes Deshabilitados <i class="fa fa-trash-alt"></i></a></li>
+        <li><a href="/TPINT_GRUPO_10_LAB4/ServletListadoClientes">Ver listado de Clientes <i class="fa fa-users"></i></a></li>
+        <li><a href="/TPINT_GRUPO_10_LAB4/ServletListadoClientesEliminados">Ver clientes Deshabilitados <i class="fa fa-user-times"></i></a></li>
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletListadoCuentas">Ver listado de Cuentas <i class="fa fa-list-alt"></i></a></li>
-        <li><a href="/TPINT_GRUPO_10_LAB4/ServletListadoCuentasEliminadas">Ver listado de Cuentas Deshabilitadas <i class="fa fa-list-alt"></i></a></li>
-        <li><a href="/TPINT_GRUPO_10_LAB4/ServletAdministrarAltaCuentas">Gestionar solicitudes de cuentas <i class="fa fa-list-alt"></i></a></li>
-        <li><a href="/TPINT_GRUPO_10_LAB4/ServletSolicitudesPrestamos">Gestionar solicitudes de prestamos <i class="fa fa-list-alt"></i></a></li>
-        <li><a href="/TPINT_GRUPO_10_LAB4/ServletInformesAdmin">Ver informes <i class="fa fa-list-alt"></i></a></li>
+        <li><a href="/TPINT_GRUPO_10_LAB4/ServletListadoCuentasEliminadas">Ver listado de Cuentas Deshabilitadas <i class="fa fa-ban"></i></a></li>
+        <li><a href="/TPINT_GRUPO_10_LAB4/ServletAdministrarAltaCuentas">Gestionar solicitudes de cuentas <i class="fa fa-university"></i></a></li>
+        <li><a href="/TPINT_GRUPO_10_LAB4/ServletSolicitudesPrestamos">Gestionar solicitudes de prestamos <i class="fa fa-hand-holding-usd"></i></a></li>
+        <li><a href="/TPINT_GRUPO_10_LAB4/ServletInformesAdmin">Ver informes <i class="fa fa-chart-bar"></i></a></li>
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletCerrarSesion">Cerrar sesión <i class="fa fa-sign-out-alt"></i></a></li>
     </ul>
 
+</div>
     <div class="message">
         <p class="message-success">
             <% if (request.getAttribute("mensajeExito") != null) { %>
@@ -163,7 +163,6 @@
             <% } %>
         </p>
     </div>
-</div>
 
 </body>
 </html>

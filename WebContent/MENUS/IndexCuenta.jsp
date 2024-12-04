@@ -131,10 +131,10 @@
 
 <div class="main-container">
     <h1>CUENTA: ${cuenta.numeroCuenta}</h1>
-	<h3 style="color: #495057;">Tipo: ${cuenta.tipoCuenta.descripcion}</h3>
+	<h3 style="color: #495057;">TIPO: ${cuenta.tipoCuenta.descripcion.toUpperCase()}</h3>
 
     <div class="logged-user">
-        Usuario: ${usuario.nombreUsuario}
+        USUARIO: ${usuario.nombreUsuario.toUpperCase()}
 
     </div>
 
@@ -142,11 +142,12 @@
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletMovimientosCuenta">Consultar movimientos <i class="fa fa-list-alt"></i></a></li>
         <li><a href="/TPINT_GRUPO_10_LAB4/servletTransferencia">Realizar transferencia <i class="fa fa-exchange-alt"></i></a></li>
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletVerPrestamos">Gestionar préstamos <i class="fa fa-hand-holding-usd"></i></a></li>
-        <li><a href="/TPINT_GRUPO_10_LAB4/ServletVerInformes">Ver informes <i class="fa fa-hand-holding-usd"></i></a></li>
+        <li><a href="/TPINT_GRUPO_10_LAB4/ServletVerInformes">Ver informes <i class="fa fa-chart-bar"></i></a></li>
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletVerCuentas">Volver a cuentas <i class="fa fa-credit-card"></i></a></li>
         <li><a href="/TPINT_GRUPO_10_LAB4/ServletCerrarSesion">Cerrar sesión <i class="fa fa-sign-out-alt"></i></a></li>
     </ul>
 
+</div>
     <div class="message">
         <p class="message-success">
             <% if (request.getAttribute("mensajeExito") != null) { %>
@@ -159,7 +160,6 @@
             <% } %>
         </p>
     </div>
-</div>
 
 </body>
 </html>
