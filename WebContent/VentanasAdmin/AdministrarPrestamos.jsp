@@ -13,6 +13,19 @@
     <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloMensajes.css">
     <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloTabla.css">
     <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloPaginacion.css">
+    
+    <style>
+    .container {
+    width: 90%;
+    padding: 20px;
+    margin: 20px auto;
+    background: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow-x: auto;
+}
+    </style>
+    
 </head>
 <body>
 
@@ -36,6 +49,7 @@
         </div>
     <% } %>
 
+    <div class="container">
 
 <table>
     <thead>
@@ -102,6 +116,7 @@
     <% if (paginaActual < totalPaginas) { %>
         <a href="?page=<%= paginaActual + 1 %>" class="pagination-link">Siguiente &raquo;</a>
     <% } %>
+</div>
 </div>
 
 <!-- Enlace para volver al menu -->

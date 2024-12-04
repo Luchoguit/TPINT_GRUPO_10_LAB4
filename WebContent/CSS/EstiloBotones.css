@@ -81,6 +81,38 @@ body {
     background-color: #d32f2f; /* Rojo más oscuro */
 }
 
+/* Botón gris */
+.button-grey {
+    background-color: #6c757d; /* Gris */
+    color: white;
+}
+
+.button-grey:hover {
+    background-color: #5a6268; /* Gris más oscuro */
+}
+
+/* Botón negro */
+.button-black {
+    background-color: #343a40; /* Negro */
+    color: white;
+}
+
+.button-black:hover {
+    background-color: #23272b; /* Negro más oscuro */
+}
+
+/* Botón blanco */
+.button-white {
+    background-color: white;
+    color: black;
+    border: 1px solid #ccc; /* Borde gris claro para contraste */
+}
+
+.button-white:hover {
+    background-color: #f8f9fa; /* Blanco más oscuro */
+    color: black;
+}
+
 /* Estilo para alinear botones en tablas */
 .action-buttons {
     display: flex; /* Botones en fila */

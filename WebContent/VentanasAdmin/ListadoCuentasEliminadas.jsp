@@ -112,6 +112,7 @@
     int paginaActual = (int) request.getAttribute("paginaActual");
     int totalPaginas = (int) request.getAttribute("totalPaginas");
 %>
+    <div class="table-container">
 
 <table>
     <tr>
@@ -179,6 +180,11 @@
         <a href="?page=<%= paginaActual + 1 %>" class="pagination-link">Siguiente &raquo;</a>
     <% } %>
 </div>
+</div>
+
+    <a href="/TPINT_GRUPO_10_LAB4/ServletListadoCuentas" class="volver-menu">
+        <input type="button" value="Ir al listado de Cuentas" class="button button-grey"> <!-- Aplicamos el estilo de botón -->
+    </a>
 
 <!-- Enlace para volver al menú -->
 <div class="volver-menu">

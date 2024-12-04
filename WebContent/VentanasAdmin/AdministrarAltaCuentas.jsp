@@ -38,6 +38,7 @@
     int paginaActual = (int) request.getAttribute("paginaActual");
     int totalPaginas = (int) request.getAttribute("totalPaginas");
 %>
+    <div class="table-container">
 
 <table>
     <thead>
@@ -93,6 +94,7 @@
     <% if (paginaActual < totalPaginas) { %>
         <a href="?page=<%= paginaActual + 1 %>" class="pagination-link">Siguiente &raquo;</a>
     <% } %>
+</div>
 </div>
 
 <!-- Enlace para volver al menú -->

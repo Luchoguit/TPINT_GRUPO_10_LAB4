@@ -68,6 +68,7 @@
     int paginaActual = (int) request.getAttribute("paginaActual");
     int totalPaginas = (int) request.getAttribute("totalPaginas");
 %>
+    <div class="table-container">
 
 <table>
     <tr>
@@ -143,6 +144,11 @@
         <a href="?page=<%= paginaActual + 1 %>" class="pagination-link">Siguiente &raquo;</a>
     <% } %>
 </div>
+</div>
+
+    <a href="/TPINT_GRUPO_10_LAB4/ServletListadoClientesEliminados" class="volver-menu">
+        <input type="button" value="Ir a Clientes Eliminados" class="button button-grey"> <!-- Aplicamos el estilo de botón -->
+    </a>
 
 <!-- Enlace para volver al menu -->
 <a href="/TPINT_GRUPO_10_LAB4/MENUS/IndexAdmin.jsp" class="volver-menu">
