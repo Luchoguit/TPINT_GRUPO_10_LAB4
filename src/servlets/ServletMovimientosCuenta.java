@@ -229,36 +229,24 @@ public class ServletMovimientosCuenta extends HttpServlet {
 
 		    // Filtro por rango de fechas
 		    
-		    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		  
 		    
 		    if (fechaDesdeParam != null && !fechaDesdeParam.isEmpty()) {
-		    	try {
-			        LocalDateTime fechaDesde = LocalDate.parse(fechaDesdeParam, formatter).atStartOfDay();
+		    	
+			        LocalDateTime fechaDesde = LocalDate.parse(fechaDesdeParam).atStartOfDay();
 			        if (movimiento.getFechaHora().isBefore(fechaDesde)) {
 			            agregar = false;
 			        }
 		    	}
-		    	catch(DateTimeParseException e)
-		    	{
-		    		movimientosFiltrados.clear();
-		    		
-		    		return movimientosFiltrados;
-		    	}
-		    }
+	
+		    
 
 		    if (fechaHastaParam != null && !fechaHastaParam.isEmpty()) {
-		    	try {
-			        LocalDateTime fechaHasta = LocalDate.parse(fechaHastaParam, formatter).atTime(23, 59, 59);
+		    	
+			        LocalDateTime fechaHasta = LocalDate.parse(fechaHastaParam).atTime(23, 59, 59);
 			        if (movimiento.getFechaHora().isAfter(fechaHasta)) {
 			            agregar = false;
 			        }
-		    	}
-		    	catch(DateTimeParseException e)
-		    	{
-		    		movimientosFiltrados.clear();
-		    		
-		    		return movimientosFiltrados;
-		    	}
 		    }
 
 		    // Filtro por rango de montos
