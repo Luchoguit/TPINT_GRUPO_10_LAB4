@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -175,9 +176,7 @@ public class ServletAltaCliente extends HttpServlet {
 	            telefonoRepetido = clienteNegocio.verificarTelefonoIngresado(telefono);
 	            System.out.println("telefono repetido: " + telefonoRepetido);
 	            
-            // Conversión de fecha
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate fechaNacimiento = LocalDate.parse(fechaNacimientoStr, formatter);
+
 
 
             // Creación de objetos Localidad y Provincia
@@ -195,13 +194,28 @@ public class ServletAltaCliente extends HttpServlet {
             cliente.setApellido(apellido);
             cliente.setSexo(sexo);
             cliente.setNacionalidad(nacionalidad);
-            cliente.setFechaNacimiento(fechaNacimiento);
+            //cliente.setFechaNacimiento(fechaNacimiento);
             cliente.setDireccion(direccion);
             cliente.setLocalidadCliente(localidadCliente);
             cliente.setProvinciaCliente(provinciaCliente);
             cliente.setCorreo(correo);
             cliente.setTelefono(telefono);
             
+            
+            // Conversión de fecha
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            
+            try {
+            	LocalDate fechaNacimiento = LocalDate.parse(fechaNacimientoStr, formatter);
+            }
+            catch(DateTimeParseException e)
+            {
+            	Mensaje.error(request, "Fecha invalida, por favor revise los datos");
+            	 cargarProvincias(request);  
+                 pregarcarDatos(request, cliente);
+                 doGet(request, response);  
+                 return;
+            }
 
 // Validación del telefono
             
