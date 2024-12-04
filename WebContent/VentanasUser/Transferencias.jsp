@@ -12,6 +12,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Ingresar CBU</title>
 <style>        
+
+		.table-container {
+		    width: 85%;
+		    padding: 20px;
+		    margin: 20px auto;
+		    background: #fff;
+		    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+		    border-radius: 8px;
+		    overflow-x: auto;
+		}
         .container {
             display: flex;
             justify-content: space-between;
@@ -108,6 +118,9 @@
 
 </head>
 <body>
+
+    <div class="table-container">
+
 
 <%
 	Cuenta cuentaActual = (Cuenta) request.getSession().getAttribute("cuenta");
@@ -265,7 +278,7 @@
 		</a>
      </div>
 	
-	
+	</div>
 </div>
 </body>
 </html>

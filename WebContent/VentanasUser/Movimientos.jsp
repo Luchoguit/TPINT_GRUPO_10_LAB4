@@ -17,6 +17,17 @@
     <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloPaginacion.css">
     <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloBotones.css">
     <link rel="stylesheet" type="text/css" href="/TPINT_GRUPO_10_LAB4/CSS/EstiloTabla.css">
+    
+    <style>
+.filter-container {
+    display: flex;  /* Usa flexbox para alinear los elementos */
+    justify-content: space-between;  /* Se distribuyen uniformemente a lo largo del espacio */
+    align-items: center;  /* Alinea los elementos verticalmente */
+    flex-wrap: wrap;  /* Permite que los elementos se ajusten si no hay suficiente espacio */
+    margin: 20px 0;
+}
+    </style>
+    
 </head>
 <body>
 
@@ -54,6 +65,19 @@
 
     <!-- Formulario de filtros -->
     <form method="get" action="ServletMovimientosCuenta" class="filter-container">
+	
+        <label for="fechaDesde">Fecha Desde:</label>
+        <input type="date" name="fechaDesde" id="fechaDesde">
+
+        <label for="fechaHasta">Hasta:</label>
+        <input type="date" name="fechaHasta" id="fechaHasta">
+
+        <label for="montoMin">Monto Mínimo:</label>
+        <input type="number" name="montoMin" step="0.01" id="montoMin">
+
+        <label for="montoMax">Máximo:</label>
+        <input type="number" name="montoMax" step="0.01" id="montoMax">
+	
         <label for="tipoMovimiento">Tipo de Movimiento:</label>
         <select name="tipoMovimiento" id="tipoMovimiento">
             <option value="">Todos</option>
@@ -62,19 +86,7 @@
             <option value="3">Pago de Préstamo</option>
             <option value="4">Transferencia</option>
         </select>
-
-        <label for="fechaDesde">Fecha Desde:</label>
-        <input type="date" name="fechaDesde" id="fechaDesde">
-
-        <label for="fechaHasta">Fecha Hasta:</label>
-        <input type="date" name="fechaHasta" id="fechaHasta">
-
-        <label for="montoMin">Monto Mínimo:</label>
-        <input type="number" name="montoMin" step="0.01" id="montoMin">
-
-        <label for="montoMax">Monto Máximo:</label>
-        <input type="number" name="montoMax" step="0.01" id="montoMax">
-
+        
         <button type="submit" class="button-blue">Filtrar</button>
     </form>
 

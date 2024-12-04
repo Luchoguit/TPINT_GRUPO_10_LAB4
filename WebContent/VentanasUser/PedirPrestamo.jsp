@@ -88,11 +88,9 @@
     </form>
 
     <!-- Botón secundario: Regresar -->
-    <div class="volver-menu">
         <form method="post" action="/TPINT_GRUPO_10_LAB4/MENUS/IndexCuenta.jsp">
            <button type="submit" class="button button-blue">Volver al Menú</button>
         </form>
-    </div>
 </div>
 
 <script>
