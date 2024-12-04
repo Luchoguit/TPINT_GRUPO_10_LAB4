@@ -224,6 +224,7 @@ public class ClienteDaoImp implements ClienteDao {
 	        if (filasActualizadas > 0) {
 	            conn.commit();
 	        }
+	        System.out.println("[DEBUG] filas actualizadas: " + filasActualizadas);
 
 	        // Retornar si se realiz la actualizacion
 	        return filasActualizadas > 0;

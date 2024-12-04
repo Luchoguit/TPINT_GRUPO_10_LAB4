@@ -28,11 +28,18 @@ public class ServletListadoClientes extends HttpServlet {
         if (!ValidarSesion.validarAdministrador(request, response)) {
             return; 
         }
-		    	 
+		    
+        if(request.getParameter("mensaje") != null) {        	
+        String mensaje = request.getParameter("mensaje");
+        String tipoMensaje = request.getParameter("tipoMensaje");
+
+        request.setAttribute("mensaje", mensaje);
+        request.setAttribute("tipoMensaje", tipoMensaje);
+        }
+
+        
         String filtroCliente = request.getParameter("filtroCliente");
     	cargarClientes(request, response, filtroCliente);
-       
-       
         
     }
 

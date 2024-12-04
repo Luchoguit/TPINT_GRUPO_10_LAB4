@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -22,6 +23,7 @@ import negocioimplementacion.ClienteNegocioImp;
 import negocioimplementacion.LocalidadNegocioImp;
 import negocioimplementacion.ProvinciaNegocioImp;
 import utilidades.ValidarSesion;
+import utilidades.Mensaje;
 
 
 @WebServlet("/ServletModificarCliente")
@@ -33,13 +35,23 @@ public class ServletModificarCliente extends HttpServlet {
         if (!ValidarSesion.validarAdministrador(request, response)) {
             return; 
         }
-		    	
+        
+        Cliente cliente = null;
+		
+        if(request.getAttribute("cliente")!= null)
+        {
+        	cliente = (Cliente)request.getAttribute("cliente");
+        } else
+        {        	
+        
     	String idClienteStr = request.getParameter("idcliente");
     	    
     	int idCliente = Integer.parseInt(idClienteStr);
 
         ClienteNegocio clienteNegocio = new ClienteNegocioImp();
-        Cliente cliente = clienteNegocio.obtenerPorId(idCliente);
+        cliente = clienteNegocio.obtenerPorId(idCliente);
+        }
+        
         LocalidadNegocio localidadNegocio = new LocalidadNegocioImp();
         ProvinciaNegocio provinciaNegocio = new ProvinciaNegocioImp();
 
@@ -105,6 +117,7 @@ public class ServletModificarCliente extends HttpServlet {
         ClienteNegocio clienteNegocio = new ClienteNegocioImp();
         Cliente cliente = clienteNegocio.obtenerPorId(idCliente); // Obtener el cliente existente
 
+        
         if (cliente != null) {
             // verificamos datos irrepetibles            
             boolean actualizado = false;
@@ -161,16 +174,16 @@ public class ServletModificarCliente extends HttpServlet {
             	
             	actualizado = clienteNegocio.actualizarCliente(cliente);
             }
+            
+
             	
             if (actualizado) {
-                // Redirigir o mostrar un mensaje de exito
-                request.setAttribute("mensaje", "Cliente actualizado correctamente.");
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/ServletListadoClientes");
-                request.setAttribute("tipoMensaje", "success");
-                dispatcher.forward(request, response);
+            	
+            	Mensaje.exito(response, "ServletListadoClientes", "Cliente actualizado correctamente.");
             } 
             
             else {
+            	
             	//armo mensaje de error dependiendo de los campos repetidos.
             	String mensajeError = "Error. Dato repetido en sistema: ";
             	if (dni_repetido) {
@@ -196,27 +209,16 @@ public class ServletModificarCliente extends HttpServlet {
             	    mensajeError += "Email";
             	}
             	
-            	
-            	//envio mensaje de error a la vista
-            	request.setAttribute("mensaje", mensajeError);
-            	request.setAttribute("tipoMensaje", "error");
+            	Mensaje.error(request, mensajeError);
                 request.setAttribute("cliente", cliente);
 
-                ProvinciaNegocio provinciaNegocios = new ProvinciaNegocioImp();
-                LocalidadNegocio localidadNegocios = new LocalidadNegocioImp();
-                List<Provincia> listaProvincias = provinciaNegocio.listarProvincias();
-                List<Localidad> listaLocalidades = localidadNegocio.listarLocalidades();
-                request.setAttribute("listaProvincias", listaProvincias);
-                request.setAttribute("listaLocalidades", listaLocalidades);
+        	    doGet(request, response);
 
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/ModificarCliente.jsp");
-                dispatcher.forward(request, response);
             }
-        } else {
-            // Manejar el caso en que no se encuentra el cliente
-            request.setAttribute("error", "No se encontro el cliente con el DNI proporcionado.");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/ServletListadoClientes");
-            dispatcher.forward(request, response);
+        } else {        	
+        	
+        	Mensaje.error(response, "ServletListadoClientes", "Cliente no encontrado.");
+
         }
     }
     
