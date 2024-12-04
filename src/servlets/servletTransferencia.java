@@ -101,6 +101,8 @@ public class servletTransferencia extends HttpServlet {
 			{
 				System.out.println("[DEBUG] CBU Invalido");
 	            Mensaje.error(request, "Debe seleccionar un cbu Valido");
+	            doGet(request, response);
+				return;
 	            
 			}
 			else {
