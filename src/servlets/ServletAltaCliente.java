@@ -186,6 +186,12 @@ public class ServletAltaCliente extends HttpServlet {
             Provincia provinciaCliente = new Provincia();
             provinciaCliente.setId(idProvincia);
 
+            LocalDate fechaNacimiento = null;
+            if (fechaNacimientoStr != null && !fechaNacimientoStr.isEmpty()) {
+                fechaNacimiento = LocalDate.parse(fechaNacimientoStr);
+            }
+            
+            
             // Configuración del cliente
             Cliente cliente = new Cliente();
             cliente.setDni(dni);
@@ -194,7 +200,7 @@ public class ServletAltaCliente extends HttpServlet {
             cliente.setApellido(apellido);
             cliente.setSexo(sexo);
             cliente.setNacionalidad(nacionalidad);
-            //cliente.setFechaNacimiento(fechaNacimiento);
+            cliente.setFechaNacimiento(fechaNacimiento);
             cliente.setDireccion(direccion);
             cliente.setLocalidadCliente(localidadCliente);
             cliente.setProvinciaCliente(provinciaCliente);
@@ -202,20 +208,6 @@ public class ServletAltaCliente extends HttpServlet {
             cliente.setTelefono(telefono);
             
             
-            // Conversión de fecha
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            
-            try {
-            	LocalDate fechaNacimiento = LocalDate.parse(fechaNacimientoStr, formatter);
-            }
-            catch(DateTimeParseException e)
-            {
-            	Mensaje.error(request, "Fecha invalida, por favor revise los datos");
-            	 cargarProvincias(request);  
-                 pregarcarDatos(request, cliente);
-                 doGet(request, response);  
-                 return;
-            }
 
 // Validación del telefono
             

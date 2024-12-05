@@ -76,7 +76,7 @@
         <!-- Fecha de Nacimiento -->
         <div class="form-group">
             <label for="fecha_nacimiento">Fecha de Nacimiento</label>
-            <input type="text" id="fecha_nacimiento" name="fecha_nacimiento" maxlength="10" placeholder="dd/mm/yyyy" required>
+            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" maxlength="10" placeholder="dd/mm/yyyy" required>
         </div>
 
         <!-- Dirección -->
@@ -137,20 +137,7 @@
 
 </div>
 
-<!-- Scripts -->
-<script>
-    document.getElementById("fecha_nacimiento").addEventListener("input", function (e) {
-        let input = e.target.value;
-        input = input.replace(/\D/g, "");
-        if (input.length >= 3) {
-            input = input.substring(0, 2) + "/" + input.substring(2);
-        }
-        if (input.length >= 6) {
-            input = input.substring(0, 5) + "/" + input.substring(5, 9);
-        }
-        e.target.value = input;
-    });
-</script>
+
 
 <script>
     document.getElementById('provincia').addEventListener('change', function() {
