@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -112,23 +113,34 @@ public class ServletListadoCuentas extends HttpServlet {
         {
         	
         	Mensaje.error(request, "La cuenta no puede ser deshabilitada ya que posee préstamos activos asociados.");
-        	
+        	doGet(request, response);
+        	return;
         }
         
-        else {
-        boolean resultado = cuentaNegocio.eliminarCuenta(idCuenta);
-        if (resultado) {
-        Mensaje.exito(request, "Cuenta deshabilitada exitosamente.");
-
-        } else 
+        else
         {
-            Mensaje.error(request, "No se pudo deshabilitar la cuenta.");
+        	Cuenta cuenta = cuentaNegocio.obtenerCuentaPorId(idCuenta);
+        	
+        	if(cuenta.getSaldo().compareTo(BigDecimal.ZERO) > 0)
+        	{
+        		Mensaje.error(request, "La cuenta no puede ser deshabilitada ya que posee saldo.");
+        	}
+        	else {
+        		 boolean resultado = cuentaNegocio.eliminarCuenta(idCuenta);
+        	        if (resultado) 
+        	        {
+        	        	Mensaje.exito(request, "Cuenta deshabilitada exitosamente.");
+
+        	        } else 
+        	        {
+        	            Mensaje.error(request, "No se pudo deshabilitar la cuenta.");
+        	        }
+        	        System.out.println("[DEBUG] resultado: " + resultado);
+        	}
+        	        
+        	doGet(request, response);
         }
-        System.out.println("[DEBUG] resultado: " + resultado);
-        }
-        
-        doGet(request, response);
     }
-      
+         
     
 }
