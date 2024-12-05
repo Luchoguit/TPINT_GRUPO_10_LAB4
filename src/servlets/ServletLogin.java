@@ -27,9 +27,11 @@ public class ServletLogin extends HttpServlet {
         Usuario usuario = usuarioNegocio.getUsuario(nombreUsuario, contrasenia);
 
         System.out.println("[DEBUG] Entra al doPost");
+        
+        if (usuario != null) {
 
         // Verificar si el usuario existe y está activo
-        if (usuario != null && usuario.isEstado() && usuario.getCliente().isEstado()) {
+        if (usuario.isEstado() && usuario.getCliente().isEstado()) {
             // Almacenar el usuario en la sesión
             request.getSession().setAttribute("usuario", usuario);
             
@@ -53,11 +55,11 @@ public class ServletLogin extends HttpServlet {
 
             request.getRequestDispatcher("LOGIN/Login.jsp").forward(request, response);
         		
+        }
         }else {
             Mensaje.error(request, "Datos Incorrectos, intente nuevamente.");
 
             request.getRequestDispatcher("LOGIN/Login.jsp").forward(request, response);
-
         }
     }
 
