@@ -106,14 +106,15 @@
 
 <script>
   
-	function soloNumeros(event) {
-	    var key = event.keyCode || event.which;
-	    var tecla = String.fromCharCode(key);
-	    var regex = /^[0-9]$/;  
-	    if (!regex.test(tecla)) {
-	        event.preventDefault(); 
-	    }
-	}
+function soloNumeros(event) {
+    var key = event.keyCode || event.which;
+    var tecla = String.fromCharCode(key);
+    var regex = /^[0-9]$/;  
+    if (!regex.test(tecla)) {
+        event.preventDefault(); 
+    }
+}
+
 </script>
 
 </head>

@@ -81,20 +81,34 @@
     </div>
             <% } %>
     <script>
-        function formatCurrency(input) {
-            let value = input.value.replace(/\D/g, '');
-            value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-            input.value = '$ ' + value;
+    function formatCurrency(input) {
+        let value = input.value.replace(/[^0-9,]/g, ''); // Permitir solo números y comas
+        let parts = value.split(',');
+
+        // Formatear la parte entera con puntos
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+        // Reconstruir el valor con coma decimal (si existe)
+        input.value = '$ ' + parts.join(',');
+    }
+
+    function confirmarTransferencia() {
+        const montoInput = document.getElementById('monto');
+        let monto = montoInput.value
+            .replace(/[^0-9,]/g, '') // Eliminar caracteres no numéricos excepto coma
+            .replace(/\./g, '')      // Eliminar separadores de miles
+            .replace(',', '.');      // Reemplazar coma por punto decimal
+
+        if (!monto || isNaN(parseFloat(monto)) || parseFloat(monto) <= 0) {
+            alert('Por favor, ingrese un monto válido.');
+            return false;
         }
 
-        function confirmarTransferencia() {
-            const monto = document.getElementById('monto').value;
-            if (!monto || parseFloat(monto.replace(/[^\d]/g, '')) <= 0) {
-                alert('Por favor, ingrese un monto válido.');
-                return false;
-            }
-            return confirm('¿Está seguro de que desea realizar esta transferencia?');
-        }
+        montoInput.value = monto; // Enviar valor limpio en el formato correcto
+        return confirm('¿Está seguro de que desea realizar esta transferencia?');
+    }
+
+
     </script>
 
 </body>
