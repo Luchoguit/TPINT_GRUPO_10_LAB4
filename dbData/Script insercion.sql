@@ -103,31 +103,5 @@ INSERT INTO cuentas (numero_cuenta, cbu, id_usuario, id_tipoCuenta, saldo, fecha
 ('2000000023', '2012345671234567892402', 24, 2, 10000.00, NOW()),
 ('2000000024', '2012345671234567892501', 25, 1, 10000.00, NOW());
 
--- Insercion de movimientos de alta de cuenta para cada cuenta creada
-INSERT INTO movimientos (id_cuenta, id_tipoMovimiento, detalle, importe, Saldo_disponible) VALUES
-(1, 1, 'Alta de cuenta', 0.00, 10000.00),
-(2, 1, 'Alta de cuenta', 0.00, 10000.00),
-(3, 1, 'Alta de cuenta', 0.00, 10000.00),
-(4, 1, 'Alta de cuenta', 0.00, 10000.00),
-(5, 1, 'Alta de cuenta', 0.00, 10000.00),
-(6, 1, 'Alta de cuenta', 0.00, 10000.00),
-(7, 1, 'Alta de cuenta', 0.00, 10000.00),
-(8, 1, 'Alta de cuenta', 0.00, 10000.00),
-(9, 1, 'Alta de cuenta', 0.00, 10000.00),
-(10, 1, 'Alta de cuenta', 0.00, 10000.00),
-(11, 1, 'Alta de cuenta', 0.00, 10000.00),
-(12, 1, 'Alta de cuenta', 0.00, 10000.00),
-(13, 1, 'Alta de cuenta', 0.00, 10000.00),
-(14, 1, 'Alta de cuenta', 0.00, 10000.00),
-(15, 1, 'Alta de cuenta', 0.00, 10000.00),
-(16, 1, 'Alta de cuenta', 0.00, 10000.00),
-(17, 1, 'Alta de cuenta', 0.00, 10000.00),
-(18, 1, 'Alta de cuenta', 0.00, 10000.00),
-(19, 1, 'Alta de cuenta', 0.00, 10000.00),
-(20, 1, 'Alta de cuenta', 0.00, 10000.00),
-(21, 1, 'Alta de cuenta', 0.00, 10000.00),
-(22, 1, 'Alta de cuenta', 0.00, 10000.00),
-(23, 1, 'Alta de cuenta', 0.00, 10000.00),
-(24, 1, 'Alta de cuenta', 0.00, 10000.00),
-(25, 1, 'Alta de cuenta', 0.00, 10000.00);
+
 
