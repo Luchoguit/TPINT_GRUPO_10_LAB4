@@ -71,7 +71,7 @@ public class PrestamoDaoImp implements PrestamoDao {
 			+ "JOIN Solicitudes_Prestamos Sp ON Sp.id_prestamo = P.id_prestamo "
 			+ "JOIN clientes Cl ON Cl.id = P.id_cliente "
 			+ "JOIN cuentas Cu ON Cu.id = P.id_cuenta "
-			+ "WHERE Sp.estado = 1";
+			+ "WHERE Sp.estado = 1 AND Cu.estado = 1 AND Cl.estado = 1";
 
 
 	@Override
@@ -98,6 +98,7 @@ public class PrestamoDaoImp implements PrestamoDao {
 	        	cliente.setApellido(resultSet.getString("Cl.apellido"));
 	        	cliente.setSexo(resultSet.getString("Cl.sexo"));
 	        	cliente.setNacionalidad(resultSet.getString("Cl.nacionalidad"));
+	        	cliente.setEstado(resultSet.getBoolean("Cl.estado"));
 	        	
 	        	java.sql.Date sqlDate = resultSet.getDate("Cl.fecha_nacimiento");
 	            LocalDate fechaNacimiento = sqlDate != null ? sqlDate.toLocalDate() : null;

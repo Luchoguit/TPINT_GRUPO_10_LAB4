@@ -55,7 +55,9 @@ public class SolicitudAltaCuentaDaoImp implements SolicitudAltaCuentaDao {
         return isInsertExitoso;
 	}
 	
-	 private static final String qryListarSolicitudes = "SELECT * FROM solicitudes_alta_cuenta WHERE respondida = 0";
+	 private static final String qryListarSolicitudes = "SELECT S.* FROM solicitudes_alta_cuenta S "
+	 		+ "JOIN Clientes C ON C.id = S.id_cliente "
+	 		+ "WHERE respondida = 0 AND C.estado = 1";
 
 	@Override
 	public List<SolicitudAltaCuenta> listarSolicitudesSinResponder() {

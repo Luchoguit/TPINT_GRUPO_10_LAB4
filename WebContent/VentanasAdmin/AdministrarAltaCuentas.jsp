@@ -20,7 +20,7 @@
 </head>
 <body>
 
-<h2>Administrar solicitud alta cuentas</h2>
+<h2 style="text-align: center;">Administrar solicitud alta cuentas</h2>
 
    <!-- Contenedor de mensajes -->
     <% 
