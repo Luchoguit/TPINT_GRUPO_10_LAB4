@@ -27,16 +27,12 @@ public class CuotaDaoImp implements CuotaDao {
 	        statement = conexion.prepareStatement(qryInsertCuota);
 
 	        int numeroCuotas = prestamo.getCantidadCuotas();
-	        BigDecimal montoCuota = prestamo.getImportePedido().divide(
-	                BigDecimal.valueOf(numeroCuotas), RoundingMode.HALF_UP
-	        );
 
-	        System.out.println("[DEBUG] Monto de cada cuota: " + montoCuota);
 
 	        for (int i = 1; i <= numeroCuotas; i++) {
 	            statement.setInt(1, prestamo.getIdPrestamo());
 	            statement.setInt(2, i); 
-	            statement.setBigDecimal(3, montoCuota);
+	            statement.setBigDecimal(3, prestamo.getImporteMensual());
 	            statement.setTimestamp(4, Timestamp.valueOf(prestamo.getFechaAlta()));
 	            statement.addBatch();
 	        }

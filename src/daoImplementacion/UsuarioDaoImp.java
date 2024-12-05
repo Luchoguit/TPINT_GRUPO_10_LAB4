@@ -96,6 +96,8 @@ public class UsuarioDaoImp implements UsuarioDao {
 	        	cliente.setApellido(resultSet.getString("C.apellido"));
 	        	cliente.setSexo(resultSet.getString("C.sexo"));
 	        	cliente.setNacionalidad(resultSet.getString("C.nacionalidad"));
+	        	cliente.setEstado(resultSet.getBoolean("C.estado"));
+
 	        	
 	        	java.sql.Date sqlDate = resultSet.getDate("C.fecha_nacimiento");
 	            LocalDate fechaNacimiento = sqlDate != null ? sqlDate.toLocalDate() : null;
@@ -163,6 +165,7 @@ public class UsuarioDaoImp implements UsuarioDao {
 	        	cliente.setApellido(resultSet.getString("C.apellido"));
 	        	cliente.setSexo(resultSet.getString("C.sexo"));
 	        	cliente.setNacionalidad(resultSet.getString("C.nacionalidad"));
+	        	cliente.setEstado(resultSet.getBoolean("C.estado"));
 	        	
 	        	java.sql.Date sqlDate = resultSet.getDate("C.fecha_nacimiento");
 	            LocalDate fechaNacimiento = sqlDate != null ? sqlDate.toLocalDate() : null;

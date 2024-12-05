@@ -29,7 +29,7 @@ public class ServletLogin extends HttpServlet {
         System.out.println("[DEBUG] Entra al doPost");
 
         // Verificar si el usuario existe y está activo
-        if (usuario != null && usuario.isEstado()) {
+        if (usuario != null && usuario.isEstado() && usuario.getCliente().isEstado()) {
             // Almacenar el usuario en la sesión
             request.getSession().setAttribute("usuario", usuario);
             
@@ -48,12 +48,16 @@ public class ServletLogin extends HttpServlet {
                 System.out.println("[DEBUG] ES USER");
                 response.sendRedirect("MENUS/IndexUser.jsp");
             }
-        } else {
+        } else if (!usuario.isEstado() || !usuario.getCliente().isEstado()){
+            Mensaje.error(request, "Usuario/Cliente deshabilitado.");
+
+            request.getRequestDispatcher("LOGIN/Login.jsp").forward(request, response);
+        		
+        }else {
             Mensaje.error(request, "Datos Incorrectos, intente nuevamente.");
 
             request.getRequestDispatcher("LOGIN/Login.jsp").forward(request, response);
 
-            System.out.println("[DEBUG] No encuentra Usuario");
         }
     }
 

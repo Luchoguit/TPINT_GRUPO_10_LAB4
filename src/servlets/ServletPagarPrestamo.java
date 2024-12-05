@@ -38,6 +38,8 @@ public class ServletPagarPrestamo extends HttpServlet {
         }
 				
 		Prestamo prestamo = (Prestamo)request.getSession().getAttribute("prestamo");
+        System.out.println("[DEBUG] Prestamo, monto mensual: " + prestamo.getImporteMensual());
+
 		
 		request.setAttribute("prestamo", prestamo);
 		
@@ -70,6 +72,8 @@ public class ServletPagarPrestamo extends HttpServlet {
 		
 		
 		Prestamo prestamo = (Prestamo)request.getSession().getAttribute("prestamo");	
+        System.out.println("[DEBUG] Prestamo, monto mensual: " + prestamo.getImporteMensual());
+
 
 		/// OBTENER LA CANTIDAD DE CUOTAS QUE EL USUARIO DESEA PAGAR	
 		

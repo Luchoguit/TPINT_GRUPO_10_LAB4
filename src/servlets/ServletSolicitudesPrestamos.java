@@ -103,6 +103,7 @@ public class ServletSolicitudesPrestamos extends HttpServlet {
 	            System.out.println("[DEBUG] Fecha de alta: " + prestamo.getFechaAlta());
 	            System.out.println("[DEBUG] Cantidad de cuotas: " + prestamo.getCantidadCuotas());
 	            System.out.println("[DEBUG] Importe pedido: " + prestamo.getImportePedido());
+	            System.out.println("[DEBUG] Monto de cada cuota: " + prestamo.getImporteMensual());
 	            
 	        	CuotaNegocio cuotaNegocio = new CuotaNegocioImp();
 	        	boolean resultadoCuotas = cuotaNegocio.generarCuotas(prestamo);

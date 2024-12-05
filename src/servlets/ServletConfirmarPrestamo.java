@@ -39,6 +39,8 @@ public class ServletConfirmarPrestamo extends HttpServlet {
 
 		Prestamo prestamo = (Prestamo) request.getSession().getAttribute("prestamo");
 
+        System.out.println("[DEBUG] Prestamo, monto mensual: " + prestamo.getImporteMensual());
+
 	    PrestamoNegocio prestamoNegocio = new PrestamoNegocioImp();
 	    boolean resultadoAltaPrestamo = prestamoNegocio.altaPrestamo(prestamo);
 	    
