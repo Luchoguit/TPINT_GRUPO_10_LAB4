@@ -129,21 +129,31 @@
 </table>
 
 <!-- Controles de paginación -->
+<% 
+    // Obtener el valor del filtro
+    String filtroCliente = request.getParameter("filtroCliente");
+
+    // Generar la cadena de consulta
+    String queryString = "&filtroCliente=" + (filtroCliente != null ? filtroCliente : "");
+%>
+
+<!-- Controles de paginación -->
 <div class="pagination">
     <% if (paginaActual > 1) { %>
-        <a href="?page=<%= paginaActual - 1 %>" class="pagination-link">&laquo; Anterior</a>
+        <a href="?page=<%= paginaActual - 1 %><%= queryString %>" class="pagination-link">&laquo; Anterior</a>
     <% }
      for (int i = 1; i <= totalPaginas; i++) { %>
         <% if (i == paginaActual) { %>
             <span class="pagination-current"><%= i %></span>
         <% } else { %>
-            <a href="?page=<%= i %>" class="pagination-link"><%= i %></a>
+            <a href="?page=<%= i %><%= queryString %>" class="pagination-link"><%= i %></a>
         <% } 
      } %>
     <% if (paginaActual < totalPaginas) { %>
-        <a href="?page=<%= paginaActual + 1 %>" class="pagination-link">Siguiente &raquo;</a>
+        <a href="?page=<%= paginaActual + 1 %><%= queryString %>" class="pagination-link">Siguiente &raquo;</a>
     <% } %>
 </div>
+
 </div>
 
     <a href="/TPINT_GRUPO_10_LAB4/ServletListadoClientesEliminados" class="volver-menu">

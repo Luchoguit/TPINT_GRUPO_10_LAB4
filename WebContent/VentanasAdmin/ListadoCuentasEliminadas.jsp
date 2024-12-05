@@ -164,22 +164,26 @@
 %>
 </table>
 
-<!-- Controles de paginación -->
+<%
+    String filtroCliente = request.getParameter("filtroCliente");
+    String filtroParam = (filtroCliente != null && !filtroCliente.isEmpty()) ? "&filtroCliente=" + filtroCliente : "";
+%>
 <div class="pagination">
     <% if (paginaActual > 1) { %>
-        <a href="?page=<%= paginaActual - 1 %>" class="pagination-link">&laquo; Anterior</a>
+        <a href="?page=<%= paginaActual - 1 %><%= filtroParam %>" class="pagination-link">&laquo; Anterior</a>
     <% }
-     for (int i = 1; i <= totalPaginas; i++) { %>
+    for (int i = 1; i <= totalPaginas; i++) { %>
         <% if (i == paginaActual) { %>
             <span class="pagination-current"><%= i %></span>
         <% } else { %>
-            <a href="?page=<%= i %>" class="pagination-link"><%= i %></a>
+            <a href="?page=<%= i %><%= filtroParam %>" class="pagination-link"><%= i %></a>
         <% } 
-     } %>
-    <% if (paginaActual < totalPaginas) { %>
-        <a href="?page=<%= paginaActual + 1 %>" class="pagination-link">Siguiente &raquo;</a>
+    } 
+    if (paginaActual < totalPaginas) { %>
+        <a href="?page=<%= paginaActual + 1 %><%= filtroParam %>" class="pagination-link">Siguiente &raquo;</a>
     <% } %>
 </div>
+
 </div>
 
     <a href="/TPINT_GRUPO_10_LAB4/ServletListadoCuentas" class="volver-menu">
