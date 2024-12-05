@@ -48,13 +48,13 @@
         <!-- Nombre -->
         <div class="form-group">
             <label for="nombre">Nombre</label>
-            <input id="nombre" type="text" name="nombre" value="<%= request.getAttribute("precargaNombre") != null ? request.getAttribute("precargaNombre") : "" %>" maxlength="50">
+            <input id="nombre" type="text" onkeypress="soloLetras(event)" name="nombre" value="<%= request.getAttribute("precargaNombre") != null ? request.getAttribute("precargaNombre") : "" %>" maxlength="50">
         </div>
 
         <!-- Apellido -->
         <div class="form-group">
             <label for="apellido">Apellido</label>
-            <input id="apellido" type="text" name="apellido" value="<%= request.getAttribute("precargaApellido") != null ? request.getAttribute("precargaApellido") : "" %>" maxlength="50">
+            <input id="apellido" type="text" onkeypress="soloLetras(event)" name="apellido" value="<%= request.getAttribute("precargaApellido") != null ? request.getAttribute("precargaApellido") : "" %>" maxlength="50">
         </div>
 
         <!-- Sexo -->
@@ -70,7 +70,7 @@
         <!-- Nacionalidad -->
         <div class="form-group">
             <label for="nacionalidad">Nacionalidad</label>
-            <input id="nacionalidad" type="text" name="nacionalidad" value="<%= request.getAttribute("precargaNacionalidad") != null ? request.getAttribute("precargaNacionalidad") : "" %>" maxlength="50">
+            <input id="nacionalidad" type="text" onkeypress="soloLetras(event)" name="nacionalidad" value="<%= request.getAttribute("precargaNacionalidad") != null ? request.getAttribute("precargaNacionalidad") : "" %>" maxlength="50">
         </div>
 
         <!-- Fecha de Nacimiento -->
@@ -174,6 +174,15 @@
         var key = event.keyCode || event.which;
         var tecla = String.fromCharCode(key);
         var regex = /^[0-9]$/;
+        if (!regex.test(tecla)) {
+            event.preventDefault();
+        }
+    }
+    
+    function soloLetras(event) {
+    	var key = event.keyCode || event.which;
+        var tecla = String.fromCharCode(key);
+        const regex = /^[a-zA-Z\s]+$/;
         if (!regex.test(tecla)) {
             event.preventDefault();
         }
