@@ -100,8 +100,7 @@ public class ServletListadoCuentasEliminadas extends HttpServlet {
         if (cuentasActivas >= 3) {
         
             Mensaje.error(request, "El cliente ya tiene 3 cuentas activas.");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/VentanasAdmin/AdministrarAltaCuentas.jsp");
-            dispatcher.forward(request, response);
+            doGet(request, response);
             return;
         }
     	
