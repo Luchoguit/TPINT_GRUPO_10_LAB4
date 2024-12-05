@@ -144,3 +144,5 @@ INSERT INTO movimientos (id_cuenta, id_tipoMovimiento, detalle, fechaHora, impor
 (12, 4, 'Pago de impuestos federales', '2024-11-01 12:00:00', 2800.00, 13, 9300.00),
 (13, 4, 'Transferencia a cuenta bancaria', '2024-11-05 10:45:00', 4900.00, 14, 8700.00),
 (14, 4, 'Compra en comercio local', '2024-11-10 17:30:00', 890.00, 15, 7300.00);
+
+update movimientos set fechaHora = '2024-01-01 10:00:00' where id_tipoMovimiento = 1
