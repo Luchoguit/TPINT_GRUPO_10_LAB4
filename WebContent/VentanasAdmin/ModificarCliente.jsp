@@ -55,12 +55,12 @@
 
     <div class="form-group">
         <label for="nombre">Nombre</label>
-        <input id="nombre" required name="nombre" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getNombre() %>">
+        <input id="nombre" required onkeypress="soloLetras(event)" name="nombre" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getNombre() %>">
     </div>
 
     <div class="form-group">
         <label for="apellido">Apellido</label>
-        <input id="apellido" required name="apellido" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getApellido() %>">
+        <input id="apellido" required onkeypress="soloLetras(event)" name="apellido" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getApellido() %>">
     </div>
 
     <div class="form-group">
@@ -73,7 +73,7 @@
 
     <div class="form-group">
         <label for="nacionalidad">Nacionalidad</label>
-        <input id="nacionalidad" required name="nacionalidad" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getNacionalidad() %>">
+        <input id="nacionalidad" required onkeypress="soloLetras(event)" name="nacionalidad" type="text" value="<%= ((Cliente) request.getAttribute("cliente")).getNacionalidad() %>">
     </div>
 
     <div class="form-group">
@@ -149,6 +149,15 @@
         var key = event.keyCode || event.which;
         var tecla = String.fromCharCode(key);
         var regex = /^[0-9]$/;
+        if (!regex.test(tecla)) {
+            event.preventDefault();
+        }
+    }
+    
+    function soloLetras(event) {
+    	var key = event.keyCode || event.which;
+        var tecla = String.fromCharCode(key);
+        const regex = /^[a-zA-Z\s]+$/;
         if (!regex.test(tecla)) {
             event.preventDefault();
         }
